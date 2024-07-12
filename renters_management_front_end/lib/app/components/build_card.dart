@@ -20,6 +20,7 @@ class BuildCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    (height<200)?height=200:null;
     Color color1;
     Color color2;
     Color textColor;
@@ -46,30 +47,32 @@ class BuildCard extends StatelessWidget {
           ),
           boxShadow: const [
             BoxShadow(
-              color: Colors.black26,
-              spreadRadius: 1,
-              blurRadius: 8,
+              color: Colors.black38,
+              spreadRadius: 3,
+              blurRadius: 5,
               offset: Offset(0, 5),
             )
           ],
           borderRadius: const BorderRadius.all(Radius.circular(20)),
         ),
-        child: Row(
+        child: Column(
           children: [
-            Padding(
-              padding: const EdgeInsets.all(16),
+            Container(
+              height: ((height-2) * 0.6),
+              padding: const EdgeInsets.all(12),
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       SizedBox(
                         width: (Get.width - rightPadding) * 0.6,
                         child: Row(
                           children: [
                             SecText(
-                              "Builb Name:  ",
+                              "Build Name:  ",
                               textColor: textColor,
                               fontWeight: FontWeight.bold,
                             ),
@@ -175,24 +178,67 @@ class BuildCard extends StatelessWidget {
                 ],
               ),
             ),
-            Expanded(
-              child: Container(
-                height: height,
-                decoration: BoxDecoration(
-                  color: color2,
-                  borderRadius: const BorderRadius.only(
-                    bottomRight: Radius.circular(20),
-                    topRight: Radius.circular(20),
+            Container(
+              height: (height-2) * 0.2,
+              width: double.maxFinite,
+              color: color2,
+              child: Stack(
+                alignment: Alignment.topRight,
+                children: [
+                  Center(
+                    child: TextButton(
+                      onPressed: () { },
+                      child: SecText(
+                        "Renters and Rent Status",
+                        textColor: color1,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                   ),
-                ),
-                child: IconButton(
-                  onPressed: () {},
-                  icon: Icon(
-                    Icons.arrow_forward_ios,
-                    color: color1,
+                  IconButton(
+                    onPressed: () {},
+                    icon: Icon(
+                      Icons.arrow_forward_ios,
+                      color: color1,
+                    ),
                   ),
-                  highlightColor: (type==0)?Colors.white38:Colors.black38,
+                ],
+              ),
+            ),
+            const SizedBox(
+              height: 2,
+            ),
+            Container(
+              height: (height-2) * 0.2,
+              width: double.maxFinite,
+              decoration: BoxDecoration(
+                color: color2,
+                borderRadius: const BorderRadius.only(
+                  bottomRight: Radius.circular(20),
+                  bottomLeft: Radius.circular(20),
                 ),
+              ),
+              child: Stack(
+                alignment: Alignment.topRight,
+                children: [
+                  Center(
+                    child: TextButton(
+                      onPressed: () { },
+                      child: SecText(
+                        "Build Reports ",
+                        textColor: color1,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                  IconButton(
+                    onPressed: () {},
+                    icon: Icon(
+                      Icons.arrow_forward_ios,
+                      color: color1,
+                    ),
+                  ),
+                ],
               ),
             )
           ],

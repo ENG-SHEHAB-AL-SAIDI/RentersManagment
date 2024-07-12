@@ -69,7 +69,7 @@ class LoginController extends GetxController {
       logging.value = true;
       await Future.delayed(const Duration(seconds: 1));
       if (UserModel.userLogin(id.text, password.text)) {
-        Get.offNamed("/main");
+        Get.offNamed("/home");
       }else{
        loggingFiled.value = true;
       }

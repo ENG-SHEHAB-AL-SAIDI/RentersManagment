@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:renters_management_front_end/app/views/home_view/main_home_view.dart';
 import 'package:renters_management_front_end/app/views/login_view/main_login_view.dart';
 import 'bindings/login_binding.dart';
 
@@ -7,6 +8,11 @@ class AppRoutes {
     GetPage(
       name: '/login',
       page: ()=>  const LoginPage(),
+      binding: LoginViewBinding(),
+    ),
+    GetPage(
+      name: '/home',
+      page: ()=>   const HomeView(),
       binding: LoginViewBinding(),
     ),
     // Add more routes here

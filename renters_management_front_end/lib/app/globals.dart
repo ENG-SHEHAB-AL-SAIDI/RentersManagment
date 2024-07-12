@@ -27,8 +27,8 @@ class AppColors {
   static Color coverColor =  const Color.fromRGBO(0, 191, 255, 0.25);
 
   static Color backColor = Color(int.parse("FFFFFFFF",radix: 16));
-  static Color tabBackColor = const Color.fromRGBO(235, 241, 253,1);
-  static Color inverseTabBackColor = Color(int.parse("FF0D3976",radix: 16));
+  //static Color tabBackColor = const Color.fromRGBO(235, 241, 253,1);
+  static Color appBarColor = Color(int.parse("FF0D3976",radix: 16));
 
   static Color mainIconColor = Color(int.parse("FFFFFFFF",radix: 16));
   static Color inverseIconColor = Color(int.parse("FF0D3976",radix: 16));

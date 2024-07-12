@@ -4,9 +4,6 @@ class User {
   RxString? name ;
   RxString? email ;
   RxString? phone;
-  RxString? level;
-  RxString? department;
-  RxString? division;
   RxString? profileImage;
 
   User({
@@ -14,9 +11,6 @@ class User {
     this.name,
     this.email,
     this.phone,
-    this.level,
-    this.department,
-    this.division,
     this.profileImage,
   });
 

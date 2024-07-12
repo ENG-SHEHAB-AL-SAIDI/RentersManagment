@@ -18,9 +18,6 @@ class UserModel {
         'name': 'Shehab AL-Saidi',
         'email':'shehab@gmail.com',
         'phone':'772388461',
-        'level': '4th',
-        'department':'Electrical engineering',
-        'division': 'Computer engineering',
         'profileImage': 'assets/images/login_background_0.jpg',
       };
       _user = userResponseToUser(response);
@@ -51,9 +48,6 @@ class UserModel {
       name: RxString(response['name']),
       email: RxString(response['email']),
       phone: RxString(response['phone']),
-      level: RxString(response['level']) ,
-      department: RxString(response['department']),
-      division: RxString(response['division']),
       profileImage: RxString(response['profileImage']),
     );
     return user;

@@ -2,7 +2,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
+import 'package:renters_management_front_end/app/components/pop_up_cards/delete_confirmation_message_card.dart';
+import 'package:renters_management_front_end/app/components/pop_up_cards/update_build_card.dart';
 import '../globals.dart';
 import 'custom_text.dart';
 
@@ -20,7 +21,7 @@ class BuildCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    (height<200)?height=200:null;
+    (height < 200) ? height = 200 : null;
     Color color1;
     Color color2;
     Color textColor;
@@ -58,7 +59,7 @@ class BuildCard extends StatelessWidget {
         child: Column(
           children: [
             Container(
-              height: ((height-2) * 0.6),
+              height: ((height - 2) * 0.6),
               padding: const EdgeInsets.all(12),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -89,13 +90,13 @@ class BuildCard extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
                             IconButton(
-                                onPressed: () {},
+                                onPressed: edit,
                                 icon: Icon(
                                   Icons.edit,
                                   color: textColor,
                                 )),
                             IconButton(
-                                onPressed: () {},
+                                onPressed: delete,
                                 icon: Icon(
                                   Icons.delete,
                                   color: textColor,
@@ -179,7 +180,7 @@ class BuildCard extends StatelessWidget {
               ),
             ),
             Container(
-              height: (height-2) * 0.2,
+              height: (height - 2) * 0.2,
               width: double.maxFinite,
               color: color2,
               child: Stack(
@@ -187,7 +188,7 @@ class BuildCard extends StatelessWidget {
                 children: [
                   Center(
                     child: TextButton(
-                      onPressed: () { },
+                      onPressed: renterStateRoute,
                       child: SecText(
                         "Renters and Rent Status",
                         textColor: color1,
@@ -196,7 +197,7 @@ class BuildCard extends StatelessWidget {
                     ),
                   ),
                   IconButton(
-                    onPressed: () {},
+                    onPressed: renterStateRoute,
                     icon: Icon(
                       Icons.arrow_forward_ios,
                       color: color1,
@@ -209,7 +210,7 @@ class BuildCard extends StatelessWidget {
               height: 2,
             ),
             Container(
-              height: (height-2) * 0.2,
+              height: (height - 2) * 0.2,
               width: double.maxFinite,
               decoration: BoxDecoration(
                 color: color2,
@@ -223,7 +224,7 @@ class BuildCard extends StatelessWidget {
                 children: [
                   Center(
                     child: TextButton(
-                      onPressed: () { },
+                      onPressed: buildReportRoute,
                       child: SecText(
                         "Build Reports ",
                         textColor: color1,
@@ -232,7 +233,7 @@ class BuildCard extends StatelessWidget {
                     ),
                   ),
                   IconButton(
-                    onPressed: () {},
+                    onPressed: buildReportRoute,
                     icon: Icon(
                       Icons.arrow_forward_ios,
                       color: color1,
@@ -243,5 +244,23 @@ class BuildCard extends StatelessWidget {
             )
           ],
         ));
+  }
+
+  void edit() {
+
+    Get.dialog(const PopUpIUpdateBuildCard());
+  }
+
+  void delete() {
+    Get.dialog(PopUpMessageCard(
+            "did you sure want delete this build that will delete all data relative to it."));
+  }
+
+  void renterStateRoute() {
+    Get.toNamed("/rentersState");
+  }
+
+  void buildReportRoute() {
+    Get.toNamed("/buildReports");
   }
 }

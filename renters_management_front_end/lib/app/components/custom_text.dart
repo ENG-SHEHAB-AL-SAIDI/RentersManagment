@@ -1,5 +1,6 @@
 // ignore_for_file: must_be_immutable
 import 'package:flutter/material.dart';
+
 import '../globals.dart';
 
 class MainText extends StatelessWidget {
@@ -9,6 +10,7 @@ class MainText extends StatelessWidget {
     this.textColor,
     this.fontSize = 24,
     this.fontWeight = FontWeight.bold,
+    this.textAlign = TextAlign.center,
     this.height,
   }) {
     textColor ??= AppColors.mainTextColor;
@@ -20,6 +22,7 @@ class MainText extends StatelessWidget {
   double fontSize;
   double? height;
   FontWeight fontWeight;
+  TextAlign textAlign;
 
   @override
   Widget build(BuildContext context) {
@@ -31,6 +34,7 @@ class MainText extends StatelessWidget {
         fontWeight: fontWeight,
         height: height,
       ),
+      textAlign: TextAlign.center,
     );
   }
 }
@@ -42,7 +46,8 @@ class SecText extends MainText {
     Color? textColor,
     double? fontSize,
     FontWeight? fontWeight,
-  }) : super(textColor: textColor ?? AppColors.secTextColor,
+  }) : super(
+            textColor: textColor ?? AppColors.secTextColor,
             fontSize: fontSize ?? 14,
             fontWeight: fontWeight ?? FontWeight.normal);
 }

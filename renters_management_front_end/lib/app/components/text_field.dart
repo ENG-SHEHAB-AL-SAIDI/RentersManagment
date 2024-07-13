@@ -53,10 +53,10 @@ class CustomTextFormField extends StatelessWidget {
             isDense: true,
             border: const OutlineInputBorder(
                 borderRadius: BorderRadius.all(Radius.circular(30))),
-            icon: Icon(
+            icon: (icon!=null)?Icon(
               icon,
               size: 40,
-            ),
+            ):null,
 
             labelText: labelText,
             suffixIcon:Obx((){
@@ -83,11 +83,11 @@ class CustomTextFormField extends StatelessWidget {
         decoration: InputDecoration(
             isDense: true,
             border: const OutlineInputBorder(
-                borderRadius: BorderRadius.all(Radius.circular(30))),
-            icon: Icon(
+                borderRadius: BorderRadius.all(Radius.circular(25))),
+            icon: (icon!=null)?Icon(
               icon,
               size: 40,
-            ),
+            ):null,
             labelText: labelText,
 
         ),

@@ -6,6 +6,8 @@ import 'package:renters_management_front_end/app/components/build_card.dart';
 import 'package:renters_management_front_end/app/components/custom_text.dart';
 import 'package:renters_management_front_end/app/globals.dart';
 
+import '../../components/pop_up_cards/add_build_card.dart';
+
 class PhoneHomeView extends StatelessWidget {
    PhoneHomeView({super.key});
 
@@ -21,7 +23,9 @@ class PhoneHomeView extends StatelessWidget {
         leading:  Icon(Icons.home,color: AppColors.mainIconColor,),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {  },
+        onPressed: () {
+          Get.dialog(const PopUpIAddBuildCard());
+        },
         backgroundColor: AppColors.inverseCardColor,
         child:  Icon(Icons.add,color: AppColors.mainIconColor,),
       ),
@@ -33,12 +37,27 @@ class PhoneHomeView extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SizedBox(height: height*0.01,),
-              SecText("Builds",textColor: AppColors.inverseSecTextColor,),
+              SecText("Your Builds",textColor: AppColors.inverseSecTextColor,),
               SizedBox(height: height*0.03,),
-              for(int i = 0;i<5;i++)...[
-                BuildCard(buildInfo: "buildInfo", height: height*0.16,type: i%2,),
-                SizedBox(height: height*0.03,)
-              ]
+
+              BuildCard(buildInfo: "buildInfo", height: height*0.16,type: 0,),
+              SizedBox(height: height*0.03,),
+
+              BuildCard(buildInfo: "buildInfo", height: height*0.16,type: 0,),
+              SizedBox(height: height*0.03,),
+
+              BuildCard(buildInfo: "buildInfo", height: height*0.16,type: 1,),
+              SizedBox(height: height*0.03,),
+
+              BuildCard(buildInfo: "buildInfo", height: height*0.16,type: 0,),
+              SizedBox(height: height*0.03,),
+
+
+              BuildCard(buildInfo: "buildInfo", height: height*0.16,type: 1,),
+              SizedBox(height: height*0.03,),
+
+              BuildCard(buildInfo: "buildInfo", height: height*0.16,type: 1,),
+              SizedBox(height: height*0.03,),
             ],
           ),
         )

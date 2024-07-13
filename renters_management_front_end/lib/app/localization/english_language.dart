@@ -1,10 +1,10 @@
 class Engilsh {
   Map<String, String> dictionary = {
-    'id': 'Email',
+    'id':'Email',
     'password': 'Password',
     'login': 'Login',
     'logging': 'logging',
-    'forgotPassword?': 'Forgot Password?',
-    'register': 'Register now',
+    'forgotPassword?':'Forgot Password?',
+    'register':'Register now',
   };
 }

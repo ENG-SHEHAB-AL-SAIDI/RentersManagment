@@ -1,12 +1,8 @@
 import 'package:get/get.dart';
-<<<<<<< HEAD
-import './views/login_view.dart';
-=======
 import 'package:renters_management_front_end/app/views/home_view/main_home_view.dart';
 import 'package:renters_management_front_end/app/views/login_view/main_login_view.dart';
 import 'package:renters_management_front_end/app/views/renters_state_view/main_renters_state_view.dart';
 import 'bindings/login_binding.dart';
->>>>>>> FrontEnd
 
 class AppRoutes {
   static final routes = [

@@ -68,7 +68,7 @@ class LoginController extends GetxController {
     if (formKey.currentState!.validate()) {
       logging.value = true;
       await Future.delayed(const Duration(seconds: 1));
-      if (UserModel.userLogin(id.text, password.text)) {
+      if (await UserModel.userLogin(id.text, password.text)) {
         Get.offNamed("/home");
       }else{
        loggingFiled.value = true;

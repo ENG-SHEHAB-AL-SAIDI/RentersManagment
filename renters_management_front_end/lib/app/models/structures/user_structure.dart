@@ -5,6 +5,9 @@ class User {
   RxString? email ;
   RxString? phone;
   RxString? profileImage;
+  RxString? emailVerifiedAt;
+  RxString? createdAt;
+  RxString? updatedAt;
 
   User({
     required this.id,
@@ -12,7 +15,10 @@ class User {
     this.email,
     this.phone,
     this.profileImage,
-  });
+    this.emailVerifiedAt,
+    this.createdAt,
+    this.updatedAt,
 
+  });
 
 }

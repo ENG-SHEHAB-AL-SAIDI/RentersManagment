@@ -1,60 +1,62 @@
+import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:renters_management_front_end/app/models/structures/user_structure.dart';
 
-
-
-
 class UserModel {
-
   static User? _user;
-  static bool userLogin(String id,String password){
-    // simulate make request and get response
-    bool responseStat = false;
-    if(id == "1" && password == "12345678"){
-      responseStat = true;
-      //String token = "token";
-      Map<String,dynamic> response = {
-        'id': 2070093,
-        'name': 'Shehab AL-Saidi',
-        'email':'shehab@gmail.com',
-        'phone':'772388461',
-        'profileImage': 'assets/images/login_background_0.jpg',
-      };
-      _user = userResponseToUser(response);
+  static final _dio = Dio();
 
+  static Future<bool> userLogin(String id, String password) async {
+    bool responseStat = false;
+    late Response response;
+    try {
+      response = await _dio.post("${dotenv.env["ApiUrl"]}/auth/login",
+          data: {"email": "shehab8@gmail.com", "password": "12345678"});
+      dotenv.env["AccessToken"] = response.data["token"]["original"]["access_token"];
+      _user = userResponseToUser(response.data);
+      responseStat = true;
+    } catch (error) {
+      if (kDebugMode) {
+        print(error);
+      }
     }
     return responseStat;
   }
-  static User fetchUser() {
-    if(_user != null){
+
+  static Future<User> fetchUser() async{
+    if (_user != null) {
       return _user!;
     }
-    // simulate make request and get response
-    Map<String,dynamic> response = {
-      'id': 2070093,
-      'name': 'Shehab AL-Saidi',
-      'level': '4th',
-      'part': 'Electrical engineering',
-      'department': 'Computer engineering',
-      'profileImage': 'assets/images/login_background_0.jpg',
-    };
-    User user = userResponseToUser(response);
-    return user;
+
+    late Response response;
+    try {
+      response = await _dio.post("${dotenv.env["ApiUrl"]}/auth/me",
+      options: Options(
+        headers: {
+        }
+      ));
+      _user = userResponseToUser(response.data);
+    } catch (error) {
+      throw Exception(error);
+    }
+    return _user!;
   }
 
-  static User userResponseToUser(Map<String,dynamic> response){
+  static User userResponseToUser(Map<String, dynamic> response) {
     User user = User(
-      id: RxInt(response['id']),
-      name: RxString(response['name']),
-      email: RxString(response['email']),
-      phone: RxString(response['phone']),
-      profileImage: RxString(response['profileImage']),
+      id: RxInt(response['user']['id']??0),
+      name: RxString(response['user']['name']??""),
+      email: RxString(response['user']['email']??""),
+      phone: RxString(response['user']['phone']??""),
+      //profileImage: RxString(response['user']['profileImage']??""),
+      emailVerifiedAt: RxString(response['user']['email_verified_at']??""),
+      createdAt: RxString(response['user']['created_at']??""),
+      updatedAt: RxString(response['user']['updated_at']??""),
     );
     return user;
   }
 
   static void write() {}
 }
-
-
-

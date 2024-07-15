@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:renters_management_front_end/app/models/api/http_provider.dart';
 import './app/localization/languages.dart';
 import './app/routes.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'app/models/api/api_end_points.dart';
 
 void main() async{
-  await dotenv.load(fileName: ".env");
+  HttpProvider.init(baseUrl:EndPoints.baseUrl);
   runApp(const MyApp());
 }
 

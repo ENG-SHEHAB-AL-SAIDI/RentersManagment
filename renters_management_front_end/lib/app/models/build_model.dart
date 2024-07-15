@@ -26,8 +26,23 @@ class BuildModel{
     return _builds!;
   }
 
-  static void fetchBuild(int id){
-
+  static Future<Build> fetchBuild(int id,{bool hardFetch = false}) async {
+    Build build0;
+    if(_builds!=null && !hardFetch){
+      for (Build build in _builds!){
+        if(build.id.value == id){
+          return build;
+        }
+      }
+    }
+    try{
+      Response response;
+      response = await HttpProvider.get("${EndPoints.getBuild}/$id");
+      build0 = buildResponseToBuild(response.data);
+    }catch(erorr){
+      throw erorr;
+    }
+    return build0;
   }
 
 

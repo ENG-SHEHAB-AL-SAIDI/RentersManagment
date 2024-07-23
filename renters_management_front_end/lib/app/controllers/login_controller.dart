@@ -1,6 +1,7 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+import 'package:renters_management_front_end/app/services/user_services.dart';
 import '../models/user_model.dart';
 
 class LoginController extends GetxController {
@@ -68,7 +69,7 @@ class LoginController extends GetxController {
     if (formKey.currentState!.validate()) {
       logging.value = true;
       await Future.delayed(const Duration(seconds: 1));
-      if (await UserModel.userLogin(id.text, password.text)) {
+      if (await UserServices.userLogin(id.text, password.text)) {
         Get.offNamed("/home");
       }else{
        loggingFiled.value = true;

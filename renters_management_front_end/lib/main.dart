@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:renters_management_front_end/app/models/api/http_provider.dart';
 import './app/localization/languages.dart';
 import './app/routes.dart';
-import 'app/models/api/api_end_points.dart';
+import 'app/services/api/api_end_points.dart';
+import 'app/services/api/http_provider.dart';
 
 void main() async{
   HttpProvider.init(baseUrl:EndPoints.baseUrl);

@@ -1,6 +1,7 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+import 'package:renters_management_front_end/app/models/result.dart';
 import 'package:renters_management_front_end/app/services/user_services.dart';
 import '../models/user_model.dart';
 
@@ -25,15 +26,10 @@ class LoginController extends GetxController {
   }
   @override
   void onInit() {
-    id.text = "1";
+    id.text = "shehab8@gmail.com";
     password.text = "12345678";
 
     super.onInit();
-  }
-  @override
-  void onReady() {
-    //onLogin();
-    super.onReady();
   }
 
   String? validateID(String? id) {
@@ -68,8 +64,8 @@ class LoginController extends GetxController {
   Future<void> onLogin() async {
     if (formKey.currentState!.validate()) {
       logging.value = true;
-      await Future.delayed(const Duration(seconds: 1));
-      if (await UserServices.userLogin(id.text, password.text)) {
+      Result res = await UserServices.userLogin(id.text, password.text);
+      if (res.statusCode==200 ) {
         Get.offNamed("/home");
       }else{
        loggingFiled.value = true;
@@ -77,6 +73,8 @@ class LoginController extends GetxController {
       logging.value = false;
     }
   }
+
+
   void changeLang(String lang){
     Get.updateLocale(Locale(lang));
   }

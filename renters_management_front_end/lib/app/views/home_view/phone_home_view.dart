@@ -30,7 +30,7 @@ class PhoneHomeView extends StatelessWidget {
         child:  Icon(Icons.add,color: AppColors.mainIconColor,),
       ),
       body: Padding(
-        padding: EdgeInsets.all(width*0.02),
+        padding: EdgeInsets.all(width*0.05),
         child: SingleChildScrollView(
           clipBehavior: Clip.none,
           child: Column(
@@ -40,22 +40,7 @@ class PhoneHomeView extends StatelessWidget {
               SecText("Your Builds",textColor: AppColors.inverseSecTextColor,),
               SizedBox(height: height*0.03,),
 
-              BuildCard(buildInfo: "buildInfo", height: height*0.16,type: 0,),
-              SizedBox(height: height*0.03,),
-
-              BuildCard(buildInfo: "buildInfo", height: height*0.16,type: 0,),
-              SizedBox(height: height*0.03,),
-
-              BuildCard(buildInfo: "buildInfo", height: height*0.16,type: 1,),
-              SizedBox(height: height*0.03,),
-
-              BuildCard(buildInfo: "buildInfo", height: height*0.16,type: 0,),
-              SizedBox(height: height*0.03,),
-
-
-              BuildCard(buildInfo: "buildInfo", height: height*0.16,type: 1,),
-              SizedBox(height: height*0.03,),
-
+              //if(b)
               BuildCard(buildInfo: "buildInfo", height: height*0.16,type: 1,),
               SizedBox(height: height*0.03,),
             ],

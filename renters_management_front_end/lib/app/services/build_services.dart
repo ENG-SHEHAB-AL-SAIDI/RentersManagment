@@ -1,28 +1,28 @@
 import 'package:dio/dio.dart';
+import 'package:renters_management_front_end/app/models/result.dart';
 import '../models/build_model.dart';
 import 'api/api_end_points.dart';
 import 'api/http_provider.dart';
 
 class BuildModel{
 
-  static List<Build> _builds = [];
-  static Future<List<Build>?> fetchBuilds({bool hardFetch = false}) async {
+  static final List<Build> _builds = [];
+
+  static Future<Result<List<Build>>> fetchBuilds({bool hardFetch = false}) async {
     if(_builds.isNotEmpty && !hardFetch){
-      return _builds;
+      return Result(data: _builds,hasError: false,message: "successful");
     }
-    Response response;
+    Response? response;
     try{
       response = await HttpProvider.get(EndPoints.getBuilds);
       List result = response.data["Builds"];
       for(int i=0;i<result.length;i++){
         _builds.add(Build.fromJson(result[i]));
       }
-      return _builds;
-
     }catch(error){
-      print(error);
+      return Result(data: _builds,hasError: true, statusCode: response?.statusCode,message: response?.data["message"]);
     }
-    return null;
+    return Result(data: _builds,hasError: false, statusCode: response.statusCode,message: "successful");
   }
 
   static Future<Build?> fetchBuild(int id,{bool hardFetch = false}) async {

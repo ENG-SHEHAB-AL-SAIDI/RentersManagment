@@ -4,11 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:renters_management_front_end/app/components/pop_up_cards/delete_confirmation_message_card.dart';
 import 'package:renters_management_front_end/app/components/pop_up_cards/update_build_card.dart';
+import 'package:renters_management_front_end/app/models/build_model.dart';
 import '../globals.dart';
 import 'custom_text.dart';
 
 class BuildCard extends StatelessWidget {
-  late var buildInfo;
+  Build buildInfo;
   double height;
   double type;
 
@@ -78,7 +79,7 @@ class BuildCard extends StatelessWidget {
                               fontWeight: FontWeight.bold,
                             ),
                             SecText(
-                              "Name",
+                              buildInfo.name?.value??"Unknown",
                               textColor: textColor,
                             ),
                           ],
@@ -118,7 +119,7 @@ class BuildCard extends StatelessWidget {
                               fontWeight: FontWeight.bold,
                             ),
                             SecText(
-                              "Ibb",
+                              buildInfo.city?.value??"Unknown",
                               textColor: textColor,
                             ),
                           ],
@@ -133,7 +134,7 @@ class BuildCard extends StatelessWidget {
                               fontWeight: FontWeight.bold,
                             ),
                             SecText(
-                              "Arwa Street",
+                              buildInfo.address?.value??"Unknown",
                               textColor: textColor,
                             ),
                           ],
@@ -153,7 +154,7 @@ class BuildCard extends StatelessWidget {
                               fontWeight: FontWeight.bold,
                             ),
                             SecText(
-                              "20",
+                              buildInfo.numRenters?.value.toString()??'0' ,
                               textColor: textColor,
                             ),
                           ],

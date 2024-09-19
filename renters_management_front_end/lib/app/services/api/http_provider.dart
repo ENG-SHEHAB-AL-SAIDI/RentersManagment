@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 
 class HttpProvider {
   static final Dio _dio = Dio();
@@ -8,6 +9,7 @@ class HttpProvider {
   static init({String baseUrl = "",String contentType='application/json'}){
     _dio.options.baseUrl = baseUrl;
     _dio.options.contentType = contentType;
+    _dio.options.connectTimeout = const Duration(seconds: 5);
   }
 
 
@@ -15,9 +17,12 @@ class HttpProvider {
     try {
       final response = await _dio.get(url,data:data);
       return response;
-    } catch (error) {
+    } on DioException catch (error) {
       // Handle the error
-      throw error;
+      if (kDebugMode) {
+        print(error);
+      }
+      rethrow;
     }
   }
 
@@ -25,9 +30,12 @@ class HttpProvider {
     try {
       final response = await _dio.post(url, data: data);
       return response;
-    } catch (error) {
+    } on DioException catch (error) {
       // Handle the error
-      throw error;
+      if (kDebugMode) {
+        print(error);
+      }
+      rethrow;
     }
   }
 

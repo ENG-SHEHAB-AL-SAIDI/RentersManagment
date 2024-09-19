@@ -1,5 +1,4 @@
 import 'package:dio/dio.dart';
-import 'package:flutter/foundation.dart';
 import 'package:renters_management_front_end/app/models/result.dart';
 
 import '../models/user_model.dart';
@@ -17,16 +16,19 @@ class UserServices {
       _user = User.fromJson(response.data["user"]);
       HttpProvider.addAuthTokenInterceptor(
           response.data["token"]["original"]["access_token"]);
-    } catch (error) {
-      if (kDebugMode) {
-        return Result(hasError: true, statusCode: response.statusCode);
+      return Result(hasError: false, statusCode: response.statusCode);
+    } on DioException catch (error) {
+      if (error.response != null) {
+        return Result(
+            hasError: true,
+            statusCode: error.response?.statusCode,
+            data: error.response?.data);
       }
+      return Result(hasError: true, message: error.message);
     }
-    return Result(hasError: false, statusCode: response.statusCode);
   }
 
   static Future<Result<User>> fetchUser({bool hardFetch = false}) async {
-
     if (_user != null && !hardFetch) {
       return Result(data: _user, hasError: false, message: "successful");
     }
@@ -35,17 +37,20 @@ class UserServices {
     try {
       response = await HttpProvider.post(EndPoints.getUserData);
       _user = User.fromJson(response.data["user"]);
-    } catch (error) {
       return Result(
-          hasError: true,
+          data: _user,
+          hasError: false,
           statusCode: response.statusCode,
-          message: response.data);
+          message: "successful");
+    } on DioException catch (error) {
+      if (error.response != null) {
+        return Result(
+            hasError: true,
+            statusCode: error.response?.statusCode,
+            data: error.response?.data);
+      }
+      return Result(hasError: true, message: error.message);
     }
-    return Result(
-        data: _user,
-        hasError: false,
-        statusCode: response.statusCode,
-        message: "successful");
   }
 
   static void write() {}

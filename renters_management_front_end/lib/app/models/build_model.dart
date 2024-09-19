@@ -2,10 +2,9 @@ import 'package:get/get_rx/src/rx_types/rx_types.dart';
 
 class Build {
   RxInt id;
+  RxInt? numRenters;
   RxString? name;
-
   RxString? city;
-
   RxString? address;
   RxString? deletedAt;
   RxString? createdAt;
@@ -13,6 +12,7 @@ class Build {
 
   Build({
     required this.id,
+    this.numRenters,
     this.name,
     this.city,
     this.address,
@@ -24,18 +24,20 @@ class Build {
   factory Build.fromJson(Map<String, dynamic> json) {
     return Build(
       id: RxInt(json['id'] ?? 0),
-      name: RxString(json['name'] ?? ""),
-      city: RxString(json['city'] ?? ""),
-      address: RxString(json['address'] ?? ""),
-      deletedAt: RxString(json['deleted_at'] ?? ""),
-      createdAt: RxString(json['created_at'] ?? ""),
-      updatedAt: RxString(json['updated_at'] ?? ""),
+      numRenters: RxInt(json['numRenters']??0),
+      name: RxString(json['name'] ?? "Unknown"),
+      city: RxString(json['city'] ?? "Unknown"),
+      address: RxString(json['address'] ?? "Unknown"),
+      deletedAt: RxString(json['deleted_at'] ?? "Unknown"),
+      createdAt: RxString(json['created_at'] ?? "Unknown"),
+      updatedAt: RxString(json['updated_at'] ?? "Unknown"),
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
       'id': id.value,
+      'numRenters': numRenters?.value,
       'name': name?.value,
       'city': city?.value,
       'address': address?.value,

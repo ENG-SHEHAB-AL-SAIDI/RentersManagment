@@ -6,7 +6,7 @@ import 'app/services/api/api_end_points.dart';
 import 'app/services/api/http_provider.dart';
 
 void main() async{
-  HttpProvider.init(baseUrl:EndPoints.baseUrl);
+  await HttpProvider.init(baseUrl:EndPoints.baseUrl);
   runApp(const MyApp());
 }
 

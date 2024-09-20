@@ -189,16 +189,16 @@ class BuildCard extends StatelessWidget {
                 children: [
                   Center(
                     child: TextButton(
-                      onPressed: renterStateRoute,
+                      onPressed: rentersListRoute,
                       child: SecText(
-                        "Renters and Rent Status",
+                        "Renters List",
                         textColor: color1,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
                   ),
                   IconButton(
-                    onPressed: renterStateRoute,
+                    onPressed: rentersListRoute,
                     icon: Icon(
                       Icons.arrow_forward_ios,
                       color: color1,
@@ -257,8 +257,8 @@ class BuildCard extends StatelessWidget {
             "did you sure want delete this build that will delete all data relative to it."));
   }
 
-  void renterStateRoute() {
-    Get.toNamed("/rentersState");
+  void rentersListRoute() {
+    Get.toNamed("/rentersList");
   }
 
   void buildReportRoute() {

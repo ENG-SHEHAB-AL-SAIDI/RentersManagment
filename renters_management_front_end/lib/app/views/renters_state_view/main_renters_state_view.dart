@@ -14,7 +14,7 @@ class RentersStateView extends StatelessWidget {
       child: LayoutBuilder(
         builder: (context, constraints) {
           if (constraints.maxWidth <= 768 && constraints.maxHeight <= 1025) {
-            return  const PhoneRentersStateView();
+            return  PhoneRentersStateView();
           } else {
             return  const Placeholder();
           }

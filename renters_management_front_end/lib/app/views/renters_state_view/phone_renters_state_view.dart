@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:renters_management_front_end/app/components/custom_text.dart';
 
 import '../../globals.dart';
 
 class PhoneRentersStateView extends StatelessWidget {
-  const PhoneRentersStateView({super.key});
+  PhoneRentersStateView({super.key});
 
   // void setYearlist() {
   //   if (widget.name.isNotEmpty) {
@@ -13,7 +14,7 @@ class PhoneRentersStateView extends StatelessWidget {
   //       year.add(DropdownMenuItem<String>(
   //           value: element.toString(),
   //           child: SecText(element.toString(),
-  //               color: AppColors.secondaryTextColor)));
+  //               color: AppColors.mainTextColor)));
   //     }).toList();
   //     if (year.isNotEmpty) {
   //       if (widget.selectedYear != "") {
@@ -25,6 +26,7 @@ class PhoneRentersStateView extends StatelessWidget {
   //       selectYear = null;
   //   }
   // }
+  List<DropdownMenuItem<String>> year = [];
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +35,7 @@ class PhoneRentersStateView extends StatelessWidget {
           backgroundColor: AppColors.inverseCardColor,
           leading: IconButton(
               onPressed: () {
-                Navigator.of(context).pop();
+                Get.back();
               },
               icon: Icon(
                 Icons.arrow_back_outlined,
@@ -47,322 +49,143 @@ class PhoneRentersStateView extends StatelessWidget {
             alignment: Alignment.center,
             child: Column(
               children: [
-                Card(
-                  color: AppColors.inverseCardColor,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(18)),
-                  elevation: 10,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                Expanded(
+                  child: Column(
                     children: [
-                      Column(
-                        children: [
-                          IconButton(
-                            onPressed: () async {
-                              // await Navigator.of(context).push(HeroDialogRoute(
-                              //     builder: (ctx) =>
-                              //         PopUpAddYearCard(widget.name)));
-                              // setYearlist();
-                              //
-                            },
-                            icon: Icon(Icons.post_add_sharp),
-                            color: AppColors.mainIconColor,
+                      SizedBox(
+                        width: double.maxFinite,
+                        child: Card(
+                          color: AppColors.inverseCardColor,
+                          elevation: 20,
+                          margin: const EdgeInsets.symmetric(
+                              horizontal: 4, vertical: 15),
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(24)),
+                          child: Padding(
+                            padding: const EdgeInsets.all(24.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                SecText("Name : Unknown",
+                                    textColor: AppColors.mainTextColor),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    SecText("Phone : Unknown ",
+                                        textColor: AppColors.mainTextColor),
+                                    Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        IconButton(
+                                            onPressed: () {
+                                              // _callrenter();
+                                            },
+                                            icon: Icon(
+                                              Icons.phone,
+                                              color: AppColors.mainIconColor,
+                                            )),
+                                        IconButton(
+                                            onPressed: () {
+                                              // _sendSMS();
+                                            },
+                                            icon: Icon(Icons.sms_outlined,
+                                                color: AppColors.mainIconColor))
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                                SecText("Activity: Unknown",
+                                    textColor: AppColors.mainTextColor),
+                                Padding(
+                                  padding: const EdgeInsets.only(top: 10),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      if (true) ...[
+                                        SecText("Rent:  Unknown",
+                                            textColor: AppColors.mainTextColor),
+                                      ] else ...[
+                                        SecText("Rent : YR",
+                                            textColor: AppColors.mainTextColor)
+                                      ],
+                                      Row(
+                                        children: [
+                                          SecText("Year:    ",
+                                              textColor:
+                                                  AppColors.mainTextColor),
+                                          DropdownButton<String>(
+                                            value: "selectYear",
+                                            elevation: 6,
+                                            icon: Icon(
+                                                Icons.arrow_drop_down_sharp,
+                                                color: AppColors.mainIconColor),
+                                            underline: const Divider(),
+                                            dropdownColor:
+                                                AppColors.mainIconColor,
+                                            onChanged: (dynamic) {
+                                              if (dynamic != null) {}
+                                            },
+                                            items: year,
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                )
+                              ],
+                            ),
                           ),
-                          SecText("أضافة سنة", textColor: AppColors.mainTextColor,)
-                        ],
+                        ),
                       ),
-                      Column(
-                        children: [
-                          IconButton(
-                            onPressed: () async {
-                              // String? result = await Navigator.of(context).push(
-                              //     HeroDialogRoute(
-                              //         builder: (ctx) =>
-                              //             const PopUpSelectCard()));
-                              // WidgetsBinding.instance
-                              //     .addPostFrameCallback((timeStamp) {
-                              //   setState(() {
-                              //     if (result != null) {
-                              //       widget.name = result;
-                              //       setYearlist();
-                              //     }
-                              //   });
-                              // });
-                            },
-                            icon: Icon(Icons.add_to_home_screen),
-                            color: AppColors.mainIconColor,
-                          ),
-                          SecText(
-                            "اختيار مستاجر",textColor: AppColors.mainTextColor,
-                          )
-                        ],
+                      Expanded(
+                        flex: 20,
+                        child: Container(),
+                        // child: (widget.name.isNotEmpty &&
+                        //         selectYear != null)
+                        //     ? MyTable(widget.name, selectYear)
+                        //     : (selectYear != null)
+                        //         ? SizedBox.expand(
+                        //             child: Card(
+                        //                 textColor: AppColors.cardColor,
+                        //                 elevation: 20,
+                        //                 margin: const EdgeInsets.symmetric(
+                        //                     horizontal: 30, vertical: 15),
+                        //                 shape: RoundedRectangleBorder(
+                        //                     borderRadius:
+                        //                         BorderRadius.circular(24)),
+                        //                 child: Center(
+                        //                     child: SecText(
+                        //                         "قم بأختيار مستاجر ",
+                        //                         fontWeight: FontWeight.bold,
+                        //                         fontSize: 28,
+                        //                         textColor: AppColors
+                        //                             .mainTextColor))),
+                        //           )
+                        //         : SizedBox.expand(
+                        //             child: Card(
+                        //                 textColor: AppColors.cardColor,
+                        //                 elevation: 20,
+                        //                 margin: const EdgeInsets.symmetric(
+                        //                     horizontal: 30, vertical: 15),
+                        //                 shape: RoundedRectangleBorder(
+                        //                     borderRadius:
+                        //                         BorderRadius.circular(24)),
+                        //                 child: Center(
+                        //                     child: SecText(
+                        //                         "قم بأضافة سنة للمستاجر اولاً  ",
+                        //                         fontWeight: FontWeight.bold,
+                        //                         fontSize: 28,
+                        //                         textColor: AppColors
+                        //                             .mainTextColor))),
                       ),
-                      Column(
-                        children: [
-                          IconButton(
-                            onPressed: () async {
-                              // if (DataCollection.rentersInfo.isNotEmpty &&
-                              //     widget.name.isNotEmpty) {
-                              //   String newName = await Navigator.of(context)
-                              //       .push(HeroDialogRoute(
-                              //           builder: (ctx) =>
-                              //               PopUpUpdateCard(widget.name)))
-                              //       .whenComplete(() => null);
-                              //   setState(() {
-                              //     widget.name = newName;
-                              //   });
-                              // } else {
-                              //   Navigator.of(context).push(HeroDialogRoute(
-                              //       builder: (ctx) => PopUpErrorAlertCard(
-                              //           "لاتوجد بيانات لتعديلها؟؟")));
-                              // }
-                            },
-                            icon: Icon(Icons.edit),
-                            color: AppColors.mainIconColor,
-                          ),
-                          SecText(
-                            "تعديل البيانات",textColor: AppColors.mainTextColor,
-                          )
-                        ],
-                      ),
-                      Column(
-                        children: [
-                          IconButton(
-                            onPressed: () async {
-                              // bool flag = await Navigator.of(context).push(
-                              //     HeroDialogRoute(
-                              //         builder: (ctx) => PopUpMessageCard(
-                              //             "هل انت متاكد انك تريد حذف المستاجر ${widget.name}")));
-                              // if (flag) {
-                              //   String newName =
-                              //       await MyControl().deleteRenter(widget.name);
-                              //   setState(() {
-                              //     print(newName);
-                              //     if (newName != "failed") {
-                              //       widget.name = newName;
-                              //       setYearlist();
-                              //     } else {
-                              //       Navigator.of(context).push(HeroDialogRoute(
-                              //         builder: (ctx) => PopUpErrorAlertCard(
-                              //             "فشلة عملية الحذف"),
-                              //       ));
-                              //     }
-                              //   });
-                              // }
-                            },
-                            icon: Icon(Icons.delete_rounded),
-                            color: AppColors.mainIconColor,
-                          ),
-                          SecText(
-                            "حذف",textColor: AppColors.mainTextColor,
-                          )
-                        ],
-                      ),
+                      const Expanded(
+                        child: Text(""),
+                      )
                     ],
                   ),
                 ),
-                // Expanded(
-                //   child: Container(
-                //     width: (cons.maxHeight > 567) ? 560 : double.maxFinite,
-                //     child: Column(
-                //       children: [
-                //         SizedBox(
-                //           width: double.maxFinite,
-                //           child: Card(
-                //             color: AppColors.mainCardColor,
-                //             elevation: 20,
-                //             margin: const EdgeInsets.symmetric(
-                //                 horizontal: 30, vertical: 15),
-                //             shape: RoundedRectangleBorder(
-                //                 borderRadius: BorderRadius.circular(24)),
-                //             child: Padding(
-                //               padding: const EdgeInsets.all(24.0),
-                //               child: Column(
-                //                 crossAxisAlignment: CrossAxisAlignment.start,
-                //                 children: [
-                //                   if (DataCollection.rentersInfo.isNotEmpty &&
-                //                       widget.name != "") ...[
-                //                     SecText(
-                //                         "الاسم : ${DataCollection.rentersInfo[widget.name]?.name}",
-                //                         color: AppColors.secondaryTextColor),
-                //                     Row(
-                //                       mainAxisAlignment:
-                //                           MainAxisAlignment.spaceBetween,
-                //                       children: [
-                //                         SecText(
-                //                             "الجوال :  ${DataCollection.rentersInfo[widget.name]?.phone}",
-                //                             color:
-                //                                 AppColors.secondaryTextColor),
-                //                         Row(
-                //                           mainAxisSize: MainAxisSize.min,
-                //                           children: [
-                //                             IconButton(
-                //                                 onPressed: () {
-                //                                   _callrenter();
-                //                                 },
-                //                                 icon: Icon(
-                //                                   Icons.phone,
-                //                                   color: AppColors.bodyColor,
-                //                                 )),
-                //                             IconButton(
-                //                                 onPressed: () {
-                //                                   _sendSMS();
-                //                                 },
-                //                                 icon: Icon(Icons.sms_outlined,
-                //                                     color: AppColors.bodyColor))
-                //                           ],
-                //                         ),
-                //                       ],
-                //                     ),
-                //                     SecText(
-                //                         "النشاط التجاري  :  ${DataCollection.rentersInfo[widget.name]?.activityType}",
-                //                         color: AppColors.secondaryTextColor),
-                //                     if (DataCollection
-                //                             .rentersInfo[widget.name]?.rent ==
-                //                         "") ...[
-                //                       SecText(
-                //                           "الايجار : ${DataCollection.rentersInfo[widget.name]?.rent} ",
-                //                           color: AppColors.secondaryTextColor),
-                //                     ] else ...[
-                //                       SecText(
-                //                           "الايجار : ${DataCollection.rentersInfo[widget.name]?.rent} YR",
-                //                           color: AppColors.secondaryTextColor)
-                //                     ],
-                //                     Row(
-                //                       mainAxisAlignment:
-                //                           MainAxisAlignment.spaceBetween,
-                //                       children: [
-                //                         Row(
-                //                           children: [
-                //                             SecText("السنة    :    ",
-                //                                 color: AppColors
-                //                                     .secondaryTextColor),
-                //                             DropdownButton<String>(
-                //                               value: selectYear,
-                //                               elevation: 6,
-                //                               icon: Icon(
-                //                                   Icons.arrow_drop_down_sharp,
-                //                                   color: AppColors.bodyColor),
-                //                               underline: const Divider(),
-                //                               dropdownColor:
-                //                                   AppColors.appbarColor,
-                //                               onChanged: (dynamic) {
-                //                                 if (dynamic != null) {
-                //                                   setState(() =>
-                //                                       selectYear = dynamic);
-                //                                 }
-                //                               },
-                //                               items: year,
-                //                             ),
-                //                           ],
-                //                         ),
-                //                         IconButton(
-                //                             onPressed: () async {
-                //                               bool flag = await Navigator.of(
-                //                                       context)
-                //                                   .push(HeroDialogRoute(
-                //                                       builder: (ctx) =>
-                //                                           PopUpMessageCard(
-                //                                               "هل انت متاكد انك تريد حذف السنة $selectYear من كشف المستاجر $widget.name ")));
-                //                               if (flag) {
-                //                                 String newName =
-                //                                     await MyControl()
-                //                                         .deleteYear(widget.name,
-                //                                             selectYear!);
-                //                                 setYearlist();
-                //                                 setState(() {
-                //                                   if (newName != "failed") {
-                //                                   } else {
-                //                                     Navigator.of(context)
-                //                                         .push(HeroDialogRoute(
-                //                                       builder: (ctx) =>
-                //                                           PopUpErrorAlertCard(
-                //                                               "فشلة عملية الحذف"),
-                //                                     ));
-                //                                   }
-                //                                 });
-                //                               }
-                //                             },
-                //                             icon: Icon(
-                //                               Icons.delete_forever,
-                //                               color: AppColors.bodyColor,
-                //                             )),
-                //                         SizedBox(
-                //                           width: 5,
-                //                         )
-                //                       ],
-                //                     )
-                //                   ] else ...[
-                //                     SecText("الاسم : -----------------",
-                //                         color: AppColors.secondaryTextColor),
-                //                     SecText("الجوال : -----------------",
-                //                         color: AppColors.secondaryTextColor),
-                //                     SecText("النشاط التجاري : -----------------",
-                //                         color: AppColors.secondaryTextColor),
-                //                     Row(
-                //                       mainAxisAlignment:
-                //                           MainAxisAlignment.spaceBetween,
-                //                       children: [
-                //                         SecText("الايجار : -----------------",
-                //                             color:
-                //                                 AppColors.secondaryTextColor),
-                //                         SecText("السنة : ------- ",
-                //                             color: AppColors.secondaryTextColor)
-                //                       ],
-                //                     )
-                //                   ]
-                //                 ],
-                //               ),
-                //             ),
-                //           ),
-                //         ),
-                //         Expanded(
-                //             flex: 20,
-                //             child: (widget.name.isNotEmpty &&
-                //                     selectYear != null)
-                //                 ? MyTable(widget.name, selectYear)
-                //                 : (selectYear != null)
-                //                     ? SizedBox.expand(
-                //                         child: Card(
-                //                             color: AppColors.cardColor,
-                //                             elevation: 20,
-                //                             margin: const EdgeInsets.symmetric(
-                //                                 horizontal: 30, vertical: 15),
-                //                             shape: RoundedRectangleBorder(
-                //                                 borderRadius:
-                //                                     BorderRadius.circular(24)),
-                //                             child: Center(
-                //                                 child: SecText(
-                //                                     "قم بأختيار مستاجر ",
-                //                                     fontWeight: FontWeight.bold,
-                //                                     fontSize: 28,
-                //                                     color: AppColors
-                //                                         .secondaryTextColor))),
-                //                       )
-                //                     : SizedBox.expand(
-                //                         child: Card(
-                //                             color: AppColors.cardColor,
-                //                             elevation: 20,
-                //                             margin: const EdgeInsets.symmetric(
-                //                                 horizontal: 30, vertical: 15),
-                //                             shape: RoundedRectangleBorder(
-                //                                 borderRadius:
-                //                                     BorderRadius.circular(24)),
-                //                             child: Center(
-                //                                 child: SecText(
-                //                                     "قم بأضافة سنة للمستاجر اولاً  ",
-                //                                     fontWeight: FontWeight.bold,
-                //                                     fontSize: 28,
-                //                                     color: AppColors
-                //                                         .secondaryTextColor))),
-                //                       )),
-                //         const Expanded(
-                //           child: Text(""),
-                //         )
-                //       ],
-                //     ),
-                //   ),
-                // ),
               ],
             )));
   }

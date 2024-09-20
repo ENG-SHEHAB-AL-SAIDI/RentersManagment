@@ -2,11 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\BuildRequest;
-use App\Http\Requests\BuildStoreRequst;
-use App\Http\Requests\BuildUpdateRequst;
+use App\Http\Requests\BuildRequst;
 use App\Models\Build;
-use Illuminate\Http\Request;
 
 class BuildController extends Controller
 {
@@ -18,23 +15,22 @@ class BuildController extends Controller
 
         $builds = auth()->guard('api')->user()->builds()->get();
         return response()->json([
-            "Builds"=>$builds
-        ],200);
+            'build' => $builds
+        ], 200);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(BuildStoreRequst $request)
+    public function store(BuildRequst $request)
     {
         $request->validated();
         $data = $request->except('token');
 
         $build = auth()->guard('api')->user()->builds()->create($data);
         return response()->json([
-            'message'=>'Store done',
             'build' => $build,
-        ],200);
+        ], 200);
     }
 
     /**
@@ -44,53 +40,49 @@ class BuildController extends Controller
     {
         $build = Build::find($id);
 
-        if(auth()->guard('api')->user()->id === $build->user_id){
+        if (auth()->guard('api')->user()->id === $build->user_id) {
             return response()->json([
-                'message'=>'done',
-                "Build" => $build
-            ],200);
+                'message' => 'successful',
+                'build' => $build,
+            ], 200);
         }
 
         return response()->json([
             'message' => 'UnAuthorize access',
             'data' => null
-        ],401);
+        ], 401);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(BuildUpdateRequst $request, int $id)
+    public function update(BuildRequst $request, int $id)
     {
         $request->validated();
-
         $build = Build::find($id);
-        $build->name = $request->query('name');
-        $build->save();
+        $build->update($request->all());
         return response()->json([
-            'message'=>'update done',
+            'message' => 'update successful',
             'build' => $build,
-        ],200);
+        ], 200);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(BuildRequst $request,string $id)
     {
-        $build = Build::find($id);
-
-        if(auth()->guard('api')->user()->id === $build->user_id){
+        if($request->authorize()){
+            $build = Build::find($id);
             $build->delete();
             return response()->json([
-                'message'=>'delete done',
+                'message' => 'delete successful',
                 'Build' => $build
-            ],200);
+            ], 200);
         }
-
         return response()->json([
             'message' => 'UnAuthorize access',
             'data' => null
-        ],401);
+        ], 401);
     }
 }

@@ -17,7 +17,7 @@ class Renter extends Model
     protected $fillable = [
         'name',
         'rent',
-        'job_bomain',
+        'job_domain',
         'enter_date',
     ];
 

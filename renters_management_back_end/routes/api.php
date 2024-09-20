@@ -2,10 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BuildController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Models\Build;
-use GuzzleHttp\Middleware;
 
 Route::middleware(['api'])->prefix('auth')->group(
 function ($router) {
@@ -18,5 +15,5 @@ function ($router) {
 
 Route::middleware(['api','auth:api'])->prefix('user')->group(
 function () {
-    Route::resource('builds',BuildController::class);
+    Route::apiResource('builds',BuildController::class);
 });

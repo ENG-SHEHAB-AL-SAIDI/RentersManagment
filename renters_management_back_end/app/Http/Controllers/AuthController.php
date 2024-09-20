@@ -52,7 +52,6 @@ class AuthController extends Controller
     {
         $credentials = request(['email', 'password']);
 
-
         if (! $token = auth()->guard('api')->attempt($credentials)) {
             return response()->json(['error' => 'Unauthorized'], 401);
         }
@@ -72,7 +71,9 @@ class AuthController extends Controller
      */
     public function me()
     {
-        return response()->json(auth()->guard('api')->user());
+        return response()->json([
+            'user'=>auth()->guard('api')->user(),
+        ]);
     }
 
     /**
@@ -108,7 +109,6 @@ class AuthController extends Controller
         return response()->json([
             'access_token' => $token,
             'token_type' => 'bearer',
-            //@intelephense-ignore-line
             'expires_in' => auth()->guard('api')->factory()->getTTL() * 60
         ]);
     }

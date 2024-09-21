@@ -4,14 +4,14 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class RenterUpdateRequst extends FormRequest
+class RenterRequst extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -21,8 +21,16 @@ class RenterUpdateRequst extends FormRequest
      */
     public function rules(): array
     {
+        if(request()->isMethod('DELETE') ){
+            return [];
+        }
         return [
-            //
+            'name'=>'required|max:50',
+            'rent'=>'integer',
+            'job_domain'=>'string',
+            'enter_date'=>'date',
+            'phones' => 'required|array',        // Ensure it's an array
+            'phones.*' => 'integer',
         ];
     }
 }

@@ -58,6 +58,6 @@ class Renter extends Model
 
     public function addPhone(int $phone)
     {
-        $this->renterPhones()->create(['phone'=>$phone]);
+        $this->renterPhones()->updateOrCreate(['phone'=>$phone]);
     }
 }

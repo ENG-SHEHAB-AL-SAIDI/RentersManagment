@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:renters_management_front_end/app/models/result.dart';
 import 'package:renters_management_front_end/app/services/build_services.dart';
+import 'package:renters_management_front_end/app/services/renter_services.dart';
 import 'package:renters_management_front_end/app/services/user_services.dart';
 
 import '../models/build_model.dart';
@@ -66,7 +67,8 @@ class LoginController extends GetxController {
       logging.value = true;
       Result res = await UserServices.userLogin(id.text, password.text);
       Result<Build> res2 = await BuildServices.fetchBuild(1,hardFetch: true);
-      print(res2.data?.toJson());
+      Result res3 = await RenterServices.fetchRenter(1,1);
+      print(res3.data);
       // Build? build = res2.data;
       if (res.statusCode==200 ) {
         // Get.offNamed("/home");

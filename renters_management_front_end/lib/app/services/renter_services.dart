@@ -1,24 +1,33 @@
 import 'package:dio/dio.dart';
+import 'package:renters_management_front_end/app/models/build_model.dart';
 import 'package:renters_management_front_end/app/models/result.dart';
+import 'package:renters_management_front_end/app/services/build_services.dart';
+import '../models/renter_model.dart';
 import '../models/user_model.dart';
 import 'api/api_end_points.dart';
 import 'api/http_provider.dart';
 
-class UserServices {
-  static User? _user;
+class RenterServices {
 
 
-  static Future<Result<User>> fetchRenters(int buildId,{bool hardFetch = false}) async {
-    if (_user != null && !hardFetch) {
-      return Result(data: _user, hasError: false, message: "successful");
+  static Future<Result<List<Renter>>> fetchRenters(int buildId,{bool hardFetch = false}) async {
+    Result<Build> res = await BuildServices.fetchBuild(buildId);
+    if (res.data != null && res.data?.renters != null && !hardFetch) {
+
+      return Result(data: res.data!.renters, hasError: false, message: "successful");
     }
 
     late Response response;
     try {
-      response = await HttpProvider.post(EndPoints.getUserData);
-      _user = User.fromJson(response.data["user"]);
+      response = await HttpProvider.post("${EndPoints.getBuilds}/$buildId/ ${EndPoints.getRenters}");
+      List result = response.data["Renters"];
+      List<Renter> renters = [];
+      for (int i = 0; i < result.length; i++) {
+        renters.add(Renter.fromJson(result[i]));
+      }
+      BuildServices.setBuildRenters(buildId, renters);
       return Result(
-          data: _user,
+          data: renters,
           hasError: false,
           statusCode: response.statusCode,
           message: "successful");
@@ -33,17 +42,26 @@ class UserServices {
     }
   }
 
-  static Future<Result<User>> fetchRenter(int buildId,{bool hardFetch = false}) async {
-    if (_user != null && !hardFetch) {
-      return Result(data: _user, hasError: false, message: "successful");
+  static Future<Result<Renter>> fetchRenter(int buildId, int renterId,{bool hardFetch = false}) async {
+    Result<Build> res = await BuildServices.fetchBuild(buildId);
+    if (res.data != null && res.data?.renters != null && !hardFetch) {
+      for(Renter renter in res.data?.renters??[]){
+        if(renter.id.value == renterId){
+           return Result(data: renter, hasError: false, message: "successful");
+        }
+      }
     }
 
     late Response response;
     try {
-      response = await HttpProvider.post(EndPoints.getUserData);
-      _user = User.fromJson(response.data["user"]);
+      response = await HttpProvider.post("${EndPoints.getBuilds}/$buildId/ ${EndPoints.getRenters}/$renterId");
+      Map<String,dynamic> result = response.data["Renter"];
+      List<Renter>? renters = res.data?.renters??[];
+      Renter renter = Renter.fromJson(result);
+      renters.add(renter);
+      BuildServices.setBuildRenters(buildId, renters);
       return Result(
-          data: _user,
+          data: renter,
           hasError: false,
           statusCode: response.statusCode,
           message: "successful");
@@ -57,6 +75,7 @@ class UserServices {
       return Result(hasError: true, message: error.message);
     }
   }
+
 
   static void write() {}
 }

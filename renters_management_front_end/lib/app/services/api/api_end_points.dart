@@ -5,4 +5,5 @@ class EndPoints{
   static String logOut = "auth/logout";
   static String getUserData = "auth/me";
   static String getBuilds = "user/builds";
+  static String getRenters = "renters";
 }

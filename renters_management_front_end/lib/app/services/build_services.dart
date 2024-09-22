@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:renters_management_front_end/app/models/result.dart';
 
 import '../models/build_model.dart';
+import '../models/renter_model.dart';
 import 'api/api_end_points.dart';
 import 'api/http_provider.dart';
 
@@ -62,10 +63,17 @@ class BuildServices {
         return Result(
             hasError: true,
             statusCode: error.response?.statusCode,
-            message: error.message
-        );
+            message: error.message);
       }
       return Result(hasError: true, message: error.message);
+    }
+  }
+
+  static void setBuildRenters(int buildId, List<Renter> renters) {
+    for (int i = 0; i < _builds.length; i++) {
+      if (_builds[i].id.value == buildId) {
+        _builds[i].renters = renters;
+      }
     }
   }
 }

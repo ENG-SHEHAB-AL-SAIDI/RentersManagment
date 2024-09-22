@@ -30,7 +30,7 @@ class Renter {
 
       id: RxInt(json['id'] ?? 0),
       name: RxString(json['name'] ?? "Unknown"),
-      rent: RxDouble(json['rent'] ?? 0),
+      rent: RxDouble(json['rent'].toDouble() ?? 0.0),
       jobDomain: RxString(json['job_domain'] ?? "Unknown"),
       enterDate: RxString(json['enter_date'] ?? "Unknown"),
 

@@ -49,7 +49,7 @@ class BuildServices {
 
     Response response;
     try {
-      response = await HttpProvider.get("${EndPoints.getBuild}/$id");
+      response = await HttpProvider.get("${EndPoints.getBuilds}/$id");
       build0 = Build.fromJson(response.data);
       _builds.add(build0);
       return Result(
@@ -62,7 +62,8 @@ class BuildServices {
         return Result(
             hasError: true,
             statusCode: error.response?.statusCode,
-            data: error.response?.data);
+            message: error.message
+        );
       }
       return Result(hasError: true, message: error.message);
     }

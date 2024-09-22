@@ -25,25 +25,39 @@ class Build {
   });
 
   factory Build.fromJson(Map<String, dynamic> json) {
+    List jsRenters = json['Build']['renters'];
+    List<Renter> renters = [];
+    if (jsRenters.isNotEmpty) {
+      for (var renter in jsRenters) {
+        renters.add(Renter.fromJson(renter));
+      }
+    }
     return Build(
-      id: RxInt(json['id'] ?? 0),
-      numRenters: RxInt(json['numRenters']??0),
-      name: RxString(json['name'] ?? "Unknown"),
-      city: RxString(json['city'] ?? "Unknown"),
-      address: RxString(json['address'] ?? "Unknown"),
-      deletedAt: RxString(json['deleted_at'] ?? "Unknown"),
-      createdAt: RxString(json['created_at'] ?? "Unknown"),
-      updatedAt: RxString(json['updated_at'] ?? "Unknown"),
+      id: RxInt(json['Build']['id'] ?? 0),
+      numRenters: RxInt(json['Build']['numRenters'] ?? 0),
+      name: RxString(json['Build']['name'] ?? "Unknown"),
+      city: RxString(json['Build']['city'] ?? "Unknown"),
+      renters: renters,
+      address: RxString(json['Build']['address'] ?? "Unknown"),
+      deletedAt: RxString(json['Build']['deleted_at'] ?? "Unknown"),
+      createdAt: RxString(json['Build']['created_at'] ?? "Unknown"),
+      updatedAt: RxString(json['Build']['updated_at'] ?? "Unknown"),
     );
   }
 
   Map<String, dynamic> toJson() {
+    List<Map<String, dynamic> > jsRenters = [];
+    for(Renter renter in renters??[]){
+      jsRenters.add(renter.toJson());
+    }
+     renters?.forEach((element) => element.toJson,);
     return {
       'id': id.value,
       'numRenters': numRenters?.value,
       'name': name?.value,
       'city': city?.value,
       'address': address?.value,
+      'renters':jsRenters,
       'deleted_at': deletedAt?.value,
       'created_at': createdAt?.value,
       'updated_at': updatedAt?.value,

@@ -29,7 +29,6 @@ class LoginController extends GetxController {
   void onInit() {
     id.text = "shehab8@gmail.com";
     password.text = "12345678";
-
     super.onInit();
   }
 
@@ -63,15 +62,14 @@ class LoginController extends GetxController {
   }
 
   Future<void> onLogin() async {
-     Result<Build> res = await BuildServices.fetchBuild(1);
-      Build? build = res.data;
-
     if (formKey.currentState!.validate()) {
       logging.value = true;
       Result res = await UserServices.userLogin(id.text, password.text);
-      print(res);
-      if (res.statusCode==200 || true) {
-        Get.offNamed("/home");
+      Result<Build> res2 = await BuildServices.fetchBuild(1,hardFetch: true);
+      print(res2.data?.toJson());
+      // Build? build = res2.data;
+      if (res.statusCode==200 ) {
+        // Get.offNamed("/home");
       }else{
        loggingFiled.value = true;
       }

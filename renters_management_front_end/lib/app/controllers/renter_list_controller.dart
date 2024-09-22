@@ -1,28 +1,31 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:renters_management_front_end/app/models/result.dart';
-import 'package:renters_management_front_end/app/services/user_services.dart';
+import 'package:renters_management_front_end/app/services/renter_services.dart';
 
-class LoginController extends GetxController {
+import '../models/renter_model.dart';
+
+class RenterListController extends GetxController {
   TextEditingController search = TextEditingController();
-  RxBool logging = false.obs;
-  RxBool loggingFiled = false.obs;
-  RxDouble heightScale = 0.6.obs;
-
+  int buildId = -1;
+  Rx<List<Renter>?> renters = Rx([]);
 
   @override
   void onClose() {
     search.dispose();
-
   }
 
-
-  void forgotPassword(){
-    Get.toNamed("/forgotPassword");
+  @override
+  void onInit() async {
+    buildId = Get.arguments['buildId'];
+    Result<List<Renter>> res = await RenterServices.fetchRenters(buildId);
+    if (res.statusCode == 200 && res.data != null) {
+      renters.value = res.data;
+    }
+    super.onInit();
   }
 
-
-  void changeLang(String lang){
+  void changeLang(String lang) {
     Get.updateLocale(Locale(lang));
   }
 }

@@ -14,7 +14,7 @@ class RenterServices {
     Result<Build> res = await BuildServices.fetchBuild(buildId);
     if (res.data != null && res.data?.renters != null && !hardFetch) {
 
-      return Result(data: res.data!.renters, hasError: false, message: "successful");
+      return Result(data: res.data!.renters, statusCode: 200,hasError: false, message: "successful");
     }
 
     late Response response;

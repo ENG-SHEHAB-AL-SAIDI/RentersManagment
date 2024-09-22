@@ -258,7 +258,7 @@ class BuildCard extends StatelessWidget {
   }
 
   void rentersListRoute() {
-    Get.toNamed("/rentersList");
+    Get.toNamed("/rentersList", arguments: {'buildId':buildInfo.id.value});
   }
 
   void buildReportRoute() {

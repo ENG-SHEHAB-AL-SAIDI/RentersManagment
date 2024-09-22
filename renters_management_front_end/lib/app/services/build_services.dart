@@ -18,6 +18,7 @@ class BuildServices {
     try {
       response = await HttpProvider.get(EndPoints.getBuilds);
       List result = response.data["Builds"];
+
       for (int i = 0; i < result.length; i++) {
         _builds.add(Build.fromJson(result[i]));
       }

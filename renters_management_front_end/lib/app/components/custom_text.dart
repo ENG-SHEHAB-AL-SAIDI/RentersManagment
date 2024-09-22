@@ -34,7 +34,7 @@ class MainText extends StatelessWidget {
         fontWeight: fontWeight,
         height: height,
       ),
-      textAlign: TextAlign.center,
+      textAlign: textAlign,
     );
   }
 }

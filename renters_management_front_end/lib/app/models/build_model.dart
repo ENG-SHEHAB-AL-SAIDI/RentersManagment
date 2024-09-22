@@ -24,8 +24,8 @@ class Build {
     this.updatedAt,
   });
 
-  factory Build.fromJson(Map<String, dynamic> json) {
-    List jsRenters = json['Build']['renters'];
+  factory Build.fromJson(Map<String, dynamic> json ) {
+    List jsRenters = json['renters'];
     List<Renter> renters = [];
     if (jsRenters.isNotEmpty) {
       for (var renter in jsRenters) {
@@ -33,15 +33,15 @@ class Build {
       }
     }
     return Build(
-      id: RxInt(json['Build']['id'] ?? 0),
-      numRenters: RxInt(json['Build']['numRenters'] ?? 0),
-      name: RxString(json['Build']['name'] ?? "Unknown"),
-      city: RxString(json['Build']['city'] ?? "Unknown"),
+      id: RxInt(json['id'] ?? 0),
+      numRenters: RxInt(json['numRenters'] ?? 0),
+      name: RxString(json['name'] ?? "Unknown"),
+      city: RxString(json['city'] ?? "Unknown"),
       renters: renters,
-      address: RxString(json['Build']['address'] ?? "Unknown"),
-      deletedAt: RxString(json['Build']['deleted_at'] ?? "Unknown"),
-      createdAt: RxString(json['Build']['created_at'] ?? "Unknown"),
-      updatedAt: RxString(json['Build']['updated_at'] ?? "Unknown"),
+      address: RxString(json['address'] ?? "Unknown"),
+      deletedAt: RxString(json['deleted_at'] ?? "Unknown"),
+      createdAt: RxString(json['created_at'] ?? "Unknown"),
+      updatedAt: RxString(json['updated_at'] ?? "Unknown"),
     );
   }
 

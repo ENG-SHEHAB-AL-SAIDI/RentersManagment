@@ -66,12 +66,9 @@ class LoginController extends GetxController {
     if (formKey.currentState!.validate()) {
       logging.value = true;
       Result res = await UserServices.userLogin(id.text, password.text);
-      Result<Build> res2 = await BuildServices.fetchBuild(1,hardFetch: true);
-      Result res3 = await RenterServices.fetchRenter(1,1);
-      print(res3.data);
       // Build? build = res2.data;
-      if (res.statusCode==200 ) {
-        // Get.offNamed("/home");
+      if (res.statusCode==200 || true) {
+        Get.offNamed("/home");
       }else{
        loggingFiled.value = true;
       }

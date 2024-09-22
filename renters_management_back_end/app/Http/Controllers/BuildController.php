@@ -15,7 +15,7 @@ class BuildController extends Controller
 
         $builds = auth()->guard('api')->user()->builds()->get();
         return response()->json([
-            'build' => $builds
+            'Builds' => $builds->load('renters')
         ], 200);
     }
 
@@ -29,7 +29,8 @@ class BuildController extends Controller
 
         $build = auth()->guard('api')->user()->builds()->create($data);
         return response()->json([
-            'build' => $build,
+                'message' => 'store successful',
+                'Build' => $build->load('renters')
         ], 200);
     }
 
@@ -42,8 +43,7 @@ class BuildController extends Controller
 
         if (auth()->guard('api')->user()->id === $build->user_id) {
             return response()->json([
-                'message' => 'successful',
-                'build' => $build,
+                'Build' => $build->load('renters')
             ], 200);
         }
 
@@ -63,7 +63,7 @@ class BuildController extends Controller
         $build->update($request->all());
         return response()->json([
             'message' => 'update successful',
-            'build' => $build,
+            'Build' => $build->load('renters'),
         ], 200);
     }
 
@@ -77,7 +77,7 @@ class BuildController extends Controller
             $build->delete();
             return response()->json([
                 'message' => 'delete successful',
-                'Build' => $build
+                'Build' => $build->load('renters')
             ], 200);
         }
         return response()->json([

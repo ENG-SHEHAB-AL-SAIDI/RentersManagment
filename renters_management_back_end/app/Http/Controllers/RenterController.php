@@ -18,7 +18,7 @@ class RenterController extends Controller
             $renters = $build->renters->load('renterPhones');
             return response()->json([
                 'message' => 'successful',
-                'build' => $renters,
+                'Renters' => $renters,
             ], 200);
         }
     }
@@ -39,7 +39,7 @@ class RenterController extends Controller
                 $renter->addPhone($phone);
             }
             return response()->json([
-                'renter' => $renter->load('renterPhones'),
+                'Renter' => $renter->load('renterPhones'),
             ], 200);
 
         }
@@ -55,7 +55,7 @@ class RenterController extends Controller
             $renter = $build->renters->find($renterId);
             return response()->json([
                 'message' => 'successful',
-                'build' => $renter->load('renterPhones'),
+                'Renter' => $renter->load('renterPhones'),
             ], 200);
         }
 
@@ -84,7 +84,7 @@ class RenterController extends Controller
             }
             return response()->json([
                 'message' => 'update successful',
-                'renter' => $renter->load('renterPhones')
+                'Renter' => $renter->load('renterPhones')
             ], 200);
         }
         return response()->json([
@@ -103,7 +103,7 @@ class RenterController extends Controller
             $renter = $build->renters->find($renterId);
             return response()->json([
                 'message' => 'delete successful',
-                'Build' => $renter
+                'Renter' => $renter
             ], 200);
         }
         return response()->json([

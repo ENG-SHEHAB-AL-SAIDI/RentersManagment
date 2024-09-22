@@ -4,8 +4,8 @@ import 'package:renters_management_front_end/app/components/custom_text.dart';
 
 import '../../globals.dart';
 
-class PhoneRentersStateView extends StatelessWidget {
-  PhoneRentersStateView({super.key});
+class PhoneRentersDetailsView extends StatelessWidget {
+  PhoneRentersDetailsView({super.key});
 
   // void setYearlist() {
   //   if (widget.name.isNotEmpty) {

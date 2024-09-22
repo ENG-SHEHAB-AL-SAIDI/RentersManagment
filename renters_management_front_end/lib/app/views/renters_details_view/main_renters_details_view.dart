@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:renters_management_front_end/app/views/renters_state_view/phone_renters_state_view.dart';
+import 'package:renters_management_front_end/app/views/renters_details_view/phone_renters_details_view.dart';
+
+
 
 class RentersStateView extends StatelessWidget {
   const RentersStateView({super.key});
@@ -14,7 +16,7 @@ class RentersStateView extends StatelessWidget {
       child: LayoutBuilder(
         builder: (context, constraints) {
           if (constraints.maxWidth <= 768 && constraints.maxHeight <= 1025) {
-            return  PhoneRentersStateView();
+            return  PhoneRentersDetailsView();
           } else {
             return  const Placeholder();
           }

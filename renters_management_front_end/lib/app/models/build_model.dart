@@ -1,4 +1,5 @@
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
+import 'package:renters_management_front_end/app/models/renter_model.dart';
 
 class Build {
   RxInt id;
@@ -6,6 +7,7 @@ class Build {
   RxString? name;
   RxString? city;
   RxString? address;
+  List<Renter>? renters;
   RxString? deletedAt;
   RxString? createdAt;
   RxString? updatedAt;
@@ -16,6 +18,7 @@ class Build {
     this.name,
     this.city,
     this.address,
+    this.renters,
     this.deletedAt,
     this.createdAt,
     this.updatedAt,

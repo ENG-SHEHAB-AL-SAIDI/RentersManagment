@@ -1,7 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:renters_management_front_end/app/models/result.dart';
+import 'package:renters_management_front_end/app/services/build_services.dart';
 import 'package:renters_management_front_end/app/services/user_services.dart';
+
+import '../models/build_model.dart';
 
 class LoginController extends GetxController {
   TextEditingController id = TextEditingController();
@@ -60,6 +63,9 @@ class LoginController extends GetxController {
   }
 
   Future<void> onLogin() async {
+     Result<Build> res = await BuildServices.fetchBuild(1);
+      Build? build = res.data;
+
     if (formKey.currentState!.validate()) {
       logging.value = true;
       Result res = await UserServices.userLogin(id.text, password.text);

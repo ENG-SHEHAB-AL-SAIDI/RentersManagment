@@ -5,7 +5,7 @@ import '../models/build_model.dart';
 import 'api/api_end_points.dart';
 import 'api/http_provider.dart';
 
-class BuildModel {
+class BuildServices {
   static final List<Build> _builds = [];
 
   static Future<Result<List<Build>>> fetchBuilds(

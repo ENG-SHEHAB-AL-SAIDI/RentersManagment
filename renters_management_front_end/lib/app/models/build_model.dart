@@ -34,7 +34,7 @@ class Build {
     }
     return Build(
       id: RxInt(json['id'] ?? 0),
-      numRenters: RxInt(json['numRenters'] ?? 0),
+      numRenters: RxInt(json['renters_count'] ?? 0),
       name: RxString(json['name'] ?? "Unknown"),
       city: RxString(json['city'] ?? "Unknown"),
       renters: renters,

@@ -40,12 +40,24 @@ class PhoneHomeView extends GetView<HomeController> {
           padding: EdgeInsets.all(width * 0.05),
           child: Obx(()=>(controller.builds.value!.isEmpty)
               ? Center(
-            child: MainText(
-              "No Builds yet\n add some ",
-              textColor: AppColors.inverseSecTextColor,
-            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                MainText(
+                  "No Builds yet\n add some ",
+                  textColor: AppColors.inverseSecTextColor,
+                ),
+                const SizedBox(height: 20,),
+                IconButton(onPressed: controller.refresh, icon: Icon(Icons.refresh,color: AppColors.inverseIconColor,size: 50,)),
+                // MainText(
+                //   "Refresh",
+                //   textColor: AppColors.inverseSecTextColor,
+                // ),
+
+              ],
+            )
           )
-              : SingleChildScrollView(
+              : RefreshIndicator(onRefresh: controller.refresh, child: SingleChildScrollView(
             clipBehavior: Clip.none,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -74,7 +86,7 @@ class PhoneHomeView extends GetView<HomeController> {
                 ]
               ],
             ),
-          ))),
+          )))),
     );
   }
 }

@@ -32,7 +32,7 @@ class BuildServices {
         return Result(
             hasError: true,
             statusCode: error.response?.statusCode,
-            data: error.response?.data);
+            message: error.response?.data);
       }
       return Result(hasError: true, message: error.message);
     }

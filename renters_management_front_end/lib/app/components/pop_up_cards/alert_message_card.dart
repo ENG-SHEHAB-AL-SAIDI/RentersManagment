@@ -36,7 +36,7 @@ class PopUpAlertCard extends StatelessWidget {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                MainText("Confirmation",
+                                MainText("Alert",
                                     textColor: AppColors.secTextColor),
                                 Icon(
                                   icon,

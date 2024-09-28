@@ -3,7 +3,6 @@ import 'package:renters_management_front_end/app/models/build_model.dart';
 import 'package:renters_management_front_end/app/models/result.dart';
 import 'package:renters_management_front_end/app/services/build_services.dart';
 import '../models/renter_model.dart';
-import '../models/user_model.dart';
 import 'api/api_end_points.dart';
 import 'api/http_provider.dart';
 

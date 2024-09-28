@@ -107,7 +107,7 @@ class PhoneRentersDetailsView extends StatelessWidget {
                                         SecText("Rent:  Unknown",
                                             textColor: AppColors.mainTextColor),
                                       ] else ...[
-                                        SecText("Rent : YR",
+                                        SecText("Rent: YR",
                                             textColor: AppColors.mainTextColor)
                                       ],
                                       Row(

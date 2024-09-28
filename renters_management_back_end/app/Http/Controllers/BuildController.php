@@ -13,9 +13,9 @@ class BuildController extends Controller
     public function index()
     {
 
-        $builds = auth()->guard('api')->user()->builds()->get();
+        $builds = auth()->guard('api')->user()->builds()->withCount('renters')->get();
         return response()->json([
-            'Builds' => $builds->load('renters')
+            'Builds' => $builds->load('renters','renters.renterPhones','renters.RentPayments')
         ], 200);
     }
 
@@ -30,7 +30,7 @@ class BuildController extends Controller
         $build = auth()->guard('api')->user()->builds()->create($data);
         return response()->json([
                 'message' => 'store successful',
-                'Build' => $build->load('renters')
+                'Build' => $build->load('renters','renters.renterPhones','renters.RentPayments')
         ], 200);
     }
 
@@ -39,11 +39,11 @@ class BuildController extends Controller
      */
     public function show(int $id)
     {
-        $build = Build::find($id);
+        $build = Build::withCount('renters')->find($id);
 
         if (auth()->guard('api')->user()->id === $build->user_id) {
             return response()->json([
-                'Build' => $build->load('renters')
+                'Build' => $build->load('renters','renters.renterPhones','renters.RentPayments')
             ], 200);
         }
 
@@ -59,11 +59,11 @@ class BuildController extends Controller
     public function update(BuildRequst $request, int $id)
     {
         $request->validated();
-        $build = Build::find($id);
+        $build = Build::withCount('renters')->find($id);
         $build->update($request->all());
         return response()->json([
             'message' => 'update successful',
-            'Build' => $build->load('renters'),
+            'Build' => $build->load('renters','renters.renterPhones','renters.RentPayments'),
         ], 200);
     }
 
@@ -73,11 +73,11 @@ class BuildController extends Controller
     public function destroy(BuildRequst $request,string $id)
     {
         if($request->authorize()){
-            $build = Build::find($id);
+            $build = Build::withCount('renters')->find($id);
             $build->delete();
             return response()->json([
                 'message' => 'delete successful',
-                'Build' => $build->load('renters')
+                'Build' => $build->load('renters','renters.renterPhones','renters.RentPayments')
             ], 200);
         }
         return response()->json([

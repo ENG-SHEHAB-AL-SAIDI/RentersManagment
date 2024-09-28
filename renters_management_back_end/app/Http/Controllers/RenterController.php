@@ -15,7 +15,7 @@ class RenterController extends Controller
     {
         $build = Build::find($buildId);
         if (auth()->guard('api')->user()->id === $build->user_id) {
-            $renters = $build->renters->load('renterPhones');
+            $renters = $build->renters->load('renterPhones','RentPayments');
             return response()->json([
                 'message' => 'successful',
                 'Renters' => $renters,
@@ -39,7 +39,7 @@ class RenterController extends Controller
                 $renter->addPhone($phone);
             }
             return response()->json([
-                'Renter' => $renter->load('renterPhones'),
+                'Renter' => $renter->load('renterPhones','RentPayments'),
             ], 200);
 
         }
@@ -55,7 +55,7 @@ class RenterController extends Controller
             $renter = $build->renters->find($renterId);
             return response()->json([
                 'message' => 'successful',
-                'Renter' => $renter->load('renterPhones'),
+                'Renter' => $renter->load('renterPhones','RentPayments'),
             ], 200);
         }
 
@@ -84,7 +84,7 @@ class RenterController extends Controller
             }
             return response()->json([
                 'message' => 'update successful',
-                'Renter' => $renter->load('renterPhones')
+                'Renter' => $renter->load('renterPhones','RentPayments')
             ], 200);
         }
         return response()->json([
@@ -103,7 +103,7 @@ class RenterController extends Controller
             $renter = $build->renters->find($renterId);
             return response()->json([
                 'message' => 'delete successful',
-                'Renter' => $renter
+                'Renter' => $renter->load('renterPhones','RentPayments')
             ], 200);
         }
         return response()->json([

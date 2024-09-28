@@ -56,55 +56,56 @@ class PhoneRentersListView extends GetView<RenterListController> {
               "No renters yet ${controller.renters.value?.length}",
               textColor: AppColors.inverseSecTextColor,
             ))
-          : Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(16),
-                  child: CustomTextFormField(
-                    icon: Icons.search_rounded,
-                    labelText: "Search",
-                  ),
-                ),
-                Expanded(
-                    child: ListView.builder(
-                        itemCount: controller.renters.value?.length ?? 0 * 2,
-                        itemBuilder: (BuildContext ctx, int i) {
-                          if (i.isOdd) return const Divider();
-                          final index = i ~/ 2 + 1;
-                          return ListTile(
-                            contentPadding:
-                                const EdgeInsets.symmetric(horizontal: 0),
-                            leading: CircleAvatar(
-                              backgroundColor: AppColors.inverseIconColor,
-                              child: MainText(
-                                "$index",textAlign: TextAlign.start,
-                              ),
-                            ),
-                            title: MainText(
-                              controller.renters.value?[i].name?.value ??
-                                  "Unknown",
-                              textColor: AppColors.inverseMainTextColor,
-                              textAlign: TextAlign.start,
-                            ),
-                            subtitle: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                SecText("Status:Active"),
-                                SecText(" last payment date:2024-4-5")
-                              ],
-                            ),
-                            trailing: IconButton(
-                              icon: Icon(
-                                Icons.delete,
-                                color: AppColors.inverseIconColor,
-                              ),
-                              onPressed: delete,
-                            ),
-                            onTap: rentersListRoute,
-                          );
-                        }))
-              ],
-            )),
+          : RefreshIndicator(onRefresh: controller.refresh, child: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(16),
+            child: CustomTextFormField(
+              icon: Icons.search_rounded,
+              onChange: controller.searching,
+              labelText: "Search",
+            ),
+          ),
+          Expanded(
+              child: ListView.builder(
+                  itemCount: controller.renters.value?.length ?? 0 * 2,
+                  itemBuilder: (BuildContext ctx, int i) {
+                    if (i.isOdd) return const Divider();
+                    final index = i ~/ 2 + 1;
+                    return ListTile(
+                      contentPadding:
+                      const EdgeInsets.symmetric(horizontal: 6),
+                      leading: CircleAvatar(
+                        backgroundColor: AppColors.inverseIconColor,
+                        child: MainText(
+                          "$index",textAlign: TextAlign.start,
+                        ),
+                      ),
+                      title: MainText(
+                        controller.renters.value?[i].name?.value ??
+                            "Unknown",
+                        textColor: AppColors.inverseMainTextColor,
+                        textAlign: TextAlign.start,
+                      ),
+                      subtitle: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          SecText("Status:Active"),
+                          SecText(" last payment date:2024-4-5")
+                        ],
+                      ),
+                      trailing: IconButton(
+                        icon: Icon(
+                          Icons.delete,
+                          color: AppColors.inverseIconColor,
+                        ),
+                        onPressed: delete,
+                      ),
+                      onTap: rentersListRoute,
+                    );
+                  }))
+        ],
+      ))),
     );
   }
 

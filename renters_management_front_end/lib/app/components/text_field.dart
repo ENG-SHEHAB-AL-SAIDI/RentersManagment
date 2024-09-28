@@ -18,6 +18,7 @@ class CustomTextFormField extends StatelessWidget {
     this.focusNode,
     this.onFieldSubmitted,
     this.onSaved,
+    this.onChange
   });
 
   bool isPassword;
@@ -32,6 +33,7 @@ class CustomTextFormField extends StatelessWidget {
   FocusNode? focusNode ;
   void Function(String?)? onSaved;
   void Function(String?)? onFieldSubmitted;
+  void Function(String?)? onChange;
   bool readOnly;
 
 
@@ -43,6 +45,7 @@ class CustomTextFormField extends StatelessWidget {
         controller: controller,
         focusNode: focusNode,
         onSaved: onSaved,
+        onChanged: onChange,
         onFieldSubmitted: onFieldSubmitted,
         readOnly: readOnly,
         onTap: onTap,
@@ -75,6 +78,7 @@ class CustomTextFormField extends StatelessWidget {
         controller: controller,
         focusNode: focusNode,
         onSaved: onSaved,
+        onChanged: onChange,
         onFieldSubmitted: onFieldSubmitted,
         readOnly: readOnly,
         onTap: onTap,

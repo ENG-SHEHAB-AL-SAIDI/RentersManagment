@@ -38,55 +38,67 @@ class PhoneHomeView extends GetView<HomeController> {
       ),
       body: Padding(
           padding: EdgeInsets.all(width * 0.05),
-          child: Obx(()=>(controller.builds.value!.isEmpty)
-              ? Center(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                MainText(
-                  "No Builds yet\n add some ",
-                  textColor: AppColors.inverseSecTextColor,
-                ),
-                const SizedBox(height: 20,),
-                IconButton(onPressed: controller.refresh, icon: Icon(Icons.refresh,color: AppColors.inverseIconColor,size: 50,)),
-                // MainText(
-                //   "Refresh",
-                //   textColor: AppColors.inverseSecTextColor,
-                // ),
-
-              ],
-            )
-          )
-              : RefreshIndicator(onRefresh: controller.refresh, child: SingleChildScrollView(
-            clipBehavior: Clip.none,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(
-                  height: height * 0.01,
-                ),
-                SecText(
-                  "Your Builds",
-                  textColor: AppColors.inverseSecTextColor,
-                ),
-                SizedBox(
-                  height: height * 0.03,
-                ),
-                for (int i = 0;
-                i < controller.builds.value!.length;
-                i++) ...[
-                  BuildCard(
-                    buildInfo: controller.builds.value![i],
-                    height: height * 0.16,
-                    type: 1,
-                  ),
-                  SizedBox(
-                    height: height * 0.03,
-                  ),
-                ]
-              ],
-            ),
-          )))),
+          child: Obx(() => (!(controller.lodeState.value))
+              ? (controller.builds.value!.isEmpty)
+                  ? Center(
+                      child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        MainText(
+                          controller.errorMessage.value,
+                          textColor: AppColors.inverseSecTextColor,
+                        ),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        IconButton(
+                            onPressed: controller.refresh,
+                            icon: Icon(
+                              Icons.refresh,
+                              color: AppColors.inverseIconColor,
+                              size: 50,
+                            )),
+                        // MainText(
+                        //   "Refresh",
+                        //   textColor: AppColors.inverseSecTextColor,
+                        // ),
+                      ],
+                    ))
+                  : RefreshIndicator(
+                      onRefresh: controller.refresh,
+                      child: SingleChildScrollView(
+                        clipBehavior: Clip.none,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            SizedBox(
+                              height: height * 0.01,
+                            ),
+                            SecText(
+                              "Your Builds",
+                              textColor: AppColors.inverseSecTextColor,
+                            ),
+                            SizedBox(
+                              height: height * 0.03,
+                            ),
+                            for (int i = 0;
+                                i < controller.builds.value!.length;
+                                i++) ...[
+                              BuildCard(
+                                buildInfo: controller.builds.value![i],
+                                height: height * 0.16,
+                                type: 1,
+                              ),
+                              SizedBox(
+                                height: height * 0.03,
+                              ),
+                            ]
+                          ],
+                        ),
+                      ))
+              : const Center(
+                  child: CircularProgressIndicator(),
+                ))),
     );
   }
 }

@@ -4,6 +4,8 @@ import 'package:renters_management_front_end/app/components/pop_up_cards/alert_m
 import 'package:renters_management_front_end/app/models/result.dart';
 import 'package:renters_management_front_end/app/services/build_services.dart';
 
+import '../components/pop_up_cards/delete_confirmation_message_card.dart';
+import '../components/pop_up_cards/update_build_card.dart';
 import '../models/build_model.dart';
 
 class HomeController extends GetxController {
@@ -41,6 +43,23 @@ class HomeController extends GetxController {
     }
     lodeState.value = false;
     super.refresh();
+  }
+
+  void edit(int i) {
+    Get.dialog(const PopUpIUpdateBuildCard());
+  }
+
+  void delete(int i) {
+    Get.dialog(PopUpMessageCard(
+        "did you sure want delete this build that will delete all data relative to it."));
+  }
+
+  void rentersListRoute(int id) {
+    Get.toNamed("/rentersList", arguments: {'buildId':id});
+  }
+
+  void buildReportRoute(int id) {
+    Get.toNamed("/buildReports",  arguments: {'buildId':id});
   }
 
 }

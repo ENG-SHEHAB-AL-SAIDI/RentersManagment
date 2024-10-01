@@ -99,9 +99,9 @@ class PhoneRentersListView extends GetView<RenterListController> {
                           Icons.delete,
                           color: AppColors.inverseIconColor,
                         ),
-                        onPressed: delete,
+                        onPressed: controller.delete,
                       ),
-                      onTap: rentersListRoute,
+                      onTap: ()=>controller.rentersDetailsRoute(i),
                     );
                   }))
         ],
@@ -109,12 +109,5 @@ class PhoneRentersListView extends GetView<RenterListController> {
     );
   }
 
-  void rentersListRoute() {
-    Get.toNamed("/rentersState");
-  }
 
-  void delete() {
-    Get.dialog(PopUpMessageCard(
-        "did you sure want delete this renter that will delete all data relative to it."));
-  }
 }

@@ -88,6 +88,7 @@ class PhoneHomeView extends GetView<HomeController> {
                                 buildInfo: controller.builds.value![i],
                                 height: height * 0.16,
                                 type: 1,
+
                               ),
                               SizedBox(
                                 height: height * 0.03,

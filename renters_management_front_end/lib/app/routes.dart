@@ -25,7 +25,7 @@ class AppRoutes {
       binding: RenterListViewBinding(),
     ),
     GetPage(
-      name: '/rentersState',
+      name: '/rentersDetails',
       page: ()=>   const RentersStateView(),
       //binding: LoginViewBinding(),
     ),

@@ -2,9 +2,9 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:renters_management_front_end/app/components/pop_up_cards/delete_confirmation_message_card.dart';
-import 'package:renters_management_front_end/app/components/pop_up_cards/update_build_card.dart';
 import 'package:renters_management_front_end/app/models/build_model.dart';
+
+import '../controllers/home_controller.dart';
 import '../globals.dart';
 import 'custom_text.dart';
 
@@ -19,6 +19,8 @@ class BuildCard extends StatelessWidget {
     required this.height,
     required this.type,
   });
+
+  HomeController controller = Get.put<HomeController>(HomeController());
 
   @override
   Widget build(BuildContext context) {
@@ -79,7 +81,7 @@ class BuildCard extends StatelessWidget {
                               fontWeight: FontWeight.bold,
                             ),
                             SecText(
-                              buildInfo.name?.value??"Unknown",
+                              buildInfo.name?.value ?? "Unknown",
                               textColor: textColor,
                             ),
                           ],
@@ -91,13 +93,15 @@ class BuildCard extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
                             IconButton(
-                                onPressed: edit,
+                                onPressed: () =>
+                                    controller.edit(buildInfo.id.value),
                                 icon: Icon(
                                   Icons.edit,
                                   color: textColor,
                                 )),
                             IconButton(
-                                onPressed: delete,
+                                onPressed: () =>
+                                    controller.delete(buildInfo.id.value),
                                 icon: Icon(
                                   Icons.delete,
                                   color: textColor,
@@ -119,7 +123,7 @@ class BuildCard extends StatelessWidget {
                               fontWeight: FontWeight.bold,
                             ),
                             SecText(
-                              buildInfo.city?.value??"Unknown",
+                              buildInfo.city?.value ?? "Unknown",
                               textColor: textColor,
                             ),
                           ],
@@ -134,7 +138,7 @@ class BuildCard extends StatelessWidget {
                               fontWeight: FontWeight.bold,
                             ),
                             SecText(
-                              buildInfo.address?.value??"Unknown",
+                              buildInfo.address?.value ?? "Unknown",
                               textColor: textColor,
                             ),
                           ],
@@ -154,7 +158,7 @@ class BuildCard extends StatelessWidget {
                               fontWeight: FontWeight.bold,
                             ),
                             SecText(
-                              buildInfo.numRenters?.value.toString()??'0' ,
+                              buildInfo.numRenters?.value.toString() ?? '0',
                               textColor: textColor,
                             ),
                           ],
@@ -184,27 +188,27 @@ class BuildCard extends StatelessWidget {
               height: (height - 2) * 0.2,
               width: double.maxFinite,
               color: color2,
-              child: Stack(
-                alignment: Alignment.topRight,
-                children: [
-                  Center(
-                    child: TextButton(
-                      onPressed: rentersListRoute,
+              child: InkWell(
+                onTap: () =>controller.rentersListRoute(buildInfo.id.value),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    Center(
                       child: SecText(
                         "Renters List",
                         textColor: color1,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                  ),
-                  IconButton(
-                    onPressed: rentersListRoute,
-                    icon: Icon(
+                    Icon(
                       Icons.arrow_forward_ios,
                       color: color1,
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
             const SizedBox(
@@ -220,48 +224,30 @@ class BuildCard extends StatelessWidget {
                   bottomLeft: Radius.circular(20),
                 ),
               ),
-              child: Stack(
-                alignment: Alignment.topRight,
-                children: [
-                  Center(
-                    child: TextButton(
-                      onPressed: buildReportRoute,
+              child: InkWell(
+                onTap: () =>controller.buildReportRoute(buildInfo.id.value),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    Center(
                       child: SecText(
-                        "Build Reports ",
+                        "Build Reports",
                         textColor: color1,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                  ),
-                  IconButton(
-                    onPressed: buildReportRoute,
-                    icon: Icon(
+                    Icon(
                       Icons.arrow_forward_ios,
                       color: color1,
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             )
           ],
         ));
-  }
-
-  void edit() {
-
-    Get.dialog(const PopUpIUpdateBuildCard());
-  }
-
-  void delete() {
-    Get.dialog(PopUpMessageCard(
-            "did you sure want delete this build that will delete all data relative to it."));
-  }
-
-  void rentersListRoute() {
-    Get.toNamed("/rentersList", arguments: {'buildId':buildInfo.id.value});
-  }
-
-  void buildReportRoute() {
-    Get.toNamed("/buildReports");
   }
 }

@@ -5,6 +5,7 @@ import 'package:renters_management_front_end/app/models/result.dart';
 import 'package:renters_management_front_end/app/services/renter_services.dart';
 
 import '../components/pop_up_cards/alert_message_card.dart';
+import '../components/pop_up_cards/delete_confirmation_message_card.dart';
 import '../models/renter_model.dart';
 
 class RenterListController extends GetxController {
@@ -59,6 +60,16 @@ class RenterListController extends GetxController {
     }
 
   }
+
+  void rentersDetailsRoute(int index) {
+    Get.toNamed("/rentersDetails", arguments: {'renterId':renters.value?[index].id.value});
+  }
+
+  void delete() {
+    Get.dialog(PopUpMessageCard(
+        "did you sure want delete this renter that will delete all data relative to it."));
+  }
+
   void changeLang(String lang) {
     Get.updateLocale(Locale(lang));
   }

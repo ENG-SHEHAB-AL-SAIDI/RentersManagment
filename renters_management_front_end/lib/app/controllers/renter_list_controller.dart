@@ -62,7 +62,7 @@ class RenterListController extends GetxController {
   }
 
   void rentersDetailsRoute(int index) {
-    Get.toNamed("/rentersDetails", arguments: {'renterId':renters.value?[index].id.value});
+    Get.toNamed("/rentersDetails", arguments: {'buildId':buildId, 'renterId':renters.value?[index].id.value});
   }
 
   void delete() {

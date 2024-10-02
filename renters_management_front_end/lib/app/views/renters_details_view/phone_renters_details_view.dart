@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:renters_management_front_end/app/components/custom_text.dart';
+import 'package:renters_management_front_end/app/controllers/renter_details_controller.dart';
 
+import '../../bindings/renter_details_binding.dart';
 import '../../globals.dart';
 
-class PhoneRentersDetailsView extends GetView {
+class PhoneRentersDetailsView extends GetView<RenterDetailsController> {
   PhoneRentersDetailsView({super.key});
 
   // void setYearlist() {
@@ -66,7 +68,7 @@ class PhoneRentersDetailsView extends GetView {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                SecText("Name : Unknown",
+                                SecText("Name : ${controller.renter?.name?.value??"Unknown"}",
                                     textColor: AppColors.mainTextColor),
                                 Row(
                                   mainAxisAlignment:

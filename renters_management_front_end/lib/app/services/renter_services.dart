@@ -46,7 +46,7 @@ class RenterServices {
     if (res.data != null && res.data?.renters != null && !hardFetch) {
       for(Renter renter in res.data?.renters??[]){
         if(renter.id.value == renterId){
-           return Result(data: renter, hasError: false, message: "successful");
+           return Result(data: renter,statusCode: 200, hasError: false, message: "successful");
         }
       }
     }
@@ -71,7 +71,7 @@ class RenterServices {
             statusCode: error.response?.statusCode,
             data: error.response?.data);
       }
-      return Result(hasError: true, message: error.message);
+      return Result(hasError: true, statusCode: 600,message: error.message);
     }
   }
 

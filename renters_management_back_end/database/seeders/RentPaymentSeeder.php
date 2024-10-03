@@ -26,8 +26,10 @@ class RentPaymentSeeder extends Seeder
     public function run()
     {
         try{
-            if($this->renter == null){
+            if($this->renter->is_null == null){
+                dd(Renter::inRandomOrder()->first());
                 $rentPayments = RentPayment::factory()->count(($this->count==-1)?1:$this->count)->create();
+                dd("x");
                 return $rentPayments;
             }
             $status=[];
@@ -36,8 +38,8 @@ class RentPaymentSeeder extends Seeder
             }
             $rentPayments = RentPayment::factory(($this->count==-1)?1:$this->count , $status)->for($this->renter)->create();
             return $rentPayments;
-    }catch(Exception){
-        echo "error";
+    }catch(Exception $e){
+        echo $e->getMessage();
     }
 
     }

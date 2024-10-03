@@ -39,7 +39,7 @@ class RentPayment extends Model
         });
 
         static::creating(function($model){
-            $model->remainAmount = $model->renter()->first()->rent;
+            $model->remainAmount = $model->renter()->get()->rent;
         });
     }
 

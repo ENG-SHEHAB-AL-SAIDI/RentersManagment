@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:renters_management_front_end/app/models/result.dart';
 
 import '../models/build_model.dart';
@@ -25,8 +26,9 @@ class BuildServices {
       return Result(
           data: _builds,
           hasError: false,
-          statusCode: (response.statusCode),
+          statusCode: response.statusCode,
           message: "successful");
+
     } on DioException catch (error) {
       if (error.response != null) {
         return Result(
@@ -34,9 +36,16 @@ class BuildServices {
             statusCode: error.response?.statusCode,
             message: error.response?.data);
       }
-      return Result(hasError: true, message: error.message);
     }
+    catch(error){
+      if (kDebugMode) {
+        print(error.toString());
+      }
+    }
+    return Result(hasError: true,statusCode: 600, message: "some thing wrong");
   }
+
+
 
   static Future<Result<Build>> fetchBuild(int id,
       {bool hardFetch = false}) async {
@@ -67,7 +76,12 @@ class BuildServices {
             message: error.message);
       }
       return Result(hasError: true, message: error.message);
+    }catch(error){
+      if (kDebugMode) {
+        print(error.toString());
+      }
     }
+    return Result(hasError: true,statusCode: 600, message: "some thing wrong");
   }
 
   static void setBuildRenters(int buildId, List<Renter> renters) {

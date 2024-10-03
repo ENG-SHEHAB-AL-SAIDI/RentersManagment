@@ -3,32 +3,13 @@ import 'package:get/get.dart';
 import 'package:renters_management_front_end/app/components/custom_text.dart';
 import 'package:renters_management_front_end/app/controllers/renter_details_controller.dart';
 
-import '../../bindings/renter_details_binding.dart';
 import '../../globals.dart';
 
 class PhoneRentersDetailsView extends GetView<RenterDetailsController> {
   PhoneRentersDetailsView({super.key});
 
-  // void setYearlist() {
-  //   if (widget.name.isNotEmpty) {
-  //     year = [];
-  //     DataCollection.rentersInfo[widget.name]!.year!.keys.map((element) {
-  //       year.add(DropdownMenuItem<String>(
-  //           value: element.toString(),
-  //           child: SecText(element.toString(),
-  //               color: AppColors.mainTextColor)));
-  //     }).toList();
-  //     if (year.isNotEmpty) {
-  //       if (widget.selectedYear != "") {
-  //         print(year[1].value);
-  //         selectYear = widget.selectedYear;
-  //       } else
-  //         selectYear = year[0].value;
-  //     } else
-  //       selectYear = null;
-  //   }
-  // }
   List<DropdownMenuItem<String>> year = [];
+  List<DropdownMenuItem<String>> phones = [];
 
   @override
   Widget build(BuildContext context) {
@@ -45,151 +26,232 @@ class PhoneRentersDetailsView extends GetView<RenterDetailsController> {
               )),
           title: MainText("Renters List"),
         ),
-        body: Container(
-            width: double.infinity,
-            color: AppColors.backColor,
-            alignment: Alignment.center,
-            child: Column(
-              children: [
-                Expanded(
-                  child: Column(
-                    children: [
-                      SizedBox(
-                        width: double.maxFinite,
-                        child: Card(
-                          color: AppColors.inverseCardColor,
-                          elevation: 20,
-                          margin: const EdgeInsets.symmetric(
-                              horizontal: 4, vertical: 15),
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(24)),
-                          child: Padding(
-                            padding: const EdgeInsets.all(24.0),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                SecText("Name : ${controller.renter?.name?.value??"Unknown"}",
-                                    textColor: AppColors.mainTextColor),
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
+        body: Obx(() => (!controller.loadingState.value)
+            ? Container(
+                width: double.infinity,
+                color: AppColors.backColor,
+                alignment: Alignment.center,
+                child: Column(
+                  children: [
+                    Expanded(
+                      child: Column(
+                        children: [
+                          SizedBox(
+                            width: double.maxFinite,
+                            child: Card(
+                              color: AppColors.inverseCardColor,
+                              elevation: 20,
+                              margin: const EdgeInsets.symmetric(
+                                  horizontal: 4, vertical: 15),
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(24)),
+                              child: Padding(
+                                padding: const EdgeInsets.all(24.0),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    SecText("Phone : Unknown ",
-                                        textColor: AppColors.mainTextColor),
                                     Row(
-                                      mainAxisSize: MainAxisSize.min,
                                       children: [
-                                        IconButton(
-                                            onPressed: () {
-                                              // _callrenter();
-                                            },
-                                            icon: Icon(
-                                              Icons.phone,
-                                              color: AppColors.mainIconColor,
-                                            )),
-                                        IconButton(
-                                            onPressed: () {
-                                              // _sendSMS();
-                                            },
-                                            icon: Icon(Icons.sms_outlined,
-                                                color: AppColors.mainIconColor))
+                                        SecText(
+                                          "Name:",
+                                          textColor: AppColors.mainTextColor,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                        const SizedBox(width: 10),
+                                        SecText(
+                                            controller.renter?.name?.value ??
+                                                "Unknown",
+                                            textColor: AppColors.mainTextColor),
                                       ],
                                     ),
-                                  ],
-                                ),
-                                SecText("Activity: Unknown",
-                                    textColor: AppColors.mainTextColor),
-                                Padding(
-                                  padding: const EdgeInsets.only(top: 10),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      if (true) ...[
-                                        SecText("Rent:  Unknown",
+                                    Obx(() => Row(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
+                                              children: [
+                                                SecText("Phone:",
+                                                    textColor: AppColors
+                                                        .mainTextColor,fontWeight: FontWeight.bold,),
+                                                const SizedBox(width: 10,),
+                                                DropdownButton<String>(
+                                                  value: controller
+                                                      .selectedPhone.value,
+                                                  elevation: 6,
+                                                  icon: Icon(
+                                                      Icons
+                                                          .arrow_drop_down_sharp,
+                                                      color: AppColors
+                                                          .mainIconColor),
+                                                  underline: const SizedBox(),
+                                                  dropdownColor: AppColors
+                                                      .inverseCardColor,
+                                                  onChanged: controller
+                                                      .changeSelectedPhone,
+                                                  items:
+                                                      controller.phones.value,
+                                                ),
+                                              ],
+                                            ),
+                                            Row(
+                                              mainAxisSize: MainAxisSize.min,
+                                              children: [
+                                                IconButton(
+                                                    onPressed: () {
+                                                      // _callrenter();
+                                                    },
+                                                    icon: Icon(
+                                                      Icons.phone,
+                                                      color: AppColors
+                                                          .mainIconColor,
+                                                    )),
+                                                IconButton(
+                                                    onPressed: () {
+                                                      // _sendSMS();
+                                                    },
+                                                    icon: Icon(
+                                                        Icons.sms_outlined,
+                                                        color: AppColors
+                                                            .mainIconColor))
+                                              ],
+                                            ),
+                                          ],
+                                        )),
+                                    Row(
+                                      children: [
+                                        SecText(
+                                          "Activity:",
+                                          textColor: AppColors.mainTextColor,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                        const SizedBox(width: 10),
+                                        SecText(
+                                            controller.renter?.jobDomain?.value ??
+                                                "Unknown",
                                             textColor: AppColors.mainTextColor),
-                                      ] else ...[
-                                        SecText("Rent: YR",
-                                            textColor: AppColors.mainTextColor)
                                       ],
-                                      Row(
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.only(top: 10),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
                                         children: [
-                                          SecText("Year:    ",
-                                              textColor:
-                                                  AppColors.mainTextColor),
-                                          DropdownButton<String>(
-                                            value: "selectYear",
-                                            elevation: 6,
-                                            icon: Icon(
-                                                Icons.arrow_drop_down_sharp,
-                                                color: AppColors.mainIconColor),
-                                            underline: const Divider(),
-                                            dropdownColor:
-                                                AppColors.mainIconColor,
-                                            onChanged: (dynamic) {
-                                              if (dynamic != null) {}
-                                            },
-                                            items: year,
+                                          if (controller.renter?.rent?.value != null) ...[
+                                            Row(
+                                              children: [
+                                                SecText(
+                                                  "Rent:",
+                                                  textColor: AppColors.mainTextColor,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                                const SizedBox(width: 10),
+                                                SecText(
+                                                    "${controller.renter?.rent?.value} YR",
+                                                    textColor: AppColors.mainTextColor),
+                                              ],
+                                            ),
+                                          ] else ...[
+                                            Row(
+                                              children: [
+                                                SecText(
+                                                  "Rent:",
+                                                  textColor: AppColors.mainTextColor,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                                const SizedBox(width: 10),
+                                                SecText(
+                                                    "Unknown",
+                                                    textColor: AppColors.mainTextColor),
+                                              ],
+                                            ),
+                                          ],
+                                          Row(
+                                            children: [
+                                              SecText("Year:    ",
+                                                  textColor:
+                                                      AppColors.mainTextColor),
+                                              DropdownButton<String>(
+                                                value: "selectYear",
+                                                elevation: 6,
+                                                icon: Icon(
+                                                    Icons.arrow_drop_down_sharp,
+                                                    color: AppColors
+                                                        .mainIconColor),
+                                                underline: const Divider(),
+                                                dropdownColor:
+                                                    AppColors.mainIconColor,
+                                                onChanged: (dynamic) {
+                                                  if (dynamic != null) {}
+                                                },
+                                                items: year,
+                                              ),
+                                            ],
                                           ),
                                         ],
                                       ),
-                                    ],
-                                  ),
-                                )
-                              ],
+                                    )
+                                  ],
+                                ),
+                              ),
                             ),
                           ),
-                        ),
+                          Expanded(
+                            flex: 20,
+                            child: Container(),
+                            // child: (widget.name.isNotEmpty &&
+                            //         selectYear != null)
+                            //     ? MyTable(widget.name, selectYear)
+                            //     : (selectYear != null)
+                            //         ? SizedBox.expand(
+                            //             child: Card(
+                            //                 textColor: AppColors.cardColor,
+                            //                 elevation: 20,
+                            //                 margin: const EdgeInsets.symmetric(
+                            //                     horizontal: 30, vertical: 15),
+                            //                 shape: RoundedRectangleBorder(
+                            //                     borderRadius:
+                            //                         BorderRadius.circular(24)),
+                            //                 child: Center(
+                            //                     child: SecText(
+                            //                         "قم بأختيار مستاجر ",
+                            //                         fontWeight: FontWeight.bold,
+                            //                         fontSize: 28,
+                            //                         textColor: AppColors
+                            //                             .mainTextColor))),
+                            //           )
+                            //         : SizedBox.expand(
+                            //             child: Card(
+                            //                 textColor: AppColors.cardColor,
+                            //                 elevation: 20,
+                            //                 margin: const EdgeInsets.symmetric(
+                            //                     horizontal: 30, vertical: 15),
+                            //                 shape: RoundedRectangleBorder(
+                            //                     borderRadius:
+                            //                         BorderRadius.circular(24)),
+                            //                 child: Center(
+                            //                     child: SecText(
+                            //                         "قم بأضافة سنة للمستاجر اولاً  ",
+                            //                         fontWeight: FontWeight.bold,
+                            //                         fontSize: 28,
+                            //                         textColor: AppColors
+                            //                             .mainTextColor))),
+                          ),
+                          const Expanded(
+                            child: SizedBox(),
+                          )
+                        ],
                       ),
-                      Expanded(
-                        flex: 20,
-                        child: Container(),
-                        // child: (widget.name.isNotEmpty &&
-                        //         selectYear != null)
-                        //     ? MyTable(widget.name, selectYear)
-                        //     : (selectYear != null)
-                        //         ? SizedBox.expand(
-                        //             child: Card(
-                        //                 textColor: AppColors.cardColor,
-                        //                 elevation: 20,
-                        //                 margin: const EdgeInsets.symmetric(
-                        //                     horizontal: 30, vertical: 15),
-                        //                 shape: RoundedRectangleBorder(
-                        //                     borderRadius:
-                        //                         BorderRadius.circular(24)),
-                        //                 child: Center(
-                        //                     child: SecText(
-                        //                         "قم بأختيار مستاجر ",
-                        //                         fontWeight: FontWeight.bold,
-                        //                         fontSize: 28,
-                        //                         textColor: AppColors
-                        //                             .mainTextColor))),
-                        //           )
-                        //         : SizedBox.expand(
-                        //             child: Card(
-                        //                 textColor: AppColors.cardColor,
-                        //                 elevation: 20,
-                        //                 margin: const EdgeInsets.symmetric(
-                        //                     horizontal: 30, vertical: 15),
-                        //                 shape: RoundedRectangleBorder(
-                        //                     borderRadius:
-                        //                         BorderRadius.circular(24)),
-                        //                 child: Center(
-                        //                     child: SecText(
-                        //                         "قم بأضافة سنة للمستاجر اولاً  ",
-                        //                         fontWeight: FontWeight.bold,
-                        //                         fontSize: 28,
-                        //                         textColor: AppColors
-                        //                             .mainTextColor))),
-                      ),
-                      const Expanded(
-                        child: Text(""),
-                      )
-                    ],
-                  ),
-                ),
-              ],
-            )));
+                    ),
+                  ],
+                ))
+            : const Center(
+                child: CircularProgressIndicator(),
+              )));
   }
 
 // void _callrenter() async {

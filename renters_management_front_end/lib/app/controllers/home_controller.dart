@@ -41,6 +41,7 @@ class HomeController extends GetxController {
     }else{
       Get.dialog(PopUpAlertCard("fetch Builds field please check your connection", Icons.warning));
     }
+
     lodeState.value = false;
     super.refresh();
   }

@@ -26,15 +26,20 @@ class Renter {
   });
 
   factory Renter.fromJson(Map<String, dynamic> json) {
+    List<Map<String, dynamic>> phones = [];
+    for (var item in json["renter_phones"]) {
+      if (item != []) {
+        phones.add(item);
+      }
+    }
     return Renter(
-
       id: RxInt(json['id'] ?? 0),
       name: RxString(json['name'] ?? "Unknown"),
       rent: RxDouble(json['rent'].toDouble() ?? 0.0),
       jobDomain: RxString(json['job_domain'] ?? "Unknown"),
       enterDate: RxString(json['enter_date'] ?? "Unknown"),
-
-      // phones: List.generate(length, generator),
+      phones: List<RxString>.generate(
+          phones.length, (i) => RxString(phones[i]["phone"].toString())),
       updatedAt: RxString(json['deleted_at'] ?? "Unknown"),
       createdAt: RxString(json['created_at'] ?? "Unknown"),
       deletedAt: RxString(json['updated_at'] ?? "Unknown"),
@@ -54,7 +59,6 @@ class Renter {
     };
   }
 }
-
 
 //
 // {

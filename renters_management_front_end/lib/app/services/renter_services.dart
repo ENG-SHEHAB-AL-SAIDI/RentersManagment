@@ -12,13 +12,12 @@ class RenterServices {
   static Future<Result<List<Renter>>> fetchRenters(int buildId,{bool hardFetch = false}) async {
     Result<Build> res = await BuildServices.fetchBuild(buildId);
     if (res.data != null && res.data?.renters != null && !hardFetch) {
-
       return Result(data: res.data!.renters, statusCode: 200,hasError: false, message: "successful");
     }
 
     late Response response;
     try {
-      response = await HttpProvider.post("${EndPoints.getBuilds}/$buildId/ ${EndPoints.getRenters}");
+      response = await HttpProvider.get("${EndPoints.getBuilds}/$buildId/${EndPoints.getRenters}");
       List result = response.data["Renters"];
       List<Renter> renters = [];
       for (int i = 0; i < result.length; i++) {

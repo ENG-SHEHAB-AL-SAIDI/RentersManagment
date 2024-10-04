@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BuildController;
+use App\Http\Controllers\CombinDataController;
 use App\Http\Controllers\RenterController;
 use Illuminate\Support\Facades\Route;
 
@@ -18,5 +19,5 @@ Route::middleware(['api','auth:api'])->prefix('user')->group(
 function () {
     Route::apiResource('builds',BuildController::class);
     Route::apiResource('builds.renters',RenterController::class);
-    // Route::get('renters',[RenterController::class, 'buildRenters'])
+    Route::get('getAllData',[CombinDataController::class, 'getAllUserData']);
 });

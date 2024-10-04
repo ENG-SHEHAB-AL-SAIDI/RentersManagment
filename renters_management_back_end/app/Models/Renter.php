@@ -51,6 +51,8 @@ class Renter extends Model
         return $this->hasMany(RentPayment::class);
     }
 
+
+
     public function build():BelongsTo
     {
         return $this->belongsTo(Build::class);

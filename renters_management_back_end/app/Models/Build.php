@@ -18,16 +18,12 @@ class Build extends Model
         'user_id',
     ];
 
-    public function getTotalRent()
+    protected $appends = ['total_rent'];
+
+    public function getTotalRentAttribute()
     {
         return $this->renters()->sum('rent');
     }
-
-    public function getRentersNumber()
-    {
-        return $this->renters()->count();
-    }
-
 
     protected static function boot()
     {

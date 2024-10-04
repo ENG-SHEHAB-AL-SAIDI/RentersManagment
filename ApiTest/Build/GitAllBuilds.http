@@ -1,0 +1,4 @@
+
+GET {{apiUrl}}/user/builds
+Content-Type: application/json
+Authorization: bearer {{token}}

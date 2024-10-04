@@ -1,9 +1,12 @@
+import 'package:get/get.dart';
+import 'package:get/get_rx/get_rx.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:renters_management_front_end/app/models/renter_model.dart';
 
 class Build {
   RxInt id;
   RxInt? numRenters;
+  RxInt? totalRent;
   RxString? name;
   RxString? city;
   RxString? address;
@@ -19,6 +22,7 @@ class Build {
     this.city,
     this.address,
     this.renters,
+    this.totalRent,
     this.deletedAt,
     this.createdAt,
     this.updatedAt,
@@ -35,6 +39,7 @@ class Build {
     return Build(
       id: RxInt(json['id'] ?? 0),
       numRenters: RxInt(json['renters_count'] ?? 0),
+      totalRent: RxInt(json['total_rent']),
       name: RxString(json['name'] ?? "Unknown"),
       city: RxString(json['city'] ?? "Unknown"),
       renters: renters,
@@ -53,7 +58,8 @@ class Build {
      renters?.forEach((element) => element.toJson,);
     return {
       'id': id.value,
-      'numRenters': numRenters?.value,
+      'renters_count': numRenters?.value,
+      'total_rent':totalRent?.value,
       'name': name?.value,
       'city': city?.value,
       'address': address?.value,

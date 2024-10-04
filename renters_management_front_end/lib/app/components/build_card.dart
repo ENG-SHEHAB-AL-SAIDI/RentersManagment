@@ -173,7 +173,7 @@ class BuildCard extends StatelessWidget {
                               fontWeight: FontWeight.bold,
                             ),
                             SecText(
-                              "100,000,000",
+                              "${buildInfo.totalRent}",
                               textColor: textColor,
                             ),
                           ],

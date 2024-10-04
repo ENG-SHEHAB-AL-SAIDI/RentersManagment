@@ -38,6 +38,12 @@ class HomeController extends GetxController {
     Result<List<Build>> res = await BuildServices.fetchBuilds(hardFetch: true);
     if(res.statusCode == 200 && res.data != null){
       builds.value = res.data;
+    }else if(res.statusCode == 100){
+      print("heer________________");
+      Result<List<Build>> res = await BuildServices.fetchBuilds(hardFetch: true);
+      if(res.statusCode == 200 && res.data != null){
+        builds.value = res.data;
+      }
     }else{
       Get.dialog(PopUpAlertCard("fetch Builds field please check your connection", Icons.warning));
     }

@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
+import 'package:get/get.dart' as get_x;
 import 'package:renters_management_front_end/app/models/result.dart';
-
 import '../models/user_model.dart';
 import 'api/api_end_points.dart';
 import 'api/http_provider.dart';
@@ -8,23 +8,39 @@ import 'api/http_provider.dart';
 class UserServices {
   static User? _user;
 
-  static Future<Result> userLogin(String email, String password) async {
+  static Future<Result<bool>> userLogin(String email, String password) async {
     late Response response;
     try {
       response = await HttpProvider.post(EndPoints.login,
           data: {"email": email, "password": password});
-      _user = User.fromJson(response.data["user"]);
-      HttpProvider.addAuthTokenInterceptor(
-          response.data["token"]["original"]["access_token"]);
-      return Result(hasError: false, statusCode: response.statusCode);
+      if(response.statusCode == 200){
+        _user = User.fromJson(response.data["user"]);
+        HttpProvider.addAuthTokenInterceptor(
+            response.data["token"]["original"]["access_token"]);
+        return Result(hasError: false, statusCode: response.statusCode,data: true);
+      }
+      return Result(hasError: false, statusCode: response.statusCode,data: false);
     } on DioException catch (error) {
       if (error.response != null) {
         return Result(
             hasError: true,
             statusCode: error.response?.statusCode,
-            data: error.response?.data);
+            message: error.response?.statusMessage);
       }
       return Result(hasError: true, message: error.message);
+    }
+  }
+
+  static Future<void> userLogout() async {
+    try {
+      Response response = await HttpProvider.post(EndPoints.logOut);
+      if (response.statusCode == 200) {
+        get_x.Get.offAllNamed("/login");
+      }
+    } on DioException catch (error) {
+      if (error.response != null) {
+        print(error);
+      }
     }
   }
 

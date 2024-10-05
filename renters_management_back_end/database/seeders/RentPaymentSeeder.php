@@ -33,12 +33,12 @@ class RentPaymentSeeder extends Seeder
                 return $rentPayments;
             }
             $rentPayments = new Collection(RentPayment::class);
-            foreach($this->years as $year){
+            foreach ($this->years as $year) {
                 for ($i = 0; $i < $this->count; $i++) {
                     $status = [];
                     if ($year != "") {
                         $status['year'] = $year;
-                        $status['month'] = $i+1;
+                        $status['month'] = $i + 1;
                     }
                     $rentPayments->push(RentPayment::factory(1, $status)->for($this->renter)->create());
                 }

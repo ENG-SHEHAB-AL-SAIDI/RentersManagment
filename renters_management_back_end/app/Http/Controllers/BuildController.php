@@ -18,6 +18,7 @@ class BuildController extends Controller
         $builds->each(function ($build) {
             $build->renters->each(function ($renter) {
                 $groupedRentPayments = $renter->rentPayments->groupBy('year');
+                $renter->unsetRelation('rentPayments');
                 $renter->grouped_rent_payments = $groupedRentPayments;
             });
         });

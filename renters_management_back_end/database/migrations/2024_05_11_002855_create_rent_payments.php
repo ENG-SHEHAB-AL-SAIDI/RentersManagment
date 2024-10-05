@@ -16,8 +16,8 @@ return new class extends Migration
             $table->string('year');
             $table->enum('month',['1','2','3','4','5','6','7','8','9','10','11','12']);
             $table->enum('state',['payed','partially','notPayed']);
-            $table->float('PayedAmount')->default(0);
-            $table->float('remainAmount');
+            $table->float('payed_amount')->default(0);
+            $table->float('remain_amount');
             $table->softDeletes();
             $table->timestamps();
 

@@ -24,7 +24,7 @@ class BuildCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    (height < 200) ? height = 200 : null;
+    (height < 200) ? height = 240 : null;
     Color color1;
     Color color2;
     Color textColor;
@@ -111,38 +111,31 @@ class BuildCard extends StatelessWidget {
                       ),
                     ],
                   ),
+
+                    Row(
+                      children: [
+                        SecText(
+                          "city:  ",
+                          textColor: textColor,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        SecText(
+                          buildInfo.city?.value ?? "Unknown",
+                          textColor: textColor,
+                        ),
+                      ],
+                    ),
+
                   Row(
                     children: [
-                      SizedBox(
-                        width: (Get.width - rightPadding) * 0.4,
-                        child: Row(
-                          children: [
-                            SecText(
-                              "city:  ",
-                              textColor: textColor,
-                              fontWeight: FontWeight.bold,
-                            ),
-                            SecText(
-                              buildInfo.city?.value ?? "Unknown",
-                              textColor: textColor,
-                            ),
-                          ],
-                        ),
+                      SecText(
+                        "address:  ",
+                        textColor: textColor,
+                        fontWeight: FontWeight.bold,
                       ),
-                      SizedBox(
-                        child: Row(
-                          children: [
-                            SecText(
-                              "address:  ",
-                              textColor: textColor,
-                              fontWeight: FontWeight.bold,
-                            ),
-                            SecText(
-                              buildInfo.address?.value ?? "Unknown",
-                              textColor: textColor,
-                            ),
-                          ],
-                        ),
+                      SecText(
+                        buildInfo.address?.value ?? "Unknown",
+                        textColor: textColor,
                       ),
                     ],
                   ),

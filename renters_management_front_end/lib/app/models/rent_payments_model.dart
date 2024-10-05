@@ -4,22 +4,22 @@ import 'package:get/get_rx/src/rx_types/rx_types.dart';
 
 class RentPayment {
   RxInt id;
-  RxString? name;
-  RxDouble? rent;
-  RxString? jobDomain;
-  RxString? enterDate;
-  List<RxString>? phones;
+  RxDouble? payedAmount;
+  RxDouble? remainAmount;
+  RxString? year;
+  RxString? month;
+  RxString? state;
   RxString? deletedAt;
   RxString? createdAt;
   RxString? updatedAt;
 
   RentPayment({
     required this.id,
-    this.name,
-    this.rent,
-    this.jobDomain,
-    this.enterDate,
-    this.phones,
+    this.year,
+    this.month,
+    this.state,
+    this.payedAmount,
+    this.remainAmount,
     this.deletedAt,
     this.createdAt,
     this.updatedAt,
@@ -29,12 +29,10 @@ class RentPayment {
     return RentPayment(
 
       id: RxInt(json['id'] ?? 0),
-      name: RxString(json['name'] ?? "Unknown"),
-      rent: RxDouble(json['rent'].toDouble() ?? 0.0),
-      jobDomain: RxString(json['job_domain'] ?? "Unknown"),
-      enterDate: RxString(json['enter_date'] ?? "Unknown"),
-
-      // phones: List.generate(length, generator),
+      year: RxString(json['year'] ?? "Unknown"),
+      month: RxString(json['month']??"Unknown"),
+      remainAmount: RxDouble(json['remain_amount'].toDouble() ?? 0.0),
+      payedAmount: RxDouble(json['payed_amount'].toDouble() ?? 0.0),
       updatedAt: RxString(json['deleted_at'] ?? "Unknown"),
       createdAt: RxString(json['created_at'] ?? "Unknown"),
       deletedAt: RxString(json['updated_at'] ?? "Unknown"),
@@ -43,14 +41,15 @@ class RentPayment {
 
   Map<String, dynamic> toJson() {
     return {
-      'id': id.value,
-      'name': name?.value,
-      'rent': rent?.value,
-      'job_domain': jobDomain?.value,
-      'enter_date': enterDate?.value,
-      'deleted_at': deletedAt?.value,
-      'created_at': createdAt?.value,
-      'updated_at': updatedAt?.value,
+      "id": id.value,
+      "year": year?.value,
+      "month": month?.value,
+      "state": state?.value,
+      "PayedAmount": payedAmount?.value,
+      "remainAmount": remainAmount?.value,
+      "deleted_at": deletedAt?.value,
+      "created_at": createdAt?.value,
+      "updated_at": updatedAt?.value,
     };
 
   }

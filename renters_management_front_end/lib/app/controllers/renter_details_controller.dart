@@ -60,7 +60,7 @@ class RenterDetailsController extends GetxController {
         ));
       });
     }
-    selectedPhone.value = phones.value.first.value ?? "";
+    selectedPhone.value = (phones.value.isNotEmpty)?phones.value.first.value ??"":"";
   }
 
   void changeSelectedPhone(value){

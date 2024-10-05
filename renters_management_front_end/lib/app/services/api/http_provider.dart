@@ -10,7 +10,7 @@ class HttpProvider {
   static init({String baseUrl = "", String contentType = 'application/json'}) {
     _dio.options.baseUrl = baseUrl;
     _dio.options.contentType = contentType;
-    _dio.options.connectTimeout = const Duration(seconds: 5);
+    _dio.options.connectTimeout = const Duration(seconds: 15);
   }
 
   static Future<Response> get(String url, {dynamic data}) async {

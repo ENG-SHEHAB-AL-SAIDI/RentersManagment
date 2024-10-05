@@ -8,7 +8,7 @@ import 'api/api_end_points.dart';
 import 'api/http_provider.dart';
 
 class BuildServices {
-  static final List<Build> _builds = [];
+  static  List<Build> _builds = [];
 
   static Future<Result<List<Build>>> fetchBuilds(
       {bool hardFetch = false}) async {
@@ -17,6 +17,7 @@ class BuildServices {
     }
     Response response;
     try {
+      _builds = [];
       response = await HttpProvider.get(EndPoints.getBuilds);
       List result = response.data["Builds"];
 
@@ -45,9 +46,125 @@ class BuildServices {
     return Result(hasError: true,statusCode: 600, message: "some thing wrong");
   }
 
-
-
   static Future<Result<Build>> fetchBuild(int id,
+      {bool hardFetch = false}) async {
+    Build build0;
+    if (_builds.isNotEmpty && !hardFetch) {
+      for (Build build in _builds) {
+        if (build.id.value == id) {
+          return Result(data: build, hasError: false, message: "successful");
+        }
+      }
+    }
+
+    Response response;
+    try {
+      for (Build build in _builds) {
+        if (build.id.value == id) {
+          _builds.remove(build);
+        }
+      }
+
+      response = await HttpProvider.get("${EndPoints.getBuilds}/$id");
+      build0 = Build.fromJson(response.data);
+      _builds.add(build0);
+      return Result(
+          data: build0,
+          hasError: false,
+          statusCode: response.statusCode,
+          message: "successful");
+    } on DioException catch (error) {
+      if (error.response != null) {
+        return Result(
+            hasError: true,
+            statusCode: error.response?.statusCode,
+            message: error.message);
+      }
+      return Result(hasError: true, message: error.message);
+    }catch(error){
+      if (kDebugMode) {
+        print(error.toString());
+      }
+    }
+    return Result(hasError: true,statusCode: 600, message: "some thing wrong");
+  }
+
+
+  static Future<Result<Build>> storeBuild(int id,
+      {bool hardFetch = false}) async {
+    Build build0;
+    if (_builds.isNotEmpty && !hardFetch) {
+      for (Build build in _builds) {
+        if (build.id.value == id) {
+          return Result(data: build, hasError: false, message: "successful");
+        }
+      }
+    }
+
+    Response response;
+    try {
+      response = await HttpProvider.get("${EndPoints.getBuilds}/$id");
+      build0 = Build.fromJson(response.data);
+      _builds.add(build0);
+      return Result(
+          data: build0,
+          hasError: false,
+          statusCode: response.statusCode,
+          message: "successful");
+    } on DioException catch (error) {
+      if (error.response != null) {
+        return Result(
+            hasError: true,
+            statusCode: error.response?.statusCode,
+            message: error.message);
+      }
+      return Result(hasError: true, message: error.message);
+    }catch(error){
+      if (kDebugMode) {
+        print(error.toString());
+      }
+    }
+    return Result(hasError: true,statusCode: 600, message: "some thing wrong");
+  }
+
+  static Future<Result<Build>> updateBuild(int id,
+      {bool hardFetch = false}) async {
+    Build build0;
+    if (_builds.isNotEmpty && !hardFetch) {
+      for (Build build in _builds) {
+        if (build.id.value == id) {
+          return Result(data: build, hasError: false, message: "successful");
+        }
+      }
+    }
+
+    Response response;
+    try {
+      response = await HttpProvider.get("${EndPoints.getBuilds}/$id");
+      build0 = Build.fromJson(response.data);
+      _builds.add(build0);
+      return Result(
+          data: build0,
+          hasError: false,
+          statusCode: response.statusCode,
+          message: "successful");
+    } on DioException catch (error) {
+      if (error.response != null) {
+        return Result(
+            hasError: true,
+            statusCode: error.response?.statusCode,
+            message: error.message);
+      }
+      return Result(hasError: true, message: error.message);
+    }catch(error){
+      if (kDebugMode) {
+        print(error.toString());
+      }
+    }
+    return Result(hasError: true,statusCode: 600, message: "some thing wrong");
+  }
+
+  static Future<Result<Build>> deleteBuild(int id,
       {bool hardFetch = false}) async {
     Build build0;
     if (_builds.isNotEmpty && !hardFetch) {

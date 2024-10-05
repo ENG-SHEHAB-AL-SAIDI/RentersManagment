@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:get/get.dart';
 import 'package:get/get_rx/get_rx.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
@@ -6,7 +8,7 @@ import 'package:renters_management_front_end/app/models/renter_model.dart';
 class Build {
   RxInt id;
   RxInt? numRenters;
-  RxInt? totalRent;
+  RxDouble? totalRent;
   RxString? name;
   RxString? city;
   RxString? address;
@@ -39,7 +41,7 @@ class Build {
     return Build(
       id: RxInt(json['id'] ?? 0),
       numRenters: RxInt(json['renters_count'] ?? 0),
-      totalRent: RxInt(json['total_rent']),
+      totalRent: RxDouble( double.parse(json['total_rent'].toStringAsFixed(5))),
       name: RxString(json['name'] ?? "Unknown"),
       city: RxString(json['city'] ?? "Unknown"),
       renters: renters,

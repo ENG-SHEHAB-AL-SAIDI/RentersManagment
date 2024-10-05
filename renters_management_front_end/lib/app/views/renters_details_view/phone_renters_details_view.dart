@@ -65,16 +65,12 @@ class PhoneRentersDetailsView extends GetView<RenterDetailsController> {
                                       ],
                                     ),
                                     Obx(() => Row(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
                                           mainAxisAlignment:
                                               MainAxisAlignment.spaceBetween,
                                           children: [
                                             Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.start,
                                               children: [
-                                                SecText("Phone:",
+                                                SecText("Phones:",
                                                     textColor: AppColors
                                                         .mainTextColor,fontWeight: FontWeight.bold,),
                                                 const SizedBox(width: 10,),
@@ -83,8 +79,7 @@ class PhoneRentersDetailsView extends GetView<RenterDetailsController> {
                                                       .selectedPhone.value,
                                                   elevation: 6,
                                                   icon: Icon(
-                                                      Icons
-                                                          .arrow_drop_down_sharp,
+                                                      Icons.arrow_drop_down_rounded,
                                                       color: AppColors
                                                           .mainIconColor),
                                                   underline: const SizedBox(),

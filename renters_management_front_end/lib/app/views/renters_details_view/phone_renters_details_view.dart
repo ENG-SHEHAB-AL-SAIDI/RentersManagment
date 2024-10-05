@@ -165,28 +165,26 @@ class PhoneRentersDetailsView extends GetView<RenterDetailsController> {
                                               ],
                                             ),
                                           ],
-                                          Row(
+                                          Obx(()=>Row(
                                             children: [
                                               SecText("Year:    ",
                                                   textColor:
-                                                      AppColors.mainTextColor),
+                                                  AppColors.mainTextColor),
                                               DropdownButton<String>(
-                                                value: "selectYear",
+                                                value: controller.selectedYear.value,
                                                 elevation: 6,
                                                 icon: Icon(
                                                     Icons.arrow_drop_down_sharp,
                                                     color: AppColors
                                                         .mainIconColor),
-                                                underline: const Divider(),
+                                                underline: const SizedBox(),
                                                 dropdownColor:
-                                                    AppColors.mainIconColor,
-                                                onChanged: (dynamic) {
-                                                  if (dynamic != null) {}
-                                                },
-                                                items: year,
+                                                AppColors.inverseCardColor,
+                                                onChanged: controller.changeSelectedYear,
+                                                items: controller.years.value,
                                               ),
                                             ],
-                                          ),
+                                          ),),
                                         ],
                                       ),
                                     )

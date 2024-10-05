@@ -37,13 +37,14 @@ class Renter {
       }
     }
 
-    // for (var key in json["grouped_rent_payments"].keys) {
-    //   List<RentPayment> rentPaymentsItems = [];
-    //   for(var item in json["grouped_rent_payments"][key]){
-    //     rentPaymentsItems.add(RentPayment.fromJson(item));
-    //   }
-    //   rentPayments.assign(key, rentPaymentsItems);
-    // }
+    for (var key in json["grouped_rent_payments"].keys) {
+      List<RentPayment> rentPaymentsItems = [];
+      for(var item in json["grouped_rent_payments"][key]){
+        rentPaymentsItems.add(RentPayment.fromJson(item));
+      }
+      rentPayments[key] = rentPaymentsItems;
+
+    }
     return Renter(
       id: RxInt(json['id'] ?? 0),
       name: RxString(json['name'] ?? "Unknown"),
@@ -52,7 +53,7 @@ class Renter {
       enterDate: RxString(json['enter_date'] ?? "Unknown"),
       phones: List<RxString>.generate(
           phones.length, (i) => RxString(phones[i]["phone"].toString())),
-      // rentPayments: ,
+      rentPayments: rentPayments,
       updatedAt: RxString(json['deleted_at'] ?? "Unknown"),
       createdAt: RxString(json['created_at'] ?? "Unknown"),
       deletedAt: RxString(json['updated_at'] ?? "Unknown"),

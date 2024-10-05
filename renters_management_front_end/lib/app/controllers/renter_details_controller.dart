@@ -15,7 +15,9 @@ class RenterDetailsController extends GetxController {
   Renter? renter;
   RxBool loadingState = true.obs;
   RxString selectedPhone = ''.obs;
+  RxString selectedYear = ''.obs;
   Rx<List<DropdownMenuItem<String>>> phones = Rx([]);
+  Rx<List<DropdownMenuItem<String>>> years = Rx([]);
 
   @override
   void onClose() {
@@ -35,6 +37,7 @@ class RenterDetailsController extends GetxController {
           "fetch Renters field please check your connection", Icons.warning));
     }
     getPhonesDropItemList();
+    getYearsDropItemList();
     loadingState.value = false;
     super.onInit();
   }
@@ -60,46 +63,44 @@ class RenterDetailsController extends GetxController {
         ));
       });
     }
-    selectedPhone.value = (phones.value.isNotEmpty)?phones.value.first.value ??"":"";
+    phones.value.add(DropdownMenuItem<String>(
+      value: "",
+      child: Icon(Icons.add, color: AppColors.mainIconColor),
+    ));
+    selectedPhone.value =
+        (phones.value.isNotEmpty) ? phones.value.first.value ?? "" : "";
   }
 
-  void changeSelectedPhone(value){
-    selectedPhone.value = value;
+  void changeSelectedPhone(value) {
+    if (value != "") {
+      selectedPhone.value = value;
+    } else {
+      print("tab");
+    }
   }
-
 
   void getYearsDropItemList() {
-    if (renter != null) {
-      renter!.phones?.forEach((phone) {
-        phones.value.add(DropdownMenuItem<String>(
-          value: phone.value,
-          child: SecText(phone.value, textColor: AppColors.mainTextColor),
+    if (renter != null && renter!.rentPayments?.keys != null) {
+      renter!.rentPayments?.keys.forEach((year) {
+        years.value.add(DropdownMenuItem<String>(
+          value: year,
+          child: SecText(year, textColor: AppColors.mainTextColor),
         ));
       });
     }
-    selectedPhone.value = phones.value.first.value ?? "";
+    years.value.add(DropdownMenuItem<String>(
+      value: "",
+      child: Icon(Icons.add, color: AppColors.mainIconColor),
+    ));
+    selectedYear.value =
+        (years.value.isNotEmpty) ? years.value.first.value ?? "" : "";
   }
 
-  void changeSelectedYear(value){
-    selectedPhone.value = value;
+  void changeSelectedYear(value) {
+    if (value != "") {
+      selectedYear.value = value;
+    } else {
+      print("tab");
+    }
   }
-// void setYearlist() {
-//   if (widget.name.isNotEmpty) {
-//     year = [];
-//     DataCollection.rentersInfo[widget.name]!.year!.keys.map((element) {
-//       year.add(DropdownMenuItem<String>(
-//           value: element.toString(),
-//           child: SecText(element.toString(),
-//               color: AppColors.mainTextColor)));
-//     }).toList();
-//     if (year.isNotEmpty) {
-//       if (widget.selectedYear != "") {
-//         print(year[1].value);
-//         selectYear = widget.selectedYear;
-//       } else
-//         selectYear = year[0].value;
-//     } else
-//       selectYear = null;
-//   }
-// }
 }

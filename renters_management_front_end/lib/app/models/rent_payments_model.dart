@@ -31,6 +31,7 @@ class RentPayment {
       id: RxInt(json['id'] ?? 0),
       year: RxString(json['year'] ?? "Unknown"),
       month: RxString(json['month']??"Unknown"),
+      state: RxString(json["state"]),
       remainAmount: RxDouble(json['remain_amount'].toDouble() ?? 0.0),
       payedAmount: RxDouble(json['payed_amount'].toDouble() ?? 0.0),
       updatedAt: RxString(json['deleted_at'] ?? "Unknown"),

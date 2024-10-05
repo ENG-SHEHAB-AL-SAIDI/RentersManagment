@@ -14,8 +14,16 @@ class BuildController extends Controller
     {
 
         $builds = auth()->guard('api')->user()->builds()->withCount('renters')->get();
+        $builds = $builds->load('renters', 'renters.renterPhones');
+        $builds->each(function ($build) {
+            $build->renters->each(function ($renter) {
+                $groupedRentPayments = $renter->rentPayments->groupBy('year');
+                $renter->grouped_rent_payments = $groupedRentPayments;
+            });
+        });
+
         return response()->json([
-            'Builds' => $builds->load('renters','renters.renterPhones','renters.RentPayments')
+            'Builds' => $builds
         ], 200);
     }
 
@@ -29,8 +37,8 @@ class BuildController extends Controller
 
         $build = auth()->guard('api')->user()->builds()->create($data);
         return response()->json([
-                'message' => 'store successful',
-                'Build' => $build->load('renters','renters.renterPhones','renters.RentPayments')
+            'message' => 'store successful',
+            'Build' => $build->load('renters', 'renters.renterPhones', 'renters.RentPayments')
         ], 200);
     }
 
@@ -43,7 +51,7 @@ class BuildController extends Controller
 
         if (auth()->guard('api')->user()->id === $build->user_id) {
             return response()->json([
-                'Build' => $build->load('renters','renters.renterPhones','renters.RentPayments')
+                'Build' => $build->load('renters', 'renters.renterPhones', 'renters.RentPayments')
             ], 200);
         }
 
@@ -63,21 +71,21 @@ class BuildController extends Controller
         $build->update($request->all());
         return response()->json([
             'message' => 'update successful',
-            'Build' => $build->load('renters','renters.renterPhones','renters.RentPayments'),
+            'Build' => $build->load('renters', 'renters.renterPhones', 'renters.RentPayments'),
         ], 200);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(BuildRequst $request,string $id)
+    public function destroy(BuildRequst $request, string $id)
     {
-        if($request->authorize()){
+        if ($request->authorize()) {
             $build = Build::withCount('renters')->find($id);
             $build->delete();
             return response()->json([
                 'message' => 'delete successful',
-                'Build' => $build->load('renters','renters.renterPhones','renters.RentPayments')
+                'Build' => $build->load('renters', 'renters.renterPhones', 'renters.RentPayments')
             ], 200);
         }
         return response()->json([

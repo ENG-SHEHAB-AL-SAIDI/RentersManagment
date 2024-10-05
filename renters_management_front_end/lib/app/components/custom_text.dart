@@ -44,10 +44,11 @@ class SecText extends MainText {
     super.text, {
     super.key,
     Color? textColor,
-    double? fontSize,
-    FontWeight? fontWeight,
+    super.height,
+    super.fontSize = 14,
+    super.fontWeight = FontWeight.normal,
+    super.textAlign,
   }) : super(
-            textColor: textColor ?? AppColors.secTextColor,
-            fontSize: fontSize ?? 14,
-            fontWeight: fontWeight ?? FontWeight.normal);
+          textColor: textColor ?? AppColors.secTextColor,
+        );
 }

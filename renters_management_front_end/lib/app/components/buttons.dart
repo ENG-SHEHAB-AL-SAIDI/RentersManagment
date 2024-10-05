@@ -8,18 +8,19 @@ class CustomButton extends StatelessWidget {
   CustomButton({
     super.key,
     required this.onPress,
+    Color? color,
+    Color? iconColor,
     this.size ,
     this.text = "",
-    this.textColor,
+    Color? textColor,
     this.icon,
-    this.iconColor,
     this.pressedColor,
     this.disableColor,
     this.borderRadius = 10,
   }) {
-    textColor = AppColors.mainTextColor;
-    iconColor = (iconColor!=null)?iconColor:textColor;
-    color = AppColors.buttonColors.color;
+    this.textColor = (textColor!= null)?textColor:AppColors.mainTextColor;
+    this.iconColor = (iconColor!=null)?this.iconColor:textColor;
+    this.color = (color!=null)?color:AppColors.buttonColors.color;
     pressedColor = AppColors.buttonColors.pressedColor;
     disableColor = AppColors.buttonColors.disableColor;
   }

@@ -11,7 +11,7 @@ import '../models/renter_model.dart';
 class RenterListController extends GetxController {
   TextEditingController searchField = TextEditingController();
   int buildId = -1;
-  Rx<List<Renter>?> renters = Rx([]);
+  Rx<List<Renter>> renters = Rx([]);
 
   @override
   void onClose() {
@@ -23,7 +23,8 @@ class RenterListController extends GetxController {
     buildId = Get.arguments['buildId'];
     Result<List<Renter>> res = await RenterServices.fetchRenters(buildId);
     if (res.statusCode == 200 && res.data != null) {
-      renters.value = res.data;
+      renters.value = res.data!;
+      print(renters.value.length);
     }else{
       Get.dialog(PopUpAlertCard("fetch Renters field please check your connection", Icons.warning));
     }
@@ -34,7 +35,7 @@ class RenterListController extends GetxController {
   Future<void> refresh()async{
     Result<List<Renter>> res = await RenterServices.fetchRenters(buildId,hardFetch: true);
     if (res.statusCode == 200 && res.data != null) {
-      renters.value = res.data;
+      renters.value = res.data!;
     }else{
       Get.dialog(PopUpAlertCard("fetch Renters field please check your connection", Icons.warning));
     }
@@ -45,7 +46,7 @@ class RenterListController extends GetxController {
     if(text == null || text == ''){
       Result<List<Renter>> res = await RenterServices.fetchRenters(buildId);
       if (res.statusCode == 200 && res.data != null) {
-        renters.value = res.data;
+        renters.value = res.data!;
       }else{
         Get.dialog(PopUpAlertCard("fetch Renters field please check your connection", Icons.warning));
       }

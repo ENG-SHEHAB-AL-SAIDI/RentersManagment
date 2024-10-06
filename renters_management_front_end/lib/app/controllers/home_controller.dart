@@ -73,7 +73,7 @@ class HomeController extends GetxController {
   }
 
   void add() async{
-    Map<String,dynamic>? result = await Get.dialog(PopUpIAddBuildCard());
+    Map<String,dynamic>? result = await Get.dialog(PopUpIAddAndUpdateBuildCard());
     if(result!=null){
       Result res = await BuildServices.storeBuild(data: result);
       if (res.statusCode == 200) {
@@ -91,7 +91,7 @@ class HomeController extends GetxController {
 
   void edit(int id) async{
     Build build = builds.value.firstWhere((element)=>element.id.value == id);
-    Map<String,dynamic>? result = await Get.dialog(PopUpIAddBuildCard(mode: "Update",data: {
+    Map<String,dynamic>? result = await Get.dialog(PopUpIAddAndUpdateBuildCard(mode: "Update",data: {
       "buildName":build.name?.value??"",
       "city":build.city?.value??"",
       "address":build.address?.value??"",

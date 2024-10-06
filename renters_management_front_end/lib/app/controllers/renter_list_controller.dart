@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:renters_management_front_end/app/components/pop_up_cards/add_and_update_renter_card.dart';
 import 'package:renters_management_front_end/app/models/result.dart';
 import 'package:renters_management_front_end/app/services/renter_services.dart';
 
+import '../components/pop_up_cards/add_and_update_build_card.dart';
 import '../components/pop_up_cards/alert_message_card.dart';
 import '../components/pop_up_cards/delete_confirmation_message_card.dart';
 import '../models/renter_model.dart';
@@ -67,6 +69,11 @@ class RenterListController extends GetxController {
   void delete() {
     Get.dialog(PopUpMessageCard(
         "did you sure want delete this renter that will delete all data relative to it."));
+  }
+
+  void add() async{
+    Map<String,dynamic> renter = await Get.dialog(PopUpIAddAndUpdateRenterCard());
+
   }
 
   void changeLang(String lang) {

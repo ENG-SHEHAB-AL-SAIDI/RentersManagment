@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Build;
 use Illuminate\Foundation\Http\FormRequest;
 
 class RenterRequst extends FormRequest
@@ -11,7 +12,8 @@ class RenterRequst extends FormRequest
      */
     public function authorize(): bool
     {
-        return true;
+        $id = request()->route('builds');
+        return auth()->guard('api')->user()->id === Build::find($id)->user_id; 
     }
 
     /**

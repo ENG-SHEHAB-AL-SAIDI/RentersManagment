@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Requests;
+
 use App\Models\Build;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -11,13 +12,17 @@ class BuildRequst extends FormRequest
      */
     public function authorize(): bool
     {
-        if( request()->isMethod('PUT') || request()->isMethod('PATCH') || request()->isMethod('DELETE') ){
-            $id = request()->route('build');
-        return auth()->guard('api')->user()->id === Build::find($id)->user_id;
+        $userId = $this->route('user');
+        if (!$userId ) {
+            throw new \Exception('User ID not found in the request.');
         }
+        $buildId = $this->route('build');
+        $authenticatedUser = auth()->guard('api')->user();
 
-        return true;
-
+        if(!$buildId){
+            return $authenticatedUser->id === $userId;
+        }
+        return $authenticatedUser->id === $userId && $authenticatedUser->builds()->where('id', $buildId)->exists();
     }
 
     /**
@@ -27,13 +32,15 @@ class BuildRequst extends FormRequest
      */
     public function rules(): array
     {
-        if(request()->isMethod('DELETE') ){
+        if ($this->isMethod('get') || $this->routeIs('builds.show') || $this->isMethod('DELETE') || $this->routeIs('builds.destroy')) {
+            // No validation for GET (show) requests
             return [];
         }
+
         return [
-            'name'=>'required|max:50',
-            'city'=>'max:50',
-            'address'=>'max:50',
+            'name' => 'required|max:50',
+            'city' => 'sometimes|max:50',
+            'address' => 'sometimes|max:50',
         ];
     }
 }

@@ -4,6 +4,8 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BuildController;
 use App\Http\Controllers\CombinDataController;
 use App\Http\Controllers\RenterController;
+use App\Http\Controllers\RentPaymentController;
+use App\Models\RentPayment;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware(['api'])->prefix('auth')->group(
@@ -15,9 +17,12 @@ function ($router) {
     Route::post('/me', [AuthController::class, 'me'])->name('me')->middleware('auth:api');
 });
 
-Route::middleware(['api','auth:api'])->prefix('user')->group(
+Route::middleware(['api','auth:api'])->group(
 function () {
-    Route::apiResource('builds',BuildController::class);
+    Route::apiResource('user.builds',BuildController::class);
     Route::apiResource('builds.renters',RenterController::class);
-    Route::get('getAllData',[CombinDataController::class, 'getAllUserData']);
+    Route::apiResource('renters.rent_payments',RentPaymentController::class);
+
+
+    // Route::get('getAllData',[CombinDataController::class, 'getAllUserData']);
 });

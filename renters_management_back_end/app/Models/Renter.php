@@ -46,10 +46,7 @@ class Renter extends Model
         return $this->hasMany(RentersPhone::class);
     }
 
-    public function GroupedRentPayments()
-    {
-        return $this->RentPayments()->groupBy('year');
-    }
+    
 
     public function rentPayments() :HasMany
     {

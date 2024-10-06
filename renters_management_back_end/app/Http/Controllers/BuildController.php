@@ -12,9 +12,8 @@ class BuildController extends Controller
      */
     public function index()
     {
+        $builds = auth()->guard('api')->user()->builds()->with(['renters', 'renters.renterPhones'])->withCount('renters')->get();
 
-        $builds = auth()->guard('api')->user()->builds()->withCount('renters')->get();
-        $builds = $builds->load('renters', 'renters.renterPhones');
         $builds->each(function ($build) {
             $build->renters->each(function ($renter) {
                 $groupedRentPayments = $renter->rentPayments->groupBy('year');
@@ -36,36 +35,38 @@ class BuildController extends Controller
         $request->validated();
         $data = $request->except('token');
 
-        $build = auth()->guard('api')->user()->builds()->create($data);
+        $build = auth()->guard('api')->user()->builds()->with('renters', 'renters.renterPhones')->create($data);
+        $build->renters->each(function ($renter) {
+            $groupedRentPayments = $renter->rentPayments->groupBy('year');
+            $renter->unsetRelation('rentPayments');
+            $renter->grouped_rent_payments = $groupedRentPayments;
+        });
         return response()->json([
             'message' => 'store successful',
-            'Build' => $build->load('renters', 'renters.renterPhones', 'renters.RentPayments')
+            'Build' => $build
         ], 200);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(int $id)
+    public function show(BuildRequst $request, int $id)
     {
+        $request->authorize();
         $build = Build::withCount('renters')->find($id);
 
-        if (auth()->guard('api')->user()->id === $build->user_id) {
-                $build->renters->each(function ($renter) {
-                    $groupedRentPayments = $renter->rentPayments->groupBy('year');
-                    $renter->unsetRelation('rentPayments');
-                    $renter->grouped_rent_payments = $groupedRentPayments;
-                });
-            return response()->json([
-                'Build' => $build,
-            ], 200);
-        }
 
+        $build->renters->each(function ($renter) {
+            $groupedRentPayments = $renter->rentPayments->groupBy('year');
+            $renter->unsetRelation('rentPayments');
+            $renter->grouped_rent_payments = $groupedRentPayments;
+        });
         return response()->json([
-            'message' => 'UnAuthorize access',
-            'data' => null
-        ], 401);
+            'Build' => $build,
+        ], 200);
     }
+
+
 
     /**
      * Update the specified resource in storage.
@@ -74,10 +75,15 @@ class BuildController extends Controller
     {
         $request->validated();
         $build = Build::withCount('renters')->find($id);
+        $build->renters->each(function ($renter) {
+            $groupedRentPayments = $renter->rentPayments->groupBy('year');
+            $renter->unsetRelation('rentPayments');
+            $renter->grouped_rent_payments = $groupedRentPayments;
+        });
         $build->update($request->all());
         return response()->json([
             'message' => 'update successful',
-            'Build' => $build->load('renters', 'renters.renterPhones', 'renters.RentPayments'),
+            'Build' => $build,
         ], 200);
     }
 
@@ -86,17 +92,12 @@ class BuildController extends Controller
      */
     public function destroy(BuildRequst $request, string $id)
     {
-        if ($request->authorize()) {
-            $build = Build::withCount('renters')->find($id);
-            $build->delete();
-            return response()->json([
-                'message' => 'delete successful',
-                'Build' => $build->load('renters', 'renters.renterPhones', 'renters.RentPayments')
-            ], 200);
-        }
+
+        $build = Build::withCount('renters')->find($id);
+        $build->forceDelete();
         return response()->json([
-            'message' => 'UnAuthorize access',
-            'data' => null
-        ], 401);
+            'message' => 'delete successful',
+            // 'Build' => $build->load('renters', 'renters.renterPhones', 'renters.RentPayments')
+        ], 200);
     }
 }

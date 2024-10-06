@@ -7,8 +7,11 @@ import '../../globals.dart';
 import '../custom_text.dart';
 
 class PopUpIAddBuildCard extends StatelessWidget {
-  const PopUpIAddBuildCard({super.key});
+   PopUpIAddBuildCard({super.key});
 
+  TextEditingController buildNameController = TextEditingController();
+  TextEditingController cityController = TextEditingController();
+  TextEditingController addressController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Center(
@@ -58,6 +61,7 @@ class PopUpIAddBuildCard extends StatelessWidget {
                               ],
                             ),
                             CustomTextFormField(
+                              controller: buildNameController,
                               width: (Get.width-12)*0.46,
                             ),
                           ],
@@ -77,6 +81,7 @@ class PopUpIAddBuildCard extends StatelessWidget {
                               SecText("City"),
                             ],),
                             CustomTextFormField(
+                              controller: cityController,
                               width: (Get.width-12)*0.46,
                             ),
                           ],
@@ -98,6 +103,7 @@ class PopUpIAddBuildCard extends StatelessWidget {
                               ],
                             ),
                             CustomTextFormField(
+                              controller: addressController,
                               width: (Get.width-12)*0.46,
                             ),
                           ],
@@ -106,11 +112,11 @@ class PopUpIAddBuildCard extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
                             CustomButton(
-                              onPress: update,
+                              onPress: add,
                               text: "Add",
                             ),
                             CustomButton(
-                              onPress: () => Get.back(),
+                              onPress: () => Get.back(result: null),
                               text: "Close",
                             ),
                           ],
@@ -123,5 +129,12 @@ class PopUpIAddBuildCard extends StatelessWidget {
     );
   }
 
-  void update() {}
+  void add(){
+    Map<String,dynamic> jsData = {
+      "name":buildNameController.text,
+      "city":cityController.text,
+      "address":addressController.text,
+    };
+    Get.back(result: jsData);
+  }
 }

@@ -41,7 +41,7 @@ class PhoneRentersListView extends GetView<RenterListController> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Get.dialog(const PopUpIAddBuildCard());
+          Get.dialog(PopUpIAddBuildCard());
         },
         backgroundColor: AppColors.inverseCardColor,
         child: Icon(

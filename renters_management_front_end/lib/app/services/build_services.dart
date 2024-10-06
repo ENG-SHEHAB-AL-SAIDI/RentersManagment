@@ -8,12 +8,16 @@ import 'api/api_end_points.dart';
 import 'api/http_provider.dart';
 
 class BuildServices {
-  static  List<Build> _builds = [];
+  static List<Build> _builds = [];
 
   static Future<Result<List<Build>>> fetchBuilds(
       {bool hardFetch = false}) async {
     if (_builds.isNotEmpty && !hardFetch) {
-      return Result(data: _builds, hasError: false, message: "successful");
+      return Result(
+          data: _builds,
+          statusCode: 200,
+          hasError: false,
+          message: "successful");
     }
     Response response;
     try {
@@ -29,7 +33,6 @@ class BuildServices {
           hasError: false,
           statusCode: response.statusCode,
           message: "successful");
-
     } on DioException catch (error) {
       if (error.response != null) {
         return Result(
@@ -37,13 +40,12 @@ class BuildServices {
             statusCode: error.response?.statusCode,
             message: error.response?.data);
       }
-    }
-    catch(error){
+    } catch (error) {
       if (kDebugMode) {
         print(error.toString());
       }
     }
-    return Result(hasError: true,statusCode: 600, message: "some thing wrong");
+    return Result(hasError: true, statusCode: 600, message: "some thing wrong");
   }
 
   static Future<Result<Build>> fetchBuild(int id,
@@ -52,7 +54,11 @@ class BuildServices {
     if (_builds.isNotEmpty && !hardFetch) {
       for (Build build in _builds) {
         if (build.id.value == id) {
-          return Result(data: build, hasError: false, message: "successful");
+          return Result(
+              data: build,
+              statusCode: 200,
+              hasError: false,
+              message: "successful");
         }
       }
     }
@@ -81,36 +87,30 @@ class BuildServices {
             message: error.message);
       }
       return Result(hasError: true, message: error.message);
-    }catch(error){
+    } catch (error) {
       if (kDebugMode) {
         print(error.toString());
       }
     }
-    return Result(hasError: true,statusCode: 600, message: "some thing wrong");
+    return Result(hasError: true, statusCode: 600, message: "some thing wrong");
   }
 
-
-  static Future<Result<Build>> storeBuild(int id,
-      {bool hardFetch = false}) async {
-    Build build0;
-    if (_builds.isNotEmpty && !hardFetch) {
-      for (Build build in _builds) {
-        if (build.id.value == id) {
-          return Result(data: build, hasError: false, message: "successful");
-        }
-      }
-    }
-
+  static Future<Result<Build>> storeBuild(
+      {required Map<String, dynamic> data, bool hardFetch = false}) async {
     Response response;
     try {
-      response = await HttpProvider.get("${EndPoints.getBuilds}/$id");
-      build0 = Build.fromJson(response.data);
-      _builds.add(build0);
-      return Result(
-          data: build0,
-          hasError: false,
-          statusCode: response.statusCode,
-          message: "successful");
+      response =
+          await HttpProvider.post(EndPoints.getBuilds, data: data);
+      if (response.statusCode == 200) {
+        Build build0 = Build.fromJson(response.data["Build"]);
+        _builds.add(build0);
+
+        return Result(
+            data: build0,
+            statusCode: response.statusCode,
+            hasError: false,
+            message: "successful");
+      }
     } on DioException catch (error) {
       if (error.response != null) {
         return Result(
@@ -119,12 +119,12 @@ class BuildServices {
             message: error.message);
       }
       return Result(hasError: true, message: error.message);
-    }catch(error){
+    } catch (error) {
       if (kDebugMode) {
         print(error.toString());
       }
     }
-    return Result(hasError: true,statusCode: 600, message: "some thing wrong");
+    return Result(hasError: true, statusCode: 600, message: "some thing wrong");
   }
 
   static Future<Result<Build>> updateBuild(int id,
@@ -156,35 +156,26 @@ class BuildServices {
             message: error.message);
       }
       return Result(hasError: true, message: error.message);
-    }catch(error){
+    } catch (error) {
       if (kDebugMode) {
         print(error.toString());
       }
     }
-    return Result(hasError: true,statusCode: 600, message: "some thing wrong");
+    return Result(hasError: true, statusCode: 600, message: "some thing wrong");
   }
 
   static Future<Result<Build>> deleteBuild(int id,
       {bool hardFetch = false}) async {
-    Build build0;
-    if (_builds.isNotEmpty && !hardFetch) {
-      for (Build build in _builds) {
-        if (build.id.value == id) {
-          return Result(data: build, hasError: false, message: "successful");
-        }
-      }
-    }
-
     Response response;
     try {
-      response = await HttpProvider.get("${EndPoints.getBuilds}/$id");
-      build0 = Build.fromJson(response.data);
-      _builds.add(build0);
-      return Result(
-          data: build0,
-          hasError: false,
-          statusCode: response.statusCode,
-          message: "successful");
+      response = await HttpProvider.delete("${EndPoints.getBuilds}/$id");
+      if (response.statusCode == 200) {
+        _builds.removeWhere((element) => element.id.value == id);
+        return Result(
+            hasError: false,
+            statusCode: response.statusCode,
+            message: "successful");
+      }
     } on DioException catch (error) {
       if (error.response != null) {
         return Result(
@@ -193,12 +184,12 @@ class BuildServices {
             message: error.message);
       }
       return Result(hasError: true, message: error.message);
-    }catch(error){
+    } catch (error) {
       if (kDebugMode) {
         print(error.toString());
       }
     }
-    return Result(hasError: true,statusCode: 600, message: "some thing wrong");
+    return Result(hasError: true, statusCode: 600, message: "some thing wrong");
   }
 
   static void setBuildRenters(int buildId, List<Renter> renters) {

@@ -66,6 +66,33 @@ class HttpProvider {
     }
   }
 
+  static Future<Response> delete(String url, {dynamic data}) async {
+    try {
+      final response = await _dio.delete(url, data: data);
+      return response;
+    } on DioException catch (error) {
+      // Handle the error
+      if (error.response != null) {
+        try {
+          if (error.response?.statusCode == 405) {
+            await _refresh();
+            final response = await _dio.post(url, data: data);
+            return response;
+
+          }
+        } on DioException catch (error) {
+          if (kDebugMode) {
+            print(error.message);
+          }
+        }
+      }
+      if (kDebugMode) {
+        print(error);
+      }
+      rethrow;
+    }
+  }
+
   static Future<int> _refresh() async {
     try {
       Response response = await _dio.post(EndPoints.refresh);

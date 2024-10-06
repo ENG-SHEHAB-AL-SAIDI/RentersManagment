@@ -44,7 +44,6 @@ class RentPaymentCard extends StatelessWidget {
     Color color1;
     Color color2;
     Color textColor;
-    double rightPadding = 70;
     if (type == 0) {
       color1 = AppColors.mainCardColor;
       color2 = AppColors.inverseCardColor;

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../components/custom_text.dart';
-import '../../components/pop_up_cards/add_build_card.dart';
+import '../../components/pop_up_cards/add_and_update_build_card.dart';
 import '../../components/text_field.dart';
 import '../../controllers/renter_list_controller.dart';
 import '../../globals.dart';

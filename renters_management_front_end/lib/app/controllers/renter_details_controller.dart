@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:renters_management_front_end/app/globals.dart';
@@ -75,7 +76,9 @@ class RenterDetailsController extends GetxController {
     if (value != "") {
       selectedPhone.value = value;
     } else {
-      print("tab");
+      if (kDebugMode) {
+        print("tab");
+      }
     }
   }
 
@@ -100,7 +103,9 @@ class RenterDetailsController extends GetxController {
     if (value != "") {
       selectedYear.value = value;
     } else {
-      print("tab");
+      if (kDebugMode) {
+        print("tab");
+      }
     }
   }
 }

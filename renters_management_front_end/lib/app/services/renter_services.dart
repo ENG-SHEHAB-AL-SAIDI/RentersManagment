@@ -10,7 +10,7 @@ class RenterServices {
 
 
   static Future<Result<List<Renter>>> fetchRenters(int buildId,{bool hardFetch = false}) async {
-    Result<Build> res = await BuildServices.fetchBuild(buildId);
+    Result<Build> res = await BuildServices.fetchBuild(id: buildId);
     if (res.data != null && res.data?.renters != null && !hardFetch) {
       return Result(data: res.data!.renters, statusCode: 200,hasError: false, message: "successful");
     }
@@ -41,7 +41,7 @@ class RenterServices {
   }
 
   static Future<Result<Renter>> fetchRenter(int buildId, int renterId,{bool hardFetch = false}) async {
-    Result<Build> res = await BuildServices.fetchBuild(buildId);
+    Result<Build> res = await BuildServices.fetchBuild(id: buildId);
     if (res.data != null && res.data?.renters != null && !hardFetch) {
       for(Renter renter in res.data?.renters??[]){
         if(renter.id.value == renterId){

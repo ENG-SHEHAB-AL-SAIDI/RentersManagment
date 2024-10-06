@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:get/get.dart' as get_x;
 import 'package:renters_management_front_end/app/models/result.dart';
 import '../models/user_model.dart';
@@ -39,7 +40,9 @@ class UserServices {
       }
     } on DioException catch (error) {
       if (error.response != null) {
-        print(error);
+        if (kDebugMode) {
+          print(error);
+        }
       }
     }
   }

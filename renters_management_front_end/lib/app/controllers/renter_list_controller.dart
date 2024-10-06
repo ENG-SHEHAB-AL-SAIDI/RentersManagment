@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:renters_management_front_end/app/models/result.dart';
@@ -24,7 +23,6 @@ class RenterListController extends GetxController {
     Result<List<Renter>> res = await RenterServices.fetchRenters(buildId);
     if (res.statusCode == 200 && res.data != null) {
       renters.value = res.data!;
-      print(renters.value.length);
     }else{
       Get.dialog(PopUpAlertCard("fetch Renters field please check your connection", Icons.warning));
     }
@@ -52,7 +50,7 @@ class RenterListController extends GetxController {
       }
     }else{
       List<Renter> matchRenters = [];
-      for(Renter item in renters.value??[]){
+      for(Renter item in renters.value){
         if(item.name?.contains(text)??false){
           matchRenters.add(item);
         }
@@ -63,7 +61,7 @@ class RenterListController extends GetxController {
   }
 
   void rentersDetailsRoute(int index) {
-    Get.toNamed("/rentersDetails", arguments: {'buildId':buildId, 'renterId':renters.value?[index].id.value});
+    Get.toNamed("/rentersDetails", arguments: {'buildId':buildId, 'renterId':renters.value[index].id.value});
   }
 
   void delete() {

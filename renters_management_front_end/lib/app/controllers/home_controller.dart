@@ -5,9 +5,8 @@ import 'package:renters_management_front_end/app/components/pop_up_cards/alert_m
 import 'package:renters_management_front_end/app/models/result.dart';
 import 'package:renters_management_front_end/app/services/build_services.dart';
 
-import '../components/pop_up_cards/add_build_card.dart';
+import '../components/pop_up_cards/add_and_update_build_card.dart';
 import '../components/pop_up_cards/delete_confirmation_message_card.dart';
-import '../components/pop_up_cards/update_build_card.dart';
 import '../models/build_model.dart';
 
 class HomeController extends GetxController {
@@ -88,15 +87,35 @@ class HomeController extends GetxController {
       }
     }
   }
-  void edit(int i) {
-    Get.dialog(const PopUpIUpdateBuildCard());
+
+
+  void edit(int id) async{
+    Build build = builds.value.firstWhere((element)=>element.id.value == id);
+    Map<String,dynamic>? result = await Get.dialog(PopUpIAddBuildCard(mode: "Update",data: {
+      "buildName":build.name?.value??"",
+      "city":build.city?.value??"",
+      "address":build.address?.value??"",
+
+    },));
+    if(result!=null){
+      Result res = await BuildServices.updateBuild(id: id,data: result);
+      if (res.statusCode == 200) {
+        if (res.data != null){
+          builds.refresh();
+        }
+      } else {
+        Get.dialog(PopUpAlertCard(
+            res.message??"error code:${res.statusCode}",
+            Icons.warning));
+      }
+    }
   }
 
   void delete(int id) async {
     bool res = await Get.dialog(PopUpMessageCard(
         "did you sure want delete this build that will delete all data relative to it."));
     if (res) {
-      Result res = await BuildServices.deleteBuild(id);
+      Result res = await BuildServices.deleteBuild(id: id);
       if (res.statusCode == 200) {
         builds.refresh();
       }else{

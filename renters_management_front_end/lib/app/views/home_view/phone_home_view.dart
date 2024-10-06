@@ -5,8 +5,6 @@ import 'package:get/get.dart';
 import 'package:renters_management_front_end/app/components/build_card.dart';
 import 'package:renters_management_front_end/app/components/custom_text.dart';
 import 'package:renters_management_front_end/app/globals.dart';
-
-import '../../components/pop_up_cards/add_build_card.dart';
 import '../../controllers/home_controller.dart';
 
 class PhoneHomeView extends GetView<HomeController> {

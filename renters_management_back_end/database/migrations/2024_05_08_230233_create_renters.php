@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name',50);
             $table->float('rent');
-            $table->string('job_domain',50)->nullable();
+            $table->string('job_domain',100)->nullable();
             $table->date('enter_date')->nullable();
             $table->softDeletes();
             $table->timestamps();

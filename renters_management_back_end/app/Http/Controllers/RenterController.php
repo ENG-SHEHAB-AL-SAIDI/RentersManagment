@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\RenterRequst;
 use App\Models\Build;
+use App\Models\Renter;
 use Illuminate\Support\Arr;
 
 class RenterController extends Controller
@@ -15,7 +16,12 @@ class RenterController extends Controller
     {
         $build = Build::find($buildId);
         if (auth()->guard('api')->user()->id === $build->user_id) {
-            $renters = $build->renters->load('renterPhones','RentPayments');
+            $renters = $build->renters->load('renterPhones');
+            $renters->each(function ($renter) {
+                $groupedRentPayments = $renter->rentPayments->groupBy('year');
+                $renter->unsetRelation('rentPayments');
+                $renter->grouped_rent_payments = $groupedRentPayments;
+            });
             return response()->json([
                 'message' => 'successful',
                 'Renters' => $renters,
@@ -28,7 +34,7 @@ class RenterController extends Controller
      */
     public function store(RenterRequst $request, $buildId)
     {
-        if($request->authorize()){
+        if ($request->authorize()) {
             $data = $request->validated();
             $phones = $data['phones']; // Store the password in a separate variable
             $data = Arr::except($data, ['phones']);
@@ -39,9 +45,8 @@ class RenterController extends Controller
                 $renter->addPhone($phone);
             }
             return response()->json([
-                'Renter' => $renter->load('renterPhones','RentPayments'),
+                'Renter' => $renter->load('renterPhones', 'RentPayments'),
             ], 200);
-
         }
     }
 
@@ -53,9 +58,14 @@ class RenterController extends Controller
         $build = Build::find($buildId);
         if (auth()->guard('api')->user()->id === $build->user_id) {
             $renter = $build->renters->find($renterId);
+            $renter->load('renterPhones');
+            $groupedRentPayments = $renter->rentPayments->groupBy('year');
+            $renter->unsetRelation('rentPayments');
+            $renter->grouped_rent_payments = $groupedRentPayments;
+
             return response()->json([
                 'message' => 'successful',
-                'Renter' => $renter->load('renterPhones','RentPayments'),
+                'Renter' => $renter,
             ], 200);
         }
 
@@ -68,23 +78,22 @@ class RenterController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(RenterRequst $request,int $buildId, int $renterId)
+    public function update(RenterRequst $request, int $buildId, int $renterId)
     {
-        if($request->authorize()){
+        if ($request->authorize()) {
             $data = $request->validated();
-            $phones = $data['phones']; // Store the password in a separate variable
-            $data = Arr::except($data, ['phones']);
-            $build = Build::find($buildId);
-            $renter = $build->renters->find($renterId);
-
+            if ($data['phones'] != null) {
+                $phones = $data['phones']; // Store the password in a separate variable
+                $data = Arr::except($data, ['phones']);
+            }
+            $renter = Renter::find($renterId)->where('build_id', $buildId);
             $renter->update($data);
-
             foreach ($phones as $phone) {
                 $renter->addPhone($phone);
             }
             return response()->json([
                 'message' => 'update successful',
-                'Renter' => $renter->load('renterPhones','RentPayments')
+                'Renter' => $renter->load('renterPhones', 'RentPayments')
             ], 200);
         }
         return response()->json([
@@ -98,12 +107,11 @@ class RenterController extends Controller
      */
     public function destroy(RenterRequst $request, int $buildId, int $renterId)
     {
-        if($request->authorize()){
-            $build = Build::find($buildId);
-            $renter = $build->renters->find($renterId);
+        if ($request->authorize()) {
+            $renter = Renter::find($renterId)->where('build_id', $buildId);
             return response()->json([
                 'message' => 'delete successful',
-                'Renter' => $renter->load('renterPhones','RentPayments')
+                'Renter' => $renter->load('renterPhones', 'RentPayments')
             ], 200);
         }
         return response()->json([

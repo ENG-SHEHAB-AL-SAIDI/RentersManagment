@@ -51,8 +51,13 @@ class BuildController extends Controller
         $build = Build::withCount('renters')->find($id);
 
         if (auth()->guard('api')->user()->id === $build->user_id) {
+                $build->renters->each(function ($renter) {
+                    $groupedRentPayments = $renter->rentPayments->groupBy('year');
+                    $renter->unsetRelation('rentPayments');
+                    $renter->grouped_rent_payments = $groupedRentPayments;
+                });
             return response()->json([
-                'Build' => $build->load('renters', 'renters.renterPhones', 'renters.RentPayments')
+                'Build' => $build,
             ], 200);
         }
 

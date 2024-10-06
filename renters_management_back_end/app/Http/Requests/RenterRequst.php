@@ -29,7 +29,7 @@ class RenterRequst extends FormRequest
             'rent'=>'integer',
             'job_domain'=>'string',
             'enter_date'=>'date',
-            'phones' => 'required|array',        // Ensure it's an array
+            'phones' => 'array',        // Ensure it's an array
             'phones.*' => 'integer',
         ];
     }

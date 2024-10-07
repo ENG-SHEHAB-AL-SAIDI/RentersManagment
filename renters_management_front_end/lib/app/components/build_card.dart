@@ -38,7 +38,7 @@ class BuildCard extends StatelessWidget {
       color2 = AppColors.backColor;
       textColor = AppColors.mainTextColor;
     }
-    return Container(
+    return Obx(()=>Container(
         height: height,
         width: double.maxFinite,
         decoration: BoxDecoration(
@@ -112,19 +112,19 @@ class BuildCard extends StatelessWidget {
                     ],
                   ),
 
-                    Row(
-                      children: [
-                        SecText(
-                          "city:  ",
-                          textColor: textColor,
-                          fontWeight: FontWeight.bold,
-                        ),
-                        SecText(
-                          buildInfo.city?.value ?? "Unknown",
-                          textColor: textColor,
-                        ),
-                      ],
-                    ),
+                  Row(
+                    children: [
+                      SecText(
+                        "city:  ",
+                        textColor: textColor,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      SecText(
+                        buildInfo.city?.value ?? "Unknown",
+                        textColor: textColor,
+                      ),
+                    ],
+                  ),
 
                   Row(
                     children: [
@@ -241,6 +241,6 @@ class BuildCard extends StatelessWidget {
               ),
             )
           ],
-        ));
+        )));
   }
 }

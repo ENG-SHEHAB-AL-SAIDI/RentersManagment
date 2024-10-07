@@ -18,7 +18,8 @@ class CustomTextFormField extends StatelessWidget {
     this.focusNode,
     this.onFieldSubmitted,
     this.onSaved,
-    this.onChange
+    this.onChange,
+    this.keyboardType,
   });
 
   bool isPassword;
@@ -35,6 +36,7 @@ class CustomTextFormField extends StatelessWidget {
   void Function(String?)? onFieldSubmitted;
   void Function(String?)? onChange;
   bool readOnly;
+  TextInputType? keyboardType;
 
 
   @override
@@ -43,6 +45,7 @@ class CustomTextFormField extends StatelessWidget {
       width: width,
       child: (isPassword)?Obx(()=>TextFormField(
         controller: controller,
+        keyboardType: keyboardType,
         focusNode: focusNode,
         onSaved: onSaved,
         onChanged: onChange,
@@ -76,6 +79,7 @@ class CustomTextFormField extends StatelessWidget {
       )):
       TextFormField(
         controller: controller,
+        keyboardType: keyboardType,
         focusNode: focusNode,
         onSaved: onSaved,
         onChanged: onChange,
@@ -98,4 +102,7 @@ class CustomTextFormField extends StatelessWidget {
       ),
     );
   }
+
+
 }
+

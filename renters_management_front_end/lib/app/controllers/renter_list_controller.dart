@@ -66,14 +66,38 @@ class RenterListController extends GetxController {
     Get.toNamed("/rentersDetails", arguments: {'buildId':buildId, 'renterId':renters.value[index].id.value});
   }
 
-  void delete() {
-    Get.dialog(PopUpMessageCard(
+  void delete(int id) async{
+    bool result = await Get.dialog(PopUpMessageCard(
         "did you sure want delete this renter that will delete all data relative to it."));
+    if(result){
+      Result res = await RenterServices.deleteRenter(buildId: buildId,renterId:id);
+      if (res.statusCode == 200) {
+          renters.refresh();
+      } else {
+        Get.dialog(PopUpAlertCard(
+            res.message??"error code:${res.statusCode}",
+            Icons.warning));
+      }
+    }
+
+
   }
 
   void add() async{
-    Map<String,dynamic> renter = await Get.dialog(PopUpIAddAndUpdateRenterCard());
-
+    Map<String,dynamic>? result = await Get.dialog(PopUpIAddAndUpdateRenterCard());
+    print(result);
+    if(result!=null){
+      Result res = await RenterServices.storeRenter(buildId: buildId,data: result);
+      if (res.statusCode == 200) {
+        if (res.data != null) {
+          renters.refresh();
+        }
+      } else {
+        Get.dialog(PopUpAlertCard(
+            res.message??"error code:${res.statusCode}",
+            Icons.warning));
+      }
+    }
   }
 
   void changeLang(String lang) {

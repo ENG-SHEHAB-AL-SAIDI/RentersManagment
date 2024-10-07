@@ -31,24 +31,26 @@ class Renter {
   factory Renter.fromJson(Map<String, dynamic> json) {
     List<Map<String, dynamic>> phones = [];
     Map<String,List<RentPayment>> rentPayments = {};
-    for (var item in json["renter_phones"]) {
+    if(json["renter_phones"].isNotEmpty){
+      for (var item in json["renter_phones"]) {
       if (item != []) {
         phones.add(item);
       }
     }
-
+    }
+    if(json["grouped_rent_payments"].isNotEmpty){
     for (var key in json["grouped_rent_payments"].keys) {
       List<RentPayment> rentPaymentsItems = [];
       for(var item in json["grouped_rent_payments"][key]){
         rentPaymentsItems.add(RentPayment.fromJson(item));
       }
       rentPayments[key] = rentPaymentsItems;
-
+    }
     }
     return Renter(
       id: RxInt(json['id'] ?? 0),
       name: RxString(json['name'] ?? "Unknown"),
-      rent: RxDouble(json['rent'] ?? 0.0),
+      rent: RxDouble(json['rent'].toDouble() ?? 0.0),
       jobDomain: RxString(json['job_domain'] ?? "Unknown"),
       enterDate: RxString(json['enter_date'] ?? "Unknown"),
       phones: List<RxString>.generate(

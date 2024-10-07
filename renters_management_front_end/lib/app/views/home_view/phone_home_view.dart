@@ -80,12 +80,11 @@ class PhoneHomeView extends GetView<HomeController> {
                             for (int i = 0;
                                 i < controller.builds.value.length;
                                 i++) ...[
-                              Obx(()=>BuildCard(
+                              BuildCard(
                                 buildInfo: controller.builds.value[i],
                                 height: height * 0.16,
                                 type: 1,
-
-                              ),),
+                              ),
                               SizedBox(
                                 height: height * 0.03,
                               ),

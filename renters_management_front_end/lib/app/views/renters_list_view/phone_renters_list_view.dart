@@ -94,8 +94,7 @@ class PhoneRentersListView extends GetView<RenterListController> {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
-                                  SecText("Status:Active"),
-                                  SecText(" last payment date:2024-4-5")
+                                  SecText(" last payment date: 2024-4-5")
                                 ],
                               ),
                               trailing: IconButton(
@@ -103,7 +102,8 @@ class PhoneRentersListView extends GetView<RenterListController> {
                                   Icons.delete,
                                   color: AppColors.inverseIconColor,
                                 ),
-                                onPressed: controller.delete,
+                                onPressed: ()=>controller.delete(controller
+                                    .renters.value[(i ~/ 2)].id.value),
                               ),
                               onTap: () => controller.rentersDetailsRoute(i),
                             );

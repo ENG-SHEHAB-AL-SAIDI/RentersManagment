@@ -92,6 +92,7 @@ class PopUpIAddAndUpdateRenterCard extends StatelessWidget {
                             ],),
                             CustomTextFormField(
                               controller: rentController,
+                              keyboardType: TextInputType.number,
                               width: (Get.width-12)*0.46,
                             ),
                           ],
@@ -136,6 +137,7 @@ class PopUpIAddAndUpdateRenterCard extends StatelessWidget {
                             ),
                             CustomTextFormField(
                               controller: activityController,
+                              keyboardType: TextInputType.datetime,
                               width: (Get.width-12)*0.46,
                             ),
                           ],
@@ -158,6 +160,7 @@ class PopUpIAddAndUpdateRenterCard extends StatelessWidget {
                             ),
                             CustomTextFormField(
                               controller: phoneController,
+                              keyboardType: TextInputType.phone,
                               width: (Get.width-12)*0.46,
                             ),
                           ],
@@ -184,15 +187,16 @@ class PopUpIAddAndUpdateRenterCard extends StatelessWidget {
   }
 
   void submit(){
-    Map<String,dynamic> jsData = {
-      "name":nameController.text,
-      "rent":rentController.text,
-      "job_domain":activityController.text,
-      "enter_date":entryYearController.text,
-      "phones": [
-        phoneController.text
-      ],
-    };
+    nameController.text = "renter99";
+    rentController.text = "1000";
+    Map<String,dynamic> jsData = {};
+    (nameController.text.isNotEmpty)?jsData["name"] = nameController.text:null;
+    (rentController.text.isNotEmpty)?jsData["rent"] = double.parse(rentController.text):null;
+    (activityController.text.isNotEmpty)?jsData["job_domain"] = activityController.text:null;
+    (entryYearController.text.isNotEmpty)?jsData["enter_date"] = entryYearController.text:null;
+    (phoneController.text.isNotEmpty)?jsData["phones"] = [phoneController.text]:null;
+
+
     Get.back(result: jsData);
   }
 }

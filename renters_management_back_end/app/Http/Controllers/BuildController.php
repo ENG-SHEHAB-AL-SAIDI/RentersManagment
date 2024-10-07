@@ -74,7 +74,7 @@ class BuildController extends Controller
     public function update(BuildRequst $request, int $id)
     {
         $request->validated();
-        $build = Build::withCount('renters')->find($id);
+        $build = Build::withCount('renters')->with('renters', 'renters.renterPhones')->find($id);
         $build->renters->each(function ($renter) {
             $groupedRentPayments = $renter->rentPayments->groupBy('year');
             $renter->unsetRelation('rentPayments');

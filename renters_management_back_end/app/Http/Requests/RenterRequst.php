@@ -12,8 +12,7 @@ class RenterRequst extends FormRequest
      */
     public function authorize(): bool
     {
-        $id = request()->route('builds');
-        return auth()->guard('api')->user()->id === Build::find($id)->user_id; 
+        return true;
     }
 
     /**
@@ -28,11 +27,11 @@ class RenterRequst extends FormRequest
         }
         return [
             'name'=>'required|max:50',
-            'rent'=>'integer',
-            'job_domain'=>'string',
-            'enter_date'=>'date',
-            'phones' => 'array',        // Ensure it's an array
-            'phones.*' => 'integer',
+            'rent'=>'required|numeric',
+            'job_domain'=>'sometimes|string',
+            'enter_date'=>'sometimes|date',
+            'phones' => 'sometimes|array',        // Ensure it's an array
+            'phones.*' => 'sometimes|integer',
         ];
     }
 }

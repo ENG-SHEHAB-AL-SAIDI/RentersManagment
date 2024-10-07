@@ -17,9 +17,9 @@ function ($router) {
     Route::post('/me', [AuthController::class, 'me'])->name('me')->middleware('auth:api');
 });
 
-Route::middleware(['api','auth:api'])->group(
+Route::middleware(['api','auth:api'])->prefix('user')->group(
 function () {
-    Route::apiResource('user.builds',BuildController::class);
+    Route::apiResource('builds',BuildController::class);
     Route::apiResource('builds.renters',RenterController::class);
     Route::apiResource('renters.rent_payments',RentPaymentController::class);
 

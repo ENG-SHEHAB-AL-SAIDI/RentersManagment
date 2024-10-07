@@ -12,17 +12,7 @@ class BuildRequst extends FormRequest
      */
     public function authorize(): bool
     {
-        $userId = $this->route('user');
-        if (!$userId ) {
-            throw new \Exception('User ID not found in the request.');
-        }
-        $buildId = $this->route('build');
-        $authenticatedUser = auth()->guard('api')->user();
-
-        if(!$buildId){
-            return $authenticatedUser->id === $userId;
-        }
-        return $authenticatedUser->id === $userId && $authenticatedUser->builds()->where('id', $buildId)->exists();
+        return  true;
     }
 
     /**

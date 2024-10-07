@@ -14,19 +14,19 @@ class RenterController extends Controller
      */
     public function index($buildId)
     {
-        $build = Build::find($buildId);
-        if (auth()->guard('api')->user()->id === $build->user_id) {
-            $renters = $build->renters->load('renterPhones');
-            $renters->each(function ($renter) {
-                $groupedRentPayments = $renter->rentPayments->groupBy('year');
-                $renter->unsetRelation('rentPayments');
-                $renter->grouped_rent_payments = $groupedRentPayments;
-            });
+
+        $renters = Renter::where('build_id',$buildId)->with('renterPhones')->get();
+            if($renters){
+                $renters->each(function ($renter) {
+                    $groupedRentPayments = $renter->rentPayments->groupBy('year');
+                    $renter->unsetRelation('rentPayments');
+                    $renter->grouped_rent_payments = $groupedRentPayments;
+                });
+            }
             return response()->json([
                 'message' => 'successful',
                 'Renters' => $renters,
             ], 200);
-        }
     }
 
     /**
@@ -34,20 +34,34 @@ class RenterController extends Controller
      */
     public function store(RenterRequst $request, $buildId)
     {
-        if ($request->authorize()) {
-            $data = $request->validated();
-            $phones = $data['phones']; // Store the password in a separate variable
-            $data = Arr::except($data, ['phones']);
 
-            $build = Build::find($buildId);
-            $renter = $build->renters()->create($data);
+        $data = $request->validated();
+        if(array_key_exists('phones',$data)){
+            $phones = $data['phones'];
+            $data = Arr::except($data, ['phones']);
+        }
+
+        $build = Build::find($buildId);
+        if (!$build) {
+            return response()->json(['error' => 'Building not found'], 404);
+        }
+
+        $renter = $build->renters()->create($data);
+
+        if(array_key_exists('phones',$data)){
             foreach ($phones as $phone) {
                 $renter->addPhone($phone);
             }
-            return response()->json([
-                'Renter' => $renter->load('renterPhones', 'RentPayments'),
-            ], 200);
         }
+        $renter->load('renterPhones');
+        $groupedRentPayments = $renter->rentPayments->groupBy('year');
+        $renter->unsetRelation('rentPayments');
+        $renter->grouped_rent_payments = $groupedRentPayments;
+
+
+        return response()->json([
+            'Renter' => $renter,
+        ], 200);
     }
 
     /**
@@ -55,10 +69,7 @@ class RenterController extends Controller
      */
     public function show(int $buildId, int $renterId)
     {
-        $build = Build::find($buildId);
-        if (auth()->guard('api')->user()->id === $build->user_id) {
-            $renter = $build->renters->find($renterId);
-            $renter->load('renterPhones');
+        $renter = Renter::with('renterPhones')->where('build_id',$buildId)->find($renterId);
             $groupedRentPayments = $renter->rentPayments->groupBy('year');
             $renter->unsetRelation('rentPayments');
             $renter->grouped_rent_payments = $groupedRentPayments;
@@ -67,12 +78,6 @@ class RenterController extends Controller
                 'message' => 'successful',
                 'Renter' => $renter,
             ], 200);
-        }
-
-        return response()->json([
-            'message' => 'UnAuthorize access',
-            'data' => null
-        ], 401);
     }
 
     /**
@@ -80,26 +85,24 @@ class RenterController extends Controller
      */
     public function update(RenterRequst $request, int $buildId, int $renterId)
     {
-        if ($request->authorize()) {
+
             $data = $request->validated();
             if ($data['phones'] != null) {
                 $phones = $data['phones']; // Store the password in a separate variable
                 $data = Arr::except($data, ['phones']);
             }
-            $renter = Renter::find($renterId)->where('build_id', $buildId);
+            $renter = Renter::with('renterPhones')->where('build_id',$buildId)->find($renterId);
             $renter->update($data);
+            $groupedRentPayments = $renter->rentPayments->groupBy('year');
+            $renter->unsetRelation('rentPayments');
+            $renter->grouped_rent_payments = $groupedRentPayments;
             foreach ($phones as $phone) {
                 $renter->addPhone($phone);
             }
             return response()->json([
                 'message' => 'update successful',
-                'Renter' => $renter->load('renterPhones', 'RentPayments')
+                'Renter' => $renter
             ], 200);
-        }
-        return response()->json([
-            'message' => 'UnAuthorize access',
-            'data' => null
-        ], 401);
     }
 
     /**
@@ -107,16 +110,10 @@ class RenterController extends Controller
      */
     public function destroy(RenterRequst $request, int $buildId, int $renterId)
     {
-        if ($request->authorize()) {
-            $renter = Renter::find($renterId)->where('build_id', $buildId);
+
+            $renter = Renter::where('build_id', $buildId)->find($renterId);
             return response()->json([
                 'message' => 'delete successful',
-                'Renter' => $renter->load('renterPhones', 'RentPayments')
             ], 200);
-        }
-        return response()->json([
-            'message' => 'UnAuthorize access',
-            'data' => null
-        ], 401);
     }
 }

@@ -22,7 +22,12 @@ class RenterRequst extends FormRequest
      */
     public function rules(): array
     {
-        if(request()->isMethod('DELETE') ){
+        if(($this->isMethod('post') && $this->routeIs('renters.addPhone')||$this->isMethod('DELETE') && $this->routeIs('renters.deletePhone'))){
+            return [
+                'phone' => 'required|integer',
+            ];
+        }
+        if($this->isMethod('DELETE') ){
             return [];
         }
         return [

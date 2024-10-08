@@ -23,6 +23,8 @@ function () {
     Route::apiResource('builds',BuildController::class);
     Route::apiResource('builds.renters',RenterController::class);
     Route::apiResource('renters.rent_payments',RentPaymentController::class);
+    Route::post('renters/{id}',[RenterController::class,'addPhone'])->name('renters.addPhone');
+    Route::delete('renters/{id}',[RenterController::class,'destroyPhone'])->name('renters.deletePhone');
     Route::apiResource('rent_payments.rentPaymentsInstallment',RentPaymentsInstallmentController::class);
 
 

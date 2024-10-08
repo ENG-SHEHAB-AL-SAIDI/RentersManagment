@@ -111,7 +111,7 @@ class RenterController extends Controller
     public function destroy(RenterRequst $request, int $buildId, int $renterId)
     {
 
-            $renter = Renter::where('build_id', $buildId)->find($renterId);
+            $renter = Renter::where('build_id', $buildId)->find($renterId)->delete();
             return response()->json([
                 'message' => 'delete successful',
             ], 200);

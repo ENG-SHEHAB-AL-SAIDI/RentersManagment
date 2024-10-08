@@ -11,7 +11,7 @@ class RentPaymentsInstallmentController extends Controller
      */
     public function index()
     {
-        //
+        
     }
 
     /**

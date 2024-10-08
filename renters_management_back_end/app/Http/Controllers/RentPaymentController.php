@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\RentPaymentRequest;
 use App\Models\Renter;
 use App\Models\RentPayment;
 use Illuminate\Http\Request;
@@ -13,20 +14,11 @@ class RentPaymentController extends Controller
      */
     public function index(int $renterId)
     {
-        $renter = Renter::find($renterId);
-        if (auth()->guard('api')->user()->id === $renter->build->user_id) {
-
-            $rentPayments = $renter->rentPayments->groupBy('year');
-
+        $rentPayments = RentPayment::where('renter_id',$renterId)->with('rentPaymentsInstallments')->get()->groupBy('year');
             return response()->json([
                 'message' => 'successful',
                 'grouped_rent_payments' => $rentPayments,
             ], 200);
-        }
-        return response()->json([
-            'message' => 'UnAuthorize access',
-            'data' => null
-        ], 401);
     }
 
 
@@ -36,20 +28,17 @@ class RentPaymentController extends Controller
      */
     public function show(int $renterId , int $rentPaymentId)
     {
-        $renter = Renter::find($renterId);
-        if (auth()->guard('api')->user()->id === $renter->build->user_id) {
-
-            $rentPayments = $renter->rentPayments->find($rentPaymentId);
-
+        $rentPayment = RentPayment::with('rentPaymentsInstallments')->find($rentPaymentId);
+        if(!$rentPayment){
+            return response()->json([
+                'message' => 'not found',
+                'rent_payment' => $rentPayment,
+            ], 404);
+        }
             return response()->json([
                 'message' => 'successful',
-                'rent_payment' => $rentPayments,
+                'rent_payment' => $rentPayment,
             ], 200);
-        }
-        return response()->json([
-            'message' => 'UnAuthorize access',
-            'data' => null
-        ], 401);
     }
 
 
@@ -57,25 +46,52 @@ class RentPaymentController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(RentPaymentRequest $request, int $renterId)
     {
-        
+        $data = $request->validated();
+        $rentPayments = Renter::find($renterId)->rentPayments()->create($data)->unsetRelation('renter');;
+        return response()->json([
+            'message' => 'successful',
+            'rent_payment' => $rentPayments,
+        ], 200);
     }
 
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(RentPaymentRequest $request, int $rentPaymentId)
     {
-        //
+        $data = $request->validated();
+        $rentPayment = RentPayment::with('rentPaymentsInstallments')->find($rentPaymentId);
+        if(!$rentPayment){
+            return response()->json([
+                'message' => 'not found',
+                'rent_payment' => $rentPayment,
+            ], 404);
+        }
+        $rentPayment->update($data);
+
+        return response()->json([
+            'message' => 'Update Successful',
+            'rent_payment' => $rentPayment,
+        ], 200);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(int $rentPaymentId)
     {
-        //
+        $rentPayment = RentPayment::find($rentPaymentId);
+        if(!$rentPayment){
+            return response()->json([
+                'message' => 'not found',
+                'rent_payment' => $rentPayment,
+            ], 404);
+        }
+            return response()->json([
+                'message' => 'Delete Successful',
+            ], 200);
     }
 }

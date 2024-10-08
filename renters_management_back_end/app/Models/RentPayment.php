@@ -30,10 +30,6 @@ class RentPayment extends Model
             $model->rentPaymentsInstallments()->forceDelete();
         });
 
-        static::deleting(function ($model) {
-            $model->rentPaymentsInstallments()->delete();
-        });
-
         static::restoring(function ($model) {
             $model->rentPaymentsInstallments()->restore();
         });

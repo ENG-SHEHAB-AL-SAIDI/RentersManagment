@@ -28,15 +28,15 @@ class Renter extends Model
         parent::boot();
 
         static::forceDeleting(function($model){
-            $model->renter_phones()->forceDelete();
+            $model->renterPhones()->forceDelete();
         });
 
         static::deleting(function($model){
-            $model->renter_phones()->delete();
+            $model->renterPhones()->delete();
         });
 
         static::restoring(function($model){
-            $model->renter_phones()->restore();
+            $model->renterPhones()->restore();
         });
     }
 
@@ -46,7 +46,7 @@ class Renter extends Model
         return $this->hasMany(RentersPhone::class);
     }
 
-    
+
 
     public function rentPayments() :HasMany
     {

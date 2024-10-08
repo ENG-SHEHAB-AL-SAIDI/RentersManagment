@@ -40,7 +40,10 @@ class RentPaymentSeeder extends Seeder
                         $status['year'] = $year;
                         $status['month'] = $i + 1;
                     }
-                    $rentPayments->push(RentPayment::factory(1, $status)->for($this->renter)->create());
+                    $rentPayment = RentPayment::factory()->for($this->renter)->create($status);
+                    $rentPaymentInstallmentSeedr = new RentPaymentsInstallmentSeeder(3,$rentPayment);
+                    $rentPaymentInstallments = $rentPaymentInstallmentSeedr->run();
+                    $rentPayments->add($rentPayment);
                 }
             }
 

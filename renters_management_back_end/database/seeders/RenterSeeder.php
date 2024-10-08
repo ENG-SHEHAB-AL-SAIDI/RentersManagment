@@ -28,7 +28,7 @@ class RenterSeeder extends Seeder
 
         foreach($renters as $renter){
             $rentPaymentSeeder = new RentPaymentSeeder(12,['2022','2023','2024'],$renter);
-            $rentPayment = $rentPaymentSeeder->run();
+            $rentPayments = $rentPaymentSeeder->run();
         }
 
         return $renters;

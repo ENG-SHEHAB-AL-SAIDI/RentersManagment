@@ -15,13 +15,18 @@ class RentPaymentsInstallmentSeeder extends Seeder
     protected int $count;
     protected RentPayment $rentPayment;
 
-    public function __construct(int $count = null , RentPayment $rentPayment) {
+    public function __construct(int $count = null, RentPayment $rentPayment) {
         $this->count = $count;
         $this->rentPayment = $rentPayment;
     }
 
     public function run(): void
     {
-        RentPaymentsInstallment::factory($this->count??1)->for($this->rentPayment)->create();
+        $rent = $this->rentPayment->renter->rent;
+        RentPaymentsInstallment::factory($this->count??1)->for($this->rentPayment)->create(
+            [
+                'amount'=>fake()->randomFloat(0,$rent),
+            ]
+        );
     }
 }

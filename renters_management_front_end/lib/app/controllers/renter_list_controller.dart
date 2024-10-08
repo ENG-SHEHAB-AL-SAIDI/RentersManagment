@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:renters_management_front_end/app/components/pop_up_cards/add_and_update_renter_card.dart';
+import 'package:renters_management_front_end/app/controllers/renter_add_update_card_controller.dart';
 import 'package:renters_management_front_end/app/models/result.dart';
 import 'package:renters_management_front_end/app/services/renter_services.dart';
 
@@ -10,13 +11,14 @@ import '../models/renter_model.dart';
 
 class RenterListController extends GetxController {
   TextEditingController searchField = TextEditingController();
-  GlobalKey<FormState> formKey = GlobalKey<FormState>();
   int buildId = -1;
   Rx<List<Renter>> renters = Rx([]);
 
   @override
   void onClose() {
     searchField.dispose();
+    super.onClose();
+    Get.delete<RenterAddUpdateCardController>(force: true);
   }
 
   @override
@@ -44,25 +46,6 @@ class RenterListController extends GetxController {
     }
   }
 
-
-  String? validateName(String? name) {
-    if (name == "" || name == null) {
-      return "required name";
-    } else if (GetUtils.isLengthGreaterThan(name,50)) {
-      return "name len can't be greater than 50";
-    }
-    return "null";
-  }
-
-  String? validateRent(String? rent) {
-
-    if (rent == "" || rent == null) {
-      return "required Rent";
-    } else if (!GetUtils.isNum(rent)) {
-      return "rent most be number";
-    }
-    return null;
-  }
 
   void searching(String? text) async {
     if (text == null || text == '') {
@@ -108,7 +91,10 @@ class RenterListController extends GetxController {
 
   void add() async {
     Map<String, dynamic>? result =
-        await Get.dialog(PopUpIAddAndUpdateRenterCard());
+        await Get.dialog(const PopUpIAddAndUpdateRenterCard(),arguments: {
+          'mode': "Add",
+          'data': null
+        });
     if (result != null) {
       Result res =
           await RenterServices.storeRenter(buildId: buildId, data: result);

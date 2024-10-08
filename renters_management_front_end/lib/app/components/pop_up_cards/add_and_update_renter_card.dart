@@ -4,26 +4,17 @@ import 'package:renters_management_front_end/app/components/buttons.dart';
 import 'package:renters_management_front_end/app/components/text_field.dart';
 import 'package:renters_management_front_end/app/controllers/renter_list_controller.dart';
 
+import '../../controllers/renter_add_update_card_controller.dart';
 import '../../globals.dart';
 import '../custom_text.dart';
 
-class PopUpIAddAndUpdateRenterCard extends StatelessWidget {
-  PopUpIAddAndUpdateRenterCard({this.mode="Add",this.data, super.key});
-  TextEditingController nameController = TextEditingController();
-  TextEditingController rentController = TextEditingController();
-  TextEditingController activityController = TextEditingController();
-  TextEditingController entryYearController = TextEditingController();
-  TextEditingController phoneController = TextEditingController();
-  Map<String,String>? data;
-  String mode;
-  RenterListController controller = Get.put<RenterListController>(RenterListController());
+class PopUpIAddAndUpdateRenterCard extends GetView<RenterAddUpdateCardController> {
+  const PopUpIAddAndUpdateRenterCard({super.key});
+
+
+
+  @override
   Widget build(BuildContext context) {
-    if(data != null){
-      nameController.text = data!["name"]??"";
-      rentController.text = data!["rent"]??"";
-      activityController.text = data!["activity"]??"";
-      entryYearController.text = data!["entryYear"]??"";
-    }
     return Center(
       child: Padding(
         padding: const EdgeInsets.all(32.0),
@@ -74,9 +65,13 @@ class PopUpIAddAndUpdateRenterCard extends StatelessWidget {
                                 ],
                               ),
                               CustomTextFormField(
-                                controller: nameController,
+                                controller: controller.nameController,
                                 validator:controller.validateName,
                                 labelText: 'name'.tr,
+                                focusNode: controller.nameFocus,
+                                  onFieldSubmitted: (e) {
+                                  controller.rentFocus.requestFocus();
+                                  },
                                 width: (Get.width-12)*0.46,
                               ),
                             ],
@@ -96,8 +91,14 @@ class PopUpIAddAndUpdateRenterCard extends StatelessWidget {
                                 SecText("Rent"),
                               ],),
                               CustomTextFormField(
-                                controller: rentController,
+                                controller: controller.rentController,
                                 keyboardType: TextInputType.number,
+                                validator: controller.validateRent,
+                                labelText: "Rent",
+                                focusNode: controller.rentFocus,
+                                onFieldSubmitted: (e) {
+                                  controller.activityFocus.requestFocus();
+                                },
                                 width: (Get.width-12)*0.46,
                               ),
                             ],
@@ -119,7 +120,12 @@ class PopUpIAddAndUpdateRenterCard extends StatelessWidget {
                                 ],
                               ),
                               CustomTextFormField(
-                                controller: activityController,
+                                controller: controller.activityController,
+                                labelText: "Activity",
+                                focusNode: controller.activityFocus,
+                                onFieldSubmitted: (e) {
+                                  controller.entryYearFocus.requestFocus();
+                                },
                                 width: (Get.width-12)*0.46,
                               ),
                             ],
@@ -141,8 +147,13 @@ class PopUpIAddAndUpdateRenterCard extends StatelessWidget {
                                 ],
                               ),
                               CustomTextFormField(
-                                controller: activityController,
+                                controller: controller.activityController,
                                 keyboardType: TextInputType.datetime,
+                                labelText: "Entry Year",
+                                focusNode: controller.entryYearFocus,
+                                onFieldSubmitted: (e) {
+                                  controller.phoneFocus.requestFocus();
+                                },
                                 width: (Get.width-12)*0.46,
                               ),
                             ],
@@ -164,8 +175,15 @@ class PopUpIAddAndUpdateRenterCard extends StatelessWidget {
                                 ],
                               ),
                               CustomTextFormField(
-                                controller: phoneController,
+                                controller: controller.phoneController,
                                 keyboardType: TextInputType.phone,
+                                validator: controller.validatePhone,
+                                labelText: "Phone",
+                                focusNode: controller.phoneFocus,
+                                onFieldSubmitted: (e) {
+                                  controller.phoneFocus.unfocus();
+                                  controller.submit();
+                                },
                                 width: (Get.width-12)*0.46,
                               ),
                             ],
@@ -174,8 +192,8 @@ class PopUpIAddAndUpdateRenterCard extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
                               CustomButton(
-                                onPress: submit,
-                                text: mode,
+                                onPress: controller.submit,
+                                text: controller.mode.value,
                               ),
                               CustomButton(
                                 onPress: () => Get.back(result: null),
@@ -192,15 +210,5 @@ class PopUpIAddAndUpdateRenterCard extends StatelessWidget {
     );
   }
 
-  void submit(){
-    Map<String,dynamic> jsData = {};
-    (nameController.text.isNotEmpty)?jsData["name"] = nameController.text:null;
-    (rentController.text.isNotEmpty)?jsData["rent"] = double.parse(rentController.text):null;
-    (activityController.text.isNotEmpty)?jsData["job_domain"] = activityController.text:null;
-    (entryYearController.text.isNotEmpty)?jsData["enter_date"] = entryYearController.text:null;
-    (phoneController.text.isNotEmpty)?jsData["phones"] = [phoneController.text]:null;
 
-
-    Get.back(result: jsData);
-  }
 }

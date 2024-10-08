@@ -116,7 +116,7 @@ class PhoneLoginView extends GetView<LoginController> {
                     ),
                     CustomTextFormField(
                       controller: controller.id,
-                      validator: (id) => controller.validateID(id),
+                      validator: controller.validateID,
                       labelText: 'id'.tr,
                       icon: Icons.account_circle_outlined,
                       focusNode: controller.idFocus,
@@ -138,7 +138,7 @@ class PhoneLoginView extends GetView<LoginController> {
                     ),
                     CustomTextFormField(
                       controller: controller.password,
-                      validator: (pwd) => controller.validatePassword(pwd),
+                      validator: controller.validatePassword,
                       labelText: 'password'.tr,
                       icon: Icons.key_sharp,
                       isPassword: true,

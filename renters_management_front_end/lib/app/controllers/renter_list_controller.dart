@@ -4,13 +4,13 @@ import 'package:renters_management_front_end/app/components/pop_up_cards/add_and
 import 'package:renters_management_front_end/app/models/result.dart';
 import 'package:renters_management_front_end/app/services/renter_services.dart';
 
-import '../components/pop_up_cards/add_and_update_build_card.dart';
 import '../components/pop_up_cards/alert_message_card.dart';
 import '../components/pop_up_cards/delete_confirmation_message_card.dart';
 import '../models/renter_model.dart';
 
 class RenterListController extends GetxController {
   TextEditingController searchField = TextEditingController();
+  GlobalKey<FormState> formKey = GlobalKey<FormState>();
   int buildId = -1;
   Rx<List<Renter>> renters = Rx([]);
 
@@ -25,77 +25,100 @@ class RenterListController extends GetxController {
     Result<List<Renter>> res = await RenterServices.fetchRenters(buildId);
     if (res.statusCode == 200 && res.data != null) {
       renters.value = res.data!;
-    }else{
-      Get.dialog(PopUpAlertCard("fetch Renters field please check your connection", Icons.warning));
+    } else {
+      Get.dialog(PopUpAlertCard(
+          "fetch Renters field please check your connection", Icons.warning));
     }
     super.onInit();
   }
 
   @override
-  Future<void> refresh()async{
-    Result<List<Renter>> res = await RenterServices.fetchRenters(buildId,hardFetch: true);
+  Future<void> refresh() async {
+    Result<List<Renter>> res =
+        await RenterServices.fetchRenters(buildId, hardFetch: true);
     if (res.statusCode == 200 && res.data != null) {
       renters.value = res.data!;
-    }else{
-      Get.dialog(PopUpAlertCard("fetch Renters field please check your connection", Icons.warning));
+    } else {
+      Get.dialog(PopUpAlertCard(
+          "fetch Renters field please check your connection", Icons.warning));
     }
-
   }
 
-  void searching(String? text) async{
-    if(text == null || text == ''){
+
+  String? validateName(String? name) {
+    if (name == "" || name == null) {
+      return "required name";
+    } else if (GetUtils.isLengthGreaterThan(name,50)) {
+      return "name len can't be greater than 50";
+    }
+    return "null";
+  }
+
+  String? validateRent(String? rent) {
+
+    if (rent == "" || rent == null) {
+      return "required Rent";
+    } else if (!GetUtils.isNum(rent)) {
+      return "rent most be number";
+    }
+    return null;
+  }
+
+  void searching(String? text) async {
+    if (text == null || text == '') {
       Result<List<Renter>> res = await RenterServices.fetchRenters(buildId);
       if (res.statusCode == 200 && res.data != null) {
         renters.value = res.data!;
-      }else{
-        Get.dialog(PopUpAlertCard("fetch Renters field please check your connection", Icons.warning));
+      } else {
+        Get.dialog(PopUpAlertCard(
+            "fetch Renters field please check your connection", Icons.warning));
       }
-    }else{
+    } else {
       List<Renter> matchRenters = [];
-      for(Renter item in renters.value){
-        if(item.name?.contains(text)??false){
+      for (Renter item in renters.value) {
+        if (item.name?.contains(text) ?? false) {
           matchRenters.add(item);
         }
         renters.value = matchRenters;
       }
     }
-
   }
 
   void rentersDetailsRoute(int index) {
-    Get.toNamed("/rentersDetails", arguments: {'buildId':buildId, 'renterId':renters.value[index].id.value});
+    Get.toNamed("/rentersDetails", arguments: {
+      'buildId': buildId,
+      'renterId': renters.value[index].id.value
+    });
   }
 
-  void delete(int id) async{
+  void delete(int id) async {
     bool result = await Get.dialog(PopUpMessageCard(
         "did you sure want delete this renter that will delete all data relative to it."));
-    if(result){
-      Result res = await RenterServices.deleteRenter(buildId: buildId,renterId:id);
+    if (result) {
+      Result res =
+          await RenterServices.deleteRenter(buildId: buildId, renterId: id);
       if (res.statusCode == 200) {
-          renters.refresh();
+        renters.refresh();
       } else {
         Get.dialog(PopUpAlertCard(
-            res.message??"error code:${res.statusCode}",
-            Icons.warning));
+            res.message ?? "error code:${res.statusCode}", Icons.warning));
       }
     }
-
-
   }
 
-  void add() async{
-    Map<String,dynamic>? result = await Get.dialog(PopUpIAddAndUpdateRenterCard());
-    print(result);
-    if(result!=null){
-      Result res = await RenterServices.storeRenter(buildId: buildId,data: result);
+  void add() async {
+    Map<String, dynamic>? result =
+        await Get.dialog(PopUpIAddAndUpdateRenterCard());
+    if (result != null) {
+      Result res =
+          await RenterServices.storeRenter(buildId: buildId, data: result);
       if (res.statusCode == 200) {
         if (res.data != null) {
           renters.refresh();
         }
       } else {
         Get.dialog(PopUpAlertCard(
-            res.message??"error code:${res.statusCode}",
-            Icons.warning));
+            res.message ?? "error code:${res.statusCode}", Icons.warning));
       }
     }
   }
@@ -103,5 +126,4 @@ class RenterListController extends GetxController {
   void changeLang(String lang) {
     Get.updateLocale(Locale(lang));
   }
-
 }

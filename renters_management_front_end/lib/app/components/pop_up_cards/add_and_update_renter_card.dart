@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:renters_management_front_end/app/components/buttons.dart';
 import 'package:renters_management_front_end/app/components/text_field.dart';
+import 'package:renters_management_front_end/app/controllers/renter_list_controller.dart';
 
 import '../../globals.dart';
 import '../custom_text.dart';
@@ -13,10 +14,9 @@ class PopUpIAddAndUpdateRenterCard extends StatelessWidget {
   TextEditingController activityController = TextEditingController();
   TextEditingController entryYearController = TextEditingController();
   TextEditingController phoneController = TextEditingController();
-
   Map<String,String>? data;
   String mode;
-  @override
+  RenterListController controller = Get.put<RenterListController>(RenterListController());
   Widget build(BuildContext context) {
     if(data != null){
       nameController.text = data!["name"]??"";
@@ -45,140 +45,146 @@ class PopUpIAddAndUpdateRenterCard extends StatelessWidget {
                 width: Get.width,
                 child: SafeArea(
                     minimum: const EdgeInsets.all(12),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        SecText("Add Renter",
-                            fontWeight: FontWeight.bold,
-                            fontSize: 20),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Row(
-                              children: [
-                                Icon(
-                                  Icons.person,
-                                  size: 40,
-                                  color: AppColors.inverseIconColor,
-                                ),
-                                const SizedBox(
-                                  width: 10,
-                                ),
-                                SecText("Name"),
-                                const SizedBox(
-                                  width: 5,
-                                ),
-                              ],
-                            ),
-                            CustomTextFormField(
-                              controller: nameController,
-                              width: (Get.width-12)*0.46,
-                            ),
-                          ],
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Row(children: [
-                              Icon(
-                                Icons.monetization_on_rounded,
-                                size: 40,
-                                color: AppColors.inverseIconColor,
+                    child: Form(
+                      key: controller.formKey,
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          SecText("Add Renter",
+                              fontWeight: FontWeight.bold,
+                              fontSize: 20),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Row(
+                                children: [
+                                  Icon(
+                                    Icons.person,
+                                    size: 40,
+                                    color: AppColors.inverseIconColor,
+                                  ),
+                                  const SizedBox(
+                                    width: 10,
+                                  ),
+                                  SecText("Name"),
+                                  const SizedBox(
+                                    width: 5,
+                                  ),
+                                ],
                               ),
-                              const SizedBox(
-                                width: 10,
+                              CustomTextFormField(
+                                controller: nameController,
+                                validator:controller.validateName,
+                                labelText: 'name'.tr,
+                                width: (Get.width-12)*0.46,
                               ),
-                              SecText("Rent"),
-                            ],),
-                            CustomTextFormField(
-                              controller: rentController,
-                              keyboardType: TextInputType.number,
-                              width: (Get.width-12)*0.46,
-                            ),
-                          ],
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Row(
-                              children: [
+                            ],
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Row(children: [
                                 Icon(
-                                  Icons.work_outline_rounded,
+                                  Icons.monetization_on_rounded,
                                   size: 40,
                                   color: AppColors.inverseIconColor,
                                 ),
                                 const SizedBox(
                                   width: 10,
                                 ),
-                                SecText("Activity", ),
-                              ],
-                            ),
-                            CustomTextFormField(
-                              controller: activityController,
-                              width: (Get.width-12)*0.46,
-                            ),
-                          ],
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Row(
-                              children: [
-                                Icon(
-                                  Icons.date_range,
-                                  size: 40,
-                                  color: AppColors.inverseIconColor,
-                                ),
-                                const SizedBox(
-                                  width: 10,
-                                ),
-                                SecText("Entry Year", ),
-                              ],
-                            ),
-                            CustomTextFormField(
-                              controller: activityController,
-                              keyboardType: TextInputType.datetime,
-                              width: (Get.width-12)*0.46,
-                            ),
-                          ],
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Row(
-                              children: [
-                                Icon(
-                                  Icons.phone_android,
-                                  size: 40,
-                                  color: AppColors.inverseIconColor,
-                                ),
-                                const SizedBox(
-                                  width: 10,
-                                ),
-                                SecText("Phone", ),
-                              ],
-                            ),
-                            CustomTextFormField(
-                              controller: phoneController,
-                              keyboardType: TextInputType.phone,
-                              width: (Get.width-12)*0.46,
-                            ),
-                          ],
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            CustomButton(
-                              onPress: submit,
-                              text: mode,
-                            ),
-                            CustomButton(
-                              onPress: () => Get.back(result: null),
-                              text: "Close",
-                            ),
-                          ],
-                        )
-                      ],
+                                SecText("Rent"),
+                              ],),
+                              CustomTextFormField(
+                                controller: rentController,
+                                keyboardType: TextInputType.number,
+                                width: (Get.width-12)*0.46,
+                              ),
+                            ],
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Row(
+                                children: [
+                                  Icon(
+                                    Icons.work_outline_rounded,
+                                    size: 40,
+                                    color: AppColors.inverseIconColor,
+                                  ),
+                                  const SizedBox(
+                                    width: 10,
+                                  ),
+                                  SecText("Activity", ),
+                                ],
+                              ),
+                              CustomTextFormField(
+                                controller: activityController,
+                                width: (Get.width-12)*0.46,
+                              ),
+                            ],
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Row(
+                                children: [
+                                  Icon(
+                                    Icons.date_range,
+                                    size: 40,
+                                    color: AppColors.inverseIconColor,
+                                  ),
+                                  const SizedBox(
+                                    width: 10,
+                                  ),
+                                  SecText("Entry Year", ),
+                                ],
+                              ),
+                              CustomTextFormField(
+                                controller: activityController,
+                                keyboardType: TextInputType.datetime,
+                                width: (Get.width-12)*0.46,
+                              ),
+                            ],
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Row(
+                                children: [
+                                  Icon(
+                                    Icons.phone_android,
+                                    size: 40,
+                                    color: AppColors.inverseIconColor,
+                                  ),
+                                  const SizedBox(
+                                    width: 10,
+                                  ),
+                                  SecText("Phone", ),
+                                ],
+                              ),
+                              CustomTextFormField(
+                                controller: phoneController,
+                                keyboardType: TextInputType.phone,
+                                width: (Get.width-12)*0.46,
+                              ),
+                            ],
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              CustomButton(
+                                onPress: submit,
+                                text: mode,
+                              ),
+                              CustomButton(
+                                onPress: () => Get.back(result: null),
+                                text: "Close",
+                              ),
+                            ],
+                          )
+                        ],
+                      ),
                     ))),
           ),
         ),
@@ -187,8 +193,6 @@ class PopUpIAddAndUpdateRenterCard extends StatelessWidget {
   }
 
   void submit(){
-    nameController.text = "renter99";
-    rentController.text = "1000";
     Map<String,dynamic> jsData = {};
     (nameController.text.isNotEmpty)?jsData["name"] = nameController.text:null;
     (rentController.text.isNotEmpty)?jsData["rent"] = double.parse(rentController.text):null;

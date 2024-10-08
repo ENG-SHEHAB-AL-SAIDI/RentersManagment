@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:get/get_rx/get_rx.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
+import 'package:renters_management_front_end/app/models/rent_payments_Installment_model.dart';
 
 class RentPayment {
   RxInt id;
@@ -9,6 +10,7 @@ class RentPayment {
   RxString? year;
   RxString? month;
   RxString? state;
+  List<RentPaymentsInstallment>? rentPaymentsInstallment;
   RxString? deletedAt;
   RxString? createdAt;
   RxString? updatedAt;
@@ -20,14 +22,21 @@ class RentPayment {
     this.state,
     this.payedAmount,
     this.remainAmount,
+    this.rentPaymentsInstallment,
     this.deletedAt,
     this.createdAt,
     this.updatedAt,
   });
 
   factory RentPayment.fromJson(Map<String, dynamic> json) {
+    List rentPaymentsInstallmentsJs = json['rent_payments_installments'];
+    List<RentPaymentsInstallment> renters = [];
+    if (rentPaymentsInstallmentsJs.isNotEmpty) {
+      for (var rentPaymentsInstallment in rentPaymentsInstallmentsJs) {
+        renters.add(RentPaymentsInstallment.fromJson(rentPaymentsInstallment));
+      }
+    }
     return RentPayment(
-
       id: RxInt(json['id'] ?? 0),
       year: RxString(json['year'] ?? "Unknown"),
       month: RxString(json['month']??"Unknown"),

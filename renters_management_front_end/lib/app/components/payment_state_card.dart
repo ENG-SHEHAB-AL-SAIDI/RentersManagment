@@ -37,7 +37,6 @@ class RentPaymentCard extends StatelessWidget {
 
   HomeController controller = Get.put<HomeController>(HomeController());
   Rx<List<DropdownMenuItem<String>>> status = Rx([]);
-
   @override
   Widget build(BuildContext context) {
     (height < 200) ? height = 240 : null;
@@ -145,7 +144,9 @@ class RentPaymentCard extends StatelessWidget {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 5,),
+                  const SizedBox(
+                    height: 5,
+                  ),
                   Row(
                     children: [
                       SecText(
@@ -167,11 +168,12 @@ class RentPaymentCard extends StatelessWidget {
                         child: DropdownButton<String>(
                           value: selectedState?.value,
                           elevation: 6,
-                          icon: Icon(Icons.arrow_drop_down_sharp, color: color2),
+                          icon:
+                              Icon(Icons.arrow_drop_down_sharp, color: color2),
                           underline: const SizedBox(),
                           dropdownColor: color1,
                           borderRadius:
-                          const BorderRadius.all(Radius.circular(24)),
+                              const BorderRadius.all(Radius.circular(24)),
                           onChanged: (value) {},
                           items: status.value,
                         ),
@@ -183,7 +185,9 @@ class RentPaymentCard extends StatelessWidget {
                       // ),
                     ],
                   ),
-                  const SizedBox(height: 5,),
+                  const SizedBox(
+                    height: 5,
+                  ),
                   Row(
                     children: [
                       SecText(
@@ -200,7 +204,9 @@ class RentPaymentCard extends StatelessWidget {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 10,),
+                  const SizedBox(
+                    height: 10,
+                  ),
                   Row(
                     children: [
                       SecText(
@@ -266,37 +272,56 @@ class RentPaymentCard extends StatelessWidget {
                     ],
                   ),
                   const Divider(),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      SecText(
-                        "2024-3-1",
-                        textColor: color1,
-                      ),
-                      SecText(
-                        "100,000",
-                        textColor: color1,
-                      ),
-                      TextButton(
-                        onPressed: () {},
-                        style: ButtonStyle(
-                            padding: WidgetStateProperty.all<EdgeInsets>(
-                                EdgeInsets.zero),
-                            alignment: Alignment.centerRight),
-                        child: SecText(
-                          "show",
-                          textColor: color1,
+                  if (rentPayment?.rentPaymentsInstallment?.isEmpty ??
+                      true) ...[
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        SecText(
+                          "Empty",
+                          textColor: AppColors.inverseSecTextColor,
                         ),
+                      ],
+                    ),
+                  ] else ...[
+                    for (int i = 0;
+                        i < (rentPayment?.rentPaymentsInstallment?.length ?? 0);
+                        i++) ...[
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          SecText(
+                            rentPayment
+                                    ?.rentPaymentsInstallment?[i].date?.value ??
+                                "Unknown",
+                            textColor: color1,
+                          ),
+                          SecText(
+                            "${rentPayment?.rentPaymentsInstallment?[i].amount?.value ?? "Unknown"}",
+                            textColor: color1,
+                          ),
+                          TextButton(
+                            onPressed: () {},
+                            style: ButtonStyle(
+                                padding: WidgetStateProperty.all<EdgeInsets>(
+                                    EdgeInsets.zero),
+                                alignment: Alignment.centerRight),
+                            child: SecText(
+                              "show",
+                              textColor: color1,
+                            ),
+                          ),
+                          IconButton(
+                              onPressed: () {},
+                              icon: Icon(
+                                Icons.delete,
+                                color: color1,
+                              ))
+                        ],
                       ),
-                      IconButton(
-                          onPressed: () {},
-                          icon: Icon(
-                            Icons.delete,
-                            color: color1,
-                          ))
+                      const Divider(),
                     ],
-                  ),
-                  const Divider(),
+                  ],
                   const SizedBox(
                     height: 16,
                   ),

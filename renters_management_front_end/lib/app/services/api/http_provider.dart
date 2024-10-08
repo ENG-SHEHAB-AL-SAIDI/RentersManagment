@@ -26,14 +26,14 @@ class HttpProvider {
             final response = await _dio.get(url, data: data);
             return response;
           }
-        } catch (error) {
+        } on DioException catch (error) {
           if (kDebugMode) {
-            print(error);
+            print(error.stackTrace);
           }
         }
       }
       if (kDebugMode) {
-        print(error);
+        print(error.stackTrace);
       }
       rethrow;
     }
@@ -60,7 +60,7 @@ class HttpProvider {
         }
       }
       if (kDebugMode) {
-        print(error);
+        print(error.stackTrace);
       }
       rethrow;
     }
@@ -87,7 +87,7 @@ class HttpProvider {
         }
       }
       if (kDebugMode) {
-        print(error);
+        print(error.stackTrace);
       }
       rethrow;
     }
@@ -114,7 +114,8 @@ class HttpProvider {
         }
       }
       if (kDebugMode) {
-        print(error);
+        print(error.response?.statusCode);
+        print(error.stackTrace);
       }
       rethrow;
     }

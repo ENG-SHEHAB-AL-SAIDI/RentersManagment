@@ -32,13 +32,18 @@ class RenterAddUpdateCardController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    mode.value = Get.arguments['mode'];
-    Map<String, String>? data = Get.arguments['data'];
+    Map<String, String>? data ;
+    if(Get.arguments != null){
+      mode.value = Get.arguments['mode']??"Add";
+      data = Get.arguments['data'];
+    }
+
     if (data != null) {
       nameController.text = data["name"] ?? "";
       rentController.text = data["rent"] ?? "";
       activityController.text = data["activity"] ?? "";
       entryYearController.text = data["entryYear"] ?? "";
+      phoneController.text = data["phone"]??"";
     }
   }
 
@@ -52,7 +57,7 @@ class RenterAddUpdateCardController extends GetxController {
   }
 
   String? validatePhone(String? phone) {
-    if (!GetUtils.isLengthEqualTo(phone, 9)) {
+    if (!GetUtils.isLengthEqualTo(phone, 0)&&!GetUtils.isLengthEqualTo(phone, 9)) {
       return "Number should be 9 digits";
     }
     return null;
@@ -70,22 +75,23 @@ class RenterAddUpdateCardController extends GetxController {
   void submit() {
     Map<String, dynamic> jsData = {};
     if (formKey.currentState!.validate()) {
-      (nameController.text.isNotEmpty)
+      (nameController.text.isNotEmpty && nameController.text != "Unknown".tr)
           ? jsData["name"] = nameController.text
           : null;
-      (rentController.text.isNotEmpty)
+      (rentController.text.isNotEmpty && rentController.text != "Unknown".tr)
           ? jsData["rent"] = double.parse(rentController.text)
           : null;
-      (activityController.text.isNotEmpty)
+      (activityController.text.isNotEmpty && activityController.text != "Unknown".tr)
           ? jsData["job_domain"] = activityController.text
           : null;
-      (entryYearController.text.isNotEmpty)
+      (entryYearController.text.isNotEmpty && entryYearController.text != "Unknown".tr)
           ? jsData["enter_date"] = entryYearController.text
           : null;
-      (phoneController.text.isNotEmpty)
+      (phoneController.text.isNotEmpty && phoneController.text != "Unknown".tr )
           ? jsData["phones"] = [phoneController.text]
           : null;
       Get.back(result: jsData);
     }
   }
+
 }

@@ -34,169 +34,198 @@ class PhoneRentersDetailsView extends GetView<RenterDetailsController> {
                   children: [
                     SizedBox(
                       width: double.maxFinite,
-                      child: Card(
-                        color: AppColors.inverseCardColor,
-                        elevation: 20,
-                        margin: const EdgeInsets.symmetric(vertical: 15),
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(24),
-                            side: BorderSide(
-                              color: AppColors.mainCardColor,
-                              width: 5,
-                              strokeAlign: -1
-                            )),
-                        child: Padding(
-                          padding: const EdgeInsets.all(24.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Row(
+                      child: Obx(() => Card(
+                            color: AppColors.inverseCardColor,
+                            elevation: 20,
+                            margin: const EdgeInsets.symmetric(vertical: 15),
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(24),
+                                side: BorderSide(
+                                    color: AppColors.mainCardColor,
+                                    width: 5,
+                                    strokeAlign: -1)),
+                            child: Padding(
+                              padding: const EdgeInsets.all(24.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  SecText(
-                                    "Name:",
-                                    textColor: AppColors.mainTextColor,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                  const SizedBox(width: 10),
-                                  SecText(
-                                      controller.renter?.name?.value ??
-                                          "Unknown",
-                                      textColor: AppColors.mainTextColor),
-                                ],
-                              ),
-                              Obx(() => Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: [
-                                      Row(
+                                    Row(
+                                      children: [
+                                        SecText(
+                                          "Name:",
+                                          textColor: AppColors.mainTextColor,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                        const SizedBox(width: 10),
+                                        SecText(
+                                            controller.renter?.name?.value ??
+                                                "Unknown",
+                                            textColor: AppColors.mainTextColor),
+                                      ],
+                                    ),
+                                    IconButton(onPressed: controller.renterUpdate, icon: Icon(Icons.edit, color: AppColors.mainIconColor))
+                                  ],),
+                                  Obx(() => Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
                                         children: [
-                                          SecText(
-                                            "Phones:",
-                                            textColor: AppColors.mainTextColor,
-                                            fontWeight: FontWeight.bold,
+                                          Row(
+                                            children: [
+                                              SecText(
+                                                "Phones:",
+                                                textColor:
+                                                    AppColors.mainTextColor,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                              const SizedBox(
+                                                width: 10,
+                                              ),
+                                              (controller
+                                                      .phones.value.isNotEmpty)
+                                                  ? DropdownButton<String>(
+                                                      value: controller
+                                                          .selectedPhone.value,
+                                                      elevation: 6,
+                                                      icon: Icon(
+                                                          Icons
+                                                              .arrow_drop_down_rounded,
+                                                          color: AppColors
+                                                              .mainIconColor),
+                                                      underline:
+                                                          const SizedBox(),
+                                                      dropdownColor: AppColors
+                                                          .inverseCardColor,
+                                                      onChanged: controller
+                                                          .changeSelectedPhone,
+                                                      items: controller
+                                                          .phones.value,
+                                                    )
+                                                  : IconButton(
+                                                      onPressed:
+                                                      ()=>controller.changeSelectedPhone(""),
+                                                      icon: Icon(Icons.add,
+                                                          color: AppColors
+                                                              .mainIconColor)),
+                                            ],
                                           ),
-                                          const SizedBox(
-                                            width: 10,
-                                          ),
-                                          DropdownButton<String>(
-                                            value:
-                                                controller.selectedPhone.value,
-                                            elevation: 6,
-                                            icon: Icon(
-                                                Icons.arrow_drop_down_rounded,
-                                                color: AppColors.mainIconColor),
-                                            underline: const SizedBox(),
-                                            dropdownColor:
-                                                AppColors.inverseCardColor,
-                                            onChanged:
-                                                controller.changeSelectedPhone,
-                                            items: controller.phones.value,
+                                          Row(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              IconButton(
+                                                  onPressed:
+                                                      controller.deletePhone,
+                                                  icon: Icon(
+                                                    Icons.delete,
+                                                    color:
+                                                        AppColors.mainTextColor,
+                                                  )),
+                                              IconButton(
+                                                  onPressed: () {
+                                                    // _callrenter();
+                                                  },
+                                                  icon: Icon(
+                                                    Icons.phone,
+                                                    color:
+                                                        AppColors.mainIconColor,
+                                                  )),
+                                              IconButton(
+                                                  onPressed: () {
+                                                    // _sendSMS();
+                                                  },
+                                                  icon: Icon(Icons.sms_outlined,
+                                                      color: AppColors
+                                                          .mainIconColor))
+                                            ],
                                           ),
                                         ],
+                                      )),
+                                  Row(
+                                    children: [
+                                      SecText(
+                                        "Activity:",
+                                        textColor: AppColors.mainTextColor,
+                                        fontWeight: FontWeight.bold,
                                       ),
-                                      Row(
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: [
-                                          IconButton(
-                                              onPressed: () {
-                                                // _callrenter();
-                                              },
-                                              icon: Icon(
-                                                Icons.phone,
-                                                color: AppColors.mainIconColor,
-                                              )),
-                                          IconButton(
-                                              onPressed: () {
-                                                // _sendSMS();
-                                              },
-                                              icon: Icon(Icons.sms_outlined,
-                                                  color:
-                                                      AppColors.mainIconColor))
-                                        ],
-                                      ),
+                                      const SizedBox(width: 10),
+                                      SecText(
+                                          controller.renter?.jobDomain?.value ??
+                                              "Unknown",
+                                          textColor: AppColors.mainTextColor),
                                     ],
-                                  )),
-                              Row(
-                                children: [
-                                  SecText(
-                                    "Activity:",
-                                    textColor: AppColors.mainTextColor,
-                                    fontWeight: FontWeight.bold,
                                   ),
-                                  const SizedBox(width: 10),
-                                  SecText(
-                                      controller.renter?.jobDomain?.value ??
-                                          "Unknown",
-                                      textColor: AppColors.mainTextColor),
+                                  Padding(
+                                    padding: const EdgeInsets.only(top: 10),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        if (controller.renter?.rent?.value !=
+                                            null) ...[
+                                          Row(
+                                            children: [
+                                              SecText(
+                                                "Rent:",
+                                                textColor:
+                                                    AppColors.mainTextColor,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                              const SizedBox(width: 10),
+                                              SecText(
+                                                  "${controller.renter?.rent?.value} YR",
+                                                  textColor:
+                                                      AppColors.mainTextColor),
+                                            ],
+                                          ),
+                                        ] else ...[
+                                          Row(
+                                            children: [
+                                              SecText(
+                                                "Rent:",
+                                                textColor:
+                                                    AppColors.mainTextColor,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                              const SizedBox(width: 10),
+                                              SecText("Unknown",
+                                                  textColor:
+                                                      AppColors.mainTextColor),
+                                            ],
+                                          ),
+                                        ],
+                                        Obx(
+                                          () => Row(
+                                            children: [
+                                              SecText("Year:    ",
+                                                  textColor:
+                                                      AppColors.mainTextColor),
+                                              DropdownButton<String>(
+                                                value: controller
+                                                    .selectedYear.value,
+                                                elevation: 6,
+                                                icon: Icon(
+                                                    Icons.arrow_drop_down_sharp,
+                                                    color: AppColors
+                                                        .mainIconColor),
+                                                underline: const SizedBox(),
+                                                dropdownColor:
+                                                    AppColors.inverseCardColor,
+                                                onChanged: controller
+                                                    .changeSelectedYear,
+                                                items: controller.years.value,
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  )
                                 ],
                               ),
-                              Padding(
-                                padding: const EdgeInsets.only(top: 10),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    if (controller.renter?.rent?.value !=
-                                        null) ...[
-                                      Row(
-                                        children: [
-                                          SecText(
-                                            "Rent:",
-                                            textColor: AppColors.mainTextColor,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                          const SizedBox(width: 10),
-                                          SecText(
-                                              "${controller.renter?.rent?.value} YR",
-                                              textColor:
-                                                  AppColors.mainTextColor),
-                                        ],
-                                      ),
-                                    ] else ...[
-                                      Row(
-                                        children: [
-                                          SecText(
-                                            "Rent:",
-                                            textColor: AppColors.mainTextColor,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                          const SizedBox(width: 10),
-                                          SecText("Unknown",
-                                              textColor:
-                                                  AppColors.mainTextColor),
-                                        ],
-                                      ),
-                                    ],
-                                    Obx(
-                                      () => Row(
-                                        children: [
-                                          SecText("Year:    ",
-                                              textColor:
-                                                  AppColors.mainTextColor),
-                                          DropdownButton<String>(
-                                            value:
-                                                controller.selectedYear.value,
-                                            elevation: 6,
-                                            icon: Icon(
-                                                Icons.arrow_drop_down_sharp,
-                                                color: AppColors.mainIconColor),
-                                            underline: const SizedBox(),
-                                            dropdownColor:
-                                                AppColors.inverseCardColor,
-                                            onChanged:
-                                                controller.changeSelectedYear,
-                                            items: controller.years.value,
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              )
-                            ],
-                          ),
-                        ),
-                      ),
+                            ),
+                          )),
                     ),
                     Expanded(
                       child: SingleChildScrollView(

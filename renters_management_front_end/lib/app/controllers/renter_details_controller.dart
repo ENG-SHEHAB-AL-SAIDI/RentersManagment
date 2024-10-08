@@ -33,6 +33,7 @@ class RenterDetailsController extends GetxController {
     Result<Renter> res = await RenterServices.fetchRenter(buildId, renterId);
     if (res.statusCode == 200 && res.data != null) {
       renter = res.data;
+      print(renter?.rentPayments?[0]?[0].rentPaymentsInstallment);
     } else {
       Get.dialog(PopUpAlertCard(
           "fetch Renters field please check your connection", Icons.warning));

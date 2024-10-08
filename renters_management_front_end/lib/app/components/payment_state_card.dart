@@ -2,9 +2,9 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:renters_management_front_end/app/models/rent_payments_model.dart';
 
-import '../controllers/home_controller.dart';
 import '../globals.dart';
 import 'buttons.dart';
 import 'custom_text.dart';
@@ -35,8 +35,13 @@ class RentPaymentCard extends StatelessWidget {
     required this.type,
   });
 
-  HomeController controller = Get.put<HomeController>(HomeController());
+  double expansionTileChildrenFontSize = 12;
+  DateFormat dateFormat =
+      DateFormat("yyyy-dd-MM"); // Define the expected format
+  DateFormat timeFormat = DateFormat("hh:mm a"); // Define the expected format
+  // DateTime dateTime = format.parse(dateString);
   Rx<List<DropdownMenuItem<String>>> status = Rx([]);
+
   @override
   Widget build(BuildContext context) {
     (height < 200) ? height = 240 : null;
@@ -248,26 +253,49 @@ class RentPaymentCard extends StatelessWidget {
                 ),
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(24)),
-                childrenPadding: const EdgeInsets.all(16),
+                childrenPadding: const EdgeInsets.all(8),
                 children: [
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      SecText(
+                      SizedBox(
+                          width: ((Get.width-45) * (1 / 5)),
+                          child: SecText(
                         "Date",
                         textColor: color1,
-                      ),
-                      SecText(
+                        fontSize:
+                            Utils.fontSizeScale(expansionTileChildrenFontSize),
+                            textAlign: TextAlign.start,
+                      )),
+                      SizedBox(
+                          width: ((Get.width-45) * (1 / 5)),
+                          child: SecText(
+                        "time",
+                        textColor: color1,
+                        fontSize:
+                            Utils.fontSizeScale(expansionTileChildrenFontSize),
+                            textAlign: TextAlign.start,
+                      )),
+                      SizedBox(
+                          width: ((Get.width-45) * (1 / 5)),
+                          child: SecText(
                         "Amount",
                         textColor: color1,
-                      ),
-                      SecText(
+                        fontSize:
+                            Utils.fontSizeScale(expansionTileChildrenFontSize),
+                            textAlign: TextAlign.start,
+                      )),
+                      SizedBox(
+                          width: ((Get.width-45) * (1 / 5)),
+                          child:  SecText(
                         "Note",
                         textColor: color1,
-                      ),
-                      Icon(
-                        Icons.delete,
-                        color: color2,
+                        fontSize:
+                            Utils.fontSizeScale(expansionTileChildrenFontSize),
+                            // textAlign: TextAlign.start,
+                      )),
+                      SizedBox(
+                        width: ((Get.width-45) * (1 / 5)),
                       )
                     ],
                   ),
@@ -290,33 +318,73 @@ class RentPaymentCard extends StatelessWidget {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          SecText(
-                            rentPayment
-                                    ?.rentPaymentsInstallment?[i].date?.value ??
-                                "Unknown",
+                          SizedBox(
+                              width: ((Get.width-45) * (1 / 5)),
+                              child:SecText(
+                            (rentPayment?.rentPaymentsInstallment?[i].date
+                                        ?.value !=
+                                    null)
+                                ? dateFormat
+                                    .format(DateTime.parse(rentPayment!
+                                        .rentPaymentsInstallment![i]
+                                        .date!
+                                        .value))
+                                    .toString()
+                                : "Unknown",
                             textColor: color1,
-                          ),
-                          SecText(
-                            "${rentPayment?.rentPaymentsInstallment?[i].amount?.value ?? "Unknown"}",
+                            fontSize: Utils.fontSizeScale(
+                                expansionTileChildrenFontSize),
+                                textAlign: TextAlign.start,
+                          )),
+                          SizedBox(
+                              width: ((Get.width-45) * (1 / 5)),
+                              child:SecText(
+                            (rentPayment?.rentPaymentsInstallment?[i].date
+                                        ?.value !=
+                                    null)
+                                ? timeFormat
+                                    .format(DateTime.parse(rentPayment!
+                                        .rentPaymentsInstallment![i]
+                                        .date!
+                                        .value))
+                                    .toString()
+                                : "Unknown",
                             textColor: color1,
-                          ),
-                          TextButton(
-                            onPressed: () {},
-                            style: ButtonStyle(
-                                padding: WidgetStateProperty.all<EdgeInsets>(
-                                    EdgeInsets.zero),
-                                alignment: Alignment.centerRight),
-                            child: SecText(
-                              "show",
-                              textColor: color1,
+                            fontSize: Utils.fontSizeScale(
+                                expansionTileChildrenFontSize),
+                                textAlign: TextAlign.start,
+                          )),
+                          SizedBox(
+                              width: ((Get.width-45) * (1 / 5)),
+                              child: SecText(
+                                "${rentPayment?.rentPaymentsInstallment?[i].amount?.value ?? "Unknown"}",
+                                textColor: color1,
+                                fontSize: Utils.fontSizeScale(
+                                    expansionTileChildrenFontSize),
+                                textAlign: TextAlign.start,
+                              )),
+                          SizedBox(
+                            width: ((Get.width-45) * (1 / 5)),
+                            child: TextButton(
+                              onPressed: () {},
+                              child: SecText(
+                                "show",
+                                textColor: color1,
+                                fontSize: Utils.fontSizeScale(
+                                    expansionTileChildrenFontSize),
+                                textAlign: TextAlign.start,
+                              ),
                             ),
                           ),
-                          IconButton(
-                              onPressed: () {},
-                              icon: Icon(
-                                Icons.delete,
-                                color: color1,
-                              ))
+                          SizedBox(
+                            width: ((Get.width-45) * (1 / 5)),
+                            child: IconButton(
+                                onPressed: () {},
+                                icon: Icon(
+                                  Icons.delete,
+                                  color: color1,
+                                )),
+                          )
                         ],
                       ),
                       const Divider(),
@@ -339,149 +407,3 @@ class RentPaymentCard extends StatelessWidget {
         ));
   }
 }
-
-//
-// Padding(
-// padding: const EdgeInsets.symmetric(vertical: 4),
-// child: Card(
-// shape: RoundedRectangleBorder(
-// borderRadius: BorderRadius.circular(24)),
-// color: AppColors.inverseCardColor,
-// child: Padding(
-// padding: const EdgeInsets.all(24),
-// child: Column(
-// crossAxisAlignment:
-// CrossAxisAlignment.start,
-// children: [
-// Row(
-// mainAxisAlignment: MainAxisAlignment.spaceBetween,
-// children: [
-// SecText(
-// "month",
-// textColor: AppColors.mainTextColor,
-// ),
-// SecText(
-// "state",
-// textColor: AppColors.mainTextColor,
-// ),
-// SecText(
-// "payedAmount",
-// textColor: AppColors.mainTextColor,
-// ),
-// SecText(
-// "remainAmount",
-// textColor: AppColors.mainTextColor,
-// ),
-// ],
-// ),
-// Divider(),
-// Row(
-// mainAxisAlignment:
-// MainAxisAlignment.spaceBetween,
-// children: [
-// SecText(
-// controller
-//     .renter
-//     ?.rentPayments?[controller
-//     .selectedYear
-//     .value]?[i]
-//     .month
-//     ?.value ??
-// "",
-// textColor:
-// AppColors.mainTextColor,
-// ),
-// SecText(
-// controller
-//     .renter
-//     ?.rentPayments?[controller
-//     .selectedYear
-//     .value]?[i]
-//     .state
-//     ?.value ??
-// "unknown",
-// textColor:
-// AppColors.mainTextColor,
-// ),
-// SecText(
-// "${controller.renter?.rentPayments?[controller.selectedYear.value]?[i].payedAmount?.value ?? "unknown"}",
-// textColor:
-// AppColors.mainTextColor,
-// ),
-// SecText(
-// "${controller.renter?.rentPayments?[controller.selectedYear.value]?[i].remainAmount?.value ?? "unknown"}",
-// textColor:
-// AppColors.mainTextColor,
-// ),
-// ],
-// ),
-// Divider(),
-// ExpansionTile(
-// tilePadding:
-// const EdgeInsets.symmetric(
-// horizontal: 0),
-// iconColor: AppColors.mainTextColor,
-// collapsedIconColor:
-// AppColors.mainTextColor,
-// title: SecText(
-// "Rent Payments Installment",
-// textColor: AppColors.mainTextColor,
-// textAlign: TextAlign.start,
-// ),
-// shape: RoundedRectangleBorder(
-// borderRadius:
-// BorderRadius.circular(24)),
-// childrenPadding: const EdgeInsets.all(8),
-// children: [
-//
-// Row(
-// mainAxisAlignment: MainAxisAlignment.spaceBetween,
-// children: [
-// SecText(
-// "Date",
-// textColor: AppColors.mainTextColor,
-// ),
-// SecText(
-// "Amount",
-// textColor: AppColors.mainTextColor,
-// ),
-// SecText(
-// "Note",
-// textColor: AppColors.mainTextColor,
-// ),
-// ],
-// ),
-// const Divider(),
-// Row(
-// mainAxisAlignment: MainAxisAlignment.spaceBetween,
-// children: [
-// SecText(
-// "2024-3-1",
-// textColor: AppColors.mainTextColor,
-// ),
-// SecText(
-// "100,000",
-// textColor: AppColors.mainTextColor,
-// ),
-// TextButton(onPressed: (){},
-// style: ButtonStyle(
-// padding: WidgetStateProperty.all<EdgeInsets>(EdgeInsets.zero),
-// alignment: Alignment.centerRight
-//
-// ),
-// child: SecText(
-// "show",
-// textColor: AppColors.mainTextColor,
-// ),
-// )
-// ],
-// ),
-// const Divider(),
-// const SizedBox(height: 16,),
-// CustomButton(onPress: (){},text: "Add Installment",color: AppColors.mainTextColor,textColor: AppColors.inverseMainTextColor,size:const Size(150,30) ,)
-// ],
-// ),
-// ],
-// ),
-// )),
-// );

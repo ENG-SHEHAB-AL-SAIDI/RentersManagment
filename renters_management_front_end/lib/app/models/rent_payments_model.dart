@@ -30,10 +30,10 @@ class RentPayment {
 
   factory RentPayment.fromJson(Map<String, dynamic> json) {
     List rentPaymentsInstallmentsJs = json['rent_payments_installments'];
-    List<RentPaymentsInstallment> renters = [];
+    List<RentPaymentsInstallment> rentPaymentsInstallment = [];
     if (rentPaymentsInstallmentsJs.isNotEmpty) {
-      for (var rentPaymentsInstallment in rentPaymentsInstallmentsJs) {
-        renters.add(RentPaymentsInstallment.fromJson(rentPaymentsInstallment));
+      for (var rentPaymentsInstallmentJs in rentPaymentsInstallmentsJs) {
+        rentPaymentsInstallment.add(RentPaymentsInstallment.fromJson(rentPaymentsInstallmentJs));
       }
     }
     return RentPayment(
@@ -43,6 +43,7 @@ class RentPayment {
       state: RxString(json["state"]),
       remainAmount: RxDouble(json['remain_amount'].toDouble() ?? 0.0),
       payedAmount: RxDouble(json['payed_amount'].toDouble() ?? 0.0),
+      rentPaymentsInstallment: rentPaymentsInstallment,
       updatedAt: RxString(json['deleted_at'] ?? "Unknown"),
       createdAt: RxString(json['created_at'] ?? "Unknown"),
       deletedAt: RxString(json['updated_at'] ?? "Unknown"),

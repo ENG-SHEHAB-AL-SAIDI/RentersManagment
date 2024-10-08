@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Requests\RentPaymentRequest;
 use App\Models\Renter;
 use App\Models\RentPayment;
-use Illuminate\Http\Request;
 
 class RentPaymentController extends Controller
 {

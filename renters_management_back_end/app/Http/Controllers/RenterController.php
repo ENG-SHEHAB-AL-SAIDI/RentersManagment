@@ -15,18 +15,18 @@ class RenterController extends Controller
     public function index($buildId)
     {
 
-        $renters = Renter::where('build_id',$buildId)->with('renterPhones')->get();
-            if($renters){
-                $renters->each(function ($renter) {
-                    $groupedRentPayments = $renter->rentPayments->groupBy('year');
-                    $renter->unsetRelation('rentPayments');
-                    $renter->grouped_rent_payments = $groupedRentPayments;
-                });
-            }
-            return response()->json([
-                'message' => 'successful',
-                'Renters' => $renters,
-            ], 200);
+        $renters = Renter::where('build_id', $buildId)->with('renterPhones')->get();
+        if ($renters) {
+            $renters->each(function ($renter) {
+                $groupedRentPayments = $renter->rentPayments()->with('rentPaymentsInstallments')->get()->groupBy('year');
+                $renter->unsetRelation('rentPayments');
+                $renter->grouped_rent_payments = $groupedRentPayments;
+            });
+        }
+        return response()->json([
+            'message' => 'successful',
+            'Renters' => $renters,
+        ], 200);
     }
 
     /**
@@ -36,7 +36,7 @@ class RenterController extends Controller
     {
 
         $data = $request->validated();
-        if(array_key_exists('phones',$data)){
+        if (array_key_exists('phones', $data)) {
             $phones = $data['phones'];
             $data = Arr::except($data, ['phones']);
         }
@@ -48,7 +48,7 @@ class RenterController extends Controller
 
         $renter = $build->renters()->create($data);
 
-        if(array_key_exists('phones',$data)){
+        if (array_key_exists('phones', $data)) {
             foreach ($phones as $phone) {
                 $renter->addPhone($phone);
             }
@@ -69,15 +69,24 @@ class RenterController extends Controller
      */
     public function show(int $buildId, int $renterId)
     {
-        $renter = Renter::with('renterPhones')->where('build_id',$buildId)->find($renterId);
-            $groupedRentPayments = $renter->rentPayments->groupBy('year');
-            $renter->unsetRelation('rentPayments');
-            $renter->grouped_rent_payments = $groupedRentPayments;
+        $renter = Renter::where('build_id', $buildId)->with('renterPhones')->find($renterId);
 
+        if(!$renter){
             return response()->json([
-                'message' => 'successful',
-                'Renter' => $renter,
-            ], 200);
+                'message' => 'renter not found',
+                'Renter' => $renter
+            ], 404);
+        }
+
+
+        $groupedRentPayments = $renter->rentPayments()->with('rentPaymentsInstallments')->get()->groupBy('year');
+        $renter->unsetRelation('rentPayments');
+        $renter->grouped_rent_payments = $groupedRentPayments;
+
+        return response()->json([
+            'message' => 'successful',
+            'Renter' => $renter,
+        ], 200);
     }
 
     /**
@@ -86,23 +95,38 @@ class RenterController extends Controller
     public function update(RenterRequst $request, int $buildId, int $renterId)
     {
 
-            $data = $request->validated();
-            if ($data['phones'] != null) {
-                $phones = $data['phones']; // Store the password in a separate variable
-                $data = Arr::except($data, ['phones']);
-            }
-            $renter = Renter::with('renterPhones')->where('build_id',$buildId)->find($renterId);
-            $renter->update($data);
-            $groupedRentPayments = $renter->rentPayments->groupBy('year');
-            $renter->unsetRelation('rentPayments');
-            $renter->grouped_rent_payments = $groupedRentPayments;
+        $data = $request->validated();
+
+        if (array_key_exists('phones', $data)) {
+            $phones = $data['phones']; // Store the password in a separate variable
+            $data = Arr::except($data, ['phones']);
+        }
+        $renter = Renter::where('build_id', $buildId)->with('renterPhones')->find($renterId);
+
+        if(!$renter){
+            return response()->json([
+                'message' => 'renter not found',
+                'Renter' => $renter
+            ], 404);
+        }
+
+        $renter->update($data);
+
+
+        $groupedRentPayments = $renter->rentPayments()->with('rentPaymentsInstallments')->get()->groupBy('year');
+        $renter->unsetRelation('rentPayments');
+        $renter->grouped_rent_payments = $groupedRentPayments;
+
+        if(array_key_exists('phones', $data)){
             foreach ($phones as $phone) {
                 $renter->addPhone($phone);
             }
-            return response()->json([
-                'message' => 'update successful',
-                'Renter' => $renter
-            ], 200);
+        }
+
+        return response()->json([
+            'message' => 'update successful',
+            'Renter' => $renter
+        ], 200);
     }
 
     /**
@@ -111,9 +135,15 @@ class RenterController extends Controller
     public function destroy(RenterRequst $request, int $buildId, int $renterId)
     {
 
-            $renter = Renter::where('build_id', $buildId)->find($renterId)->delete();
+        $renter = Renter::where('build_id', $buildId)->find($renterId);
+        $renter->delete();
+        if(!$renter){
             return response()->json([
-                'message' => 'delete successful',
-            ], 200);
+                'message' => 'renter not found',
+            ], 404);
+        }
+        return response()->json([
+            'message' => 'delete successful',
+        ], 200);
     }
 }

@@ -5,6 +5,7 @@ use App\Http\Controllers\BuildController;
 use App\Http\Controllers\CombinDataController;
 use App\Http\Controllers\RenterController;
 use App\Http\Controllers\RentPaymentController;
+use App\Http\Controllers\RentPaymentsInstallmentController;
 use App\Models\RentPayment;
 use Illuminate\Support\Facades\Route;
 
@@ -22,6 +23,7 @@ function () {
     Route::apiResource('builds',BuildController::class);
     Route::apiResource('builds.renters',RenterController::class);
     Route::apiResource('renters.rent_payments',RentPaymentController::class);
+    Route::apiResource('rent_payments.rentPaymentsInstallment',RentPaymentsInstallmentController::class);
 
 
     // Route::get('getAllData',[CombinDataController::class, 'getAllUserData']);

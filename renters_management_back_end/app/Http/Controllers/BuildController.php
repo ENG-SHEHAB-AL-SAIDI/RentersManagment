@@ -16,7 +16,7 @@ class BuildController extends Controller
 
         $builds->each(function ($build) {
             $build->renters->each(function ($renter) {
-                $groupedRentPayments = $renter->rentPayments->groupBy('year');
+                $groupedRentPayments = $renter->rentPayments()->with('rentPaymentsInstallments')->get()->groupBy('year');
                 $renter->unsetRelation('rentPayments');
                 $renter->grouped_rent_payments = $groupedRentPayments;
             });
@@ -37,7 +37,7 @@ class BuildController extends Controller
 
         $build = auth()->guard('api')->user()->builds()->with('renters', 'renters.renterPhones')->create($data);
         $build->renters->each(function ($renter) {
-            $groupedRentPayments = $renter->rentPayments->groupBy('year');
+            $groupedRentPayments = $renter->rentPayments()->with('rentPaymentsInstallments')->get()->groupBy('year');
             $renter->unsetRelation('rentPayments');
             $renter->grouped_rent_payments = $groupedRentPayments;
         });
@@ -55,9 +55,15 @@ class BuildController extends Controller
         $request->authorize();
         $build = Build::withCount('renters')->find($id);
 
+        if(!$build){
+            return response()->json([
+                'message' => 'build not found',
+                'Renter' => $build
+            ], 404);
+        }
 
         $build->renters->each(function ($renter) {
-            $groupedRentPayments = $renter->rentPayments->groupBy('year');
+            $groupedRentPayments = $renter->rentPayments()->with('rentPaymentsInstallments')->get()->groupBy('year');
             $renter->unsetRelation('rentPayments');
             $renter->grouped_rent_payments = $groupedRentPayments;
         });
@@ -75,8 +81,16 @@ class BuildController extends Controller
     {
         $request->validated();
         $build = Build::withCount('renters')->with('renters', 'renters.renterPhones')->find($id);
+
+        if(!$build){
+            return response()->json([
+                'message' => 'build not found',
+                'Renter' => $build
+            ], 404);
+        }
+
         $build->renters->each(function ($renter) {
-            $groupedRentPayments = $renter->rentPayments->groupBy('year');
+            $groupedRentPayments = $renter->rentPayments()->with('rentPaymentsInstallments')->get()->groupBy('year');
             $renter->unsetRelation('rentPayments');
             $renter->grouped_rent_payments = $groupedRentPayments;
         });
@@ -93,11 +107,16 @@ class BuildController extends Controller
     public function destroy(BuildRequst $request, string $id)
     {
 
-        $build = Build::withCount('renters')->find($id);
-        $build->forceDelete();
+        $build = Build::find($id);
+        if(!$build){
+            return response()->json([
+                'message' => 'build not found',
+                'Renter' => $build
+            ], 404);
+        }
+        $build->delete();
         return response()->json([
             'message' => 'delete successful',
-            // 'Build' => $build->load('renters', 'renters.renterPhones', 'renters.RentPayments')
         ], 200);
     }
 }

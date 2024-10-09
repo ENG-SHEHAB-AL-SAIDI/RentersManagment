@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+import 'package:get/get_rx/get_rx.dart';
 import 'package:renters_management_front_end/app/models/result.dart';
 import 'package:renters_management_front_end/app/services/user_services.dart';
 
@@ -11,6 +12,7 @@ class LoginController extends GetxController {
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
   FocusNode idFocus = FocusNode();
   FocusNode passwordFocus = FocusNode();
+  RxString filedMessage = "password or id is wrong".obs;
   String logWith = "ID";
   RxBool logging = false.obs;
   RxBool loggingFiled = false.obs;
@@ -64,10 +66,12 @@ class LoginController extends GetxController {
     if (formKey.currentState!.validate()) {
       logging.value = true;
       Result res = await UserServices.userLogin(id.text, password.text);
-      // Build? build = res2.data;
-      if (res.statusCode==200 || true) {
+      if (res.statusCode==200) {
         Get.offNamed("/home");
       }else{
+        if((res.statusCode??600)%100 == 6){
+          filedMessage.value = "please check your connection";
+        }
        loggingFiled.value = true;
       }
       logging.value = false;

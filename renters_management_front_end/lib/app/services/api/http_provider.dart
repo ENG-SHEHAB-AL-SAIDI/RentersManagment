@@ -1,6 +1,5 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
-import 'package:get/get.dart' as get_x;
 import 'package:renters_management_front_end/app/services/api/api_end_points.dart';
 
 class HttpProvider {
@@ -11,134 +10,118 @@ class HttpProvider {
     _dio.options.baseUrl = baseUrl;
     _dio.options.contentType = contentType;
     _dio.options.connectTimeout = const Duration(seconds: 15);
+    _dio.interceptors.add(InterceptorsWrapper(
+      onError: (DioException error, ErrorInterceptorHandler handler) async {
+        if (kDebugMode) {
+          print("HttpProviderError ${error.response?.statusCode}");
+        }
+
+        if (error.response?.statusCode == 401 && error.requestOptions.path != "auth/refresh") {
+          try {
+            Response? response = await _refreshAndRetry(error.requestOptions);
+            if (response != null) {
+              return handler.resolve(response);
+            }
+          } catch (e) {
+            if (kDebugMode) {
+              print(e);
+            }
+          }
+        }
+
+        return handler.next(error);
+      },
+    ));
   }
 
-  static Future<Response> get(String url, {dynamic data}) async {
+  static Future<Response?> get(String url, {dynamic data}) async {
     try {
       final response = await _dio.get(url, data: data);
       return response;
     } on DioException catch (error) {
-      // Handle the error
       if (error.response != null) {
-        try {
-          if (error.response?.statusCode == 405) {
-            await _refresh();
-            final response = await _dio.get(url, data: data);
-            return response;
-          }
-        } on DioException catch (error) {
-          if (kDebugMode) {
-            print(error.stackTrace);
-          }
+        if (kDebugMode) {
+          print(error.response?.statusCode);
         }
+        return error.response;
       }
-      if (kDebugMode) {
-        print(error.stackTrace);
-      }
+    }catch(e){
       rethrow;
     }
+    return null;
   }
 
-  static Future<Response> post(String url, {dynamic data}) async {
+  static Future<Response?> post(String url, {dynamic data}) async {
     try {
       final response = await _dio.post(url, data: data);
       return response;
     } on DioException catch (error) {
-      // Handle the error
       if (error.response != null) {
-        try {
-          if (error.response?.statusCode == 405) {
-            await _refresh();
-            final response = await _dio.post(url, data: data);
-            return response;
-
-          }
-        } on DioException catch (error) {
-          if (kDebugMode) {
-            print(error.message);
-          }
+        if (kDebugMode) {
+          print(error.response?.statusCode);
         }
+          return error.response;
       }
-      if (kDebugMode) {
-        print(error.stackTrace);
-      }
+    }catch(e){
       rethrow;
     }
+    return null;
   }
 
-  static Future<Response> patch(String url, {dynamic data}) async {
+  static Future<Response?> patch(String url, {dynamic data}) async {
     try {
       final response = await _dio.patch(url, data: data);
       return response;
     } on DioException catch (error) {
-      // Handle the error
       if (error.response != null) {
-        try {
-          if (error.response?.statusCode == 405) {
-            await _refresh();
-            final response = await _dio.post(url, data: data);
-            return response;
-
-          }
-        } on DioException catch (error) {
-          if (kDebugMode) {
-            print(error.message);
-          }
+        if (kDebugMode) {
+          print(error.response?.statusCode);
         }
+        return error.response;
       }
-      if (kDebugMode) {
-        print(error.stackTrace);
-      }
+    }catch(e){
       rethrow;
     }
+    return null;
   }
 
-  static Future<Response> delete(String url, {dynamic data}) async {
+  static Future<Response?> delete(String url, {dynamic data}) async {
     try {
       final response = await _dio.delete(url, data: data);
       return response;
-    } on DioException catch (error) {
-      // Handle the error
+    }  on DioException catch (error) {
       if (error.response != null) {
-        try {
-          if (error.response?.statusCode == 405) {
-            await _refresh();
-            final response = await _dio.post(url, data: data);
-            return response;
-
-          }
-        } on DioException catch (error) {
-          if (kDebugMode) {
-            print(error.message);
-          }
+        if (kDebugMode) {
+          print(error.response?.statusCode);
         }
+        return error.response;
       }
-      if (kDebugMode) {
-        print(error.response?.statusCode);
-        print(error.stackTrace);
-      }
+    }catch(e){
       rethrow;
     }
+    return null;
   }
 
-  static Future<int> _refresh() async {
+  static Future<Response?> _refreshAndRetry(
+      RequestOptions requestOptions) async {
     try {
-      Response response = await _dio.post(EndPoints.refresh);
+      Response response = await _dio.post("auth/refresh");
       if (response.statusCode == 200) {
+        removeAuthTokenInterceptor();
         addAuthTokenInterceptor(
             response.data["token"]["original"]["access_token"]);
-        return 200;
-      } else {
-        get_x.Get.offAllNamed("/login");
+        return await _dio.request(requestOptions.path,
+            queryParameters: requestOptions.queryParameters,
+            data: requestOptions.data,
+            options: Options(
+              method: requestOptions.method,
+            ));
       }
     } on DioException catch (error) {
-      if (error.response != null) {
-        if (error.response?.statusCode == 401) {
-          get_x.Get.offAllNamed("/login");
-        }
-      }
+      return error.response;
     }
-    return 405;
+
+    return null;
   }
 
   static void addAuthTokenInterceptor(String authToken) {

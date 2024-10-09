@@ -178,8 +178,8 @@ class RenterDetailsController extends GetxController {
       'data': {
         "name":renter?.name?.value??"",
         "rent":renter?.rent?.value.toString()??"",
-        "activity":renter?.jobDomain?.value??"",
-        "entryYear":renter?.enterDate?.value??"",
+        "activity":(renter?.jobDomain?.value == "Unknown".tr)?"":renter?.jobDomain?.value??"",
+        "entryYear":(renter?.enterDate?.value == "Unknown".tr)?"":renter?.enterDate?.value??"",
         "phone":selectedPhone.value,
       }
     });

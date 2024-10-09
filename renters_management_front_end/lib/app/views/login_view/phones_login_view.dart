@@ -171,7 +171,7 @@ class PhoneLoginView extends GetView<LoginController> {
                         textColor: Colors.redAccent,
                       ),
                       SecText(
-                        "password or id is wrong",
+                        controller.filedMessage.value,
                         textColor: Colors.redAccent,
                       ),
                     ],

@@ -21,11 +21,11 @@ class RenterServices {
           message: "successful");
     }
 
-    late Response response;
+    late Response? response;
     try {
       response = await HttpProvider.get(
           "${EndPoints.getBuilds}/$buildId/${EndPoints.getRenters}");
-      List result = response.data["Renters"];
+      List result = response?.data["Renters"];
       List<Renter> renters = [];
       for (int i = 0; i < result.length; i++) {
         renters.add(Renter.fromJson(result[i]));
@@ -34,16 +34,17 @@ class RenterServices {
       return Result(
           data: renters,
           hasError: false,
-          statusCode: response.statusCode,
+          statusCode: response?.statusCode,
           message: "successful");
-    } on DioException catch (error) {
-      if (error.response != null) {
-        return Result(
-            hasError: true,
-            statusCode: error.response?.statusCode,
-            data: error.response?.data);
+    }  catch (error) {
+      if (kDebugMode) {
+        print(error.toString());
       }
-      return Result(hasError: true, message: error.message);
+      return Result(
+          hasError: true,
+          statusCode: 621,
+          message: error.toString(),
+          data: null);
     }
   }
 
@@ -62,11 +63,11 @@ class RenterServices {
       }
     }
 
-    late Response response;
+    late Response? response;
     try {
       response = await HttpProvider.post(
           "${EndPoints.getBuilds}/$buildId/ ${EndPoints.getRenters}/$renterId");
-      Map<String, dynamic> result = response.data["Renter"];
+      Map<String, dynamic> result = response?.data["Renter"];
       List<Renter>? renters = res.data?.renters ?? [];
       Renter renter = Renter.fromJson(result);
       renters.add(renter);
@@ -74,17 +75,19 @@ class RenterServices {
       return Result(
           data: renter,
           hasError: false,
-          statusCode: response.statusCode,
+          statusCode: response?.statusCode,
           message: "successful");
-    } on DioException catch (error) {
-      if (error.response != null) {
-        return Result(
-            hasError: true,
-            statusCode: error.response?.statusCode,
-            data: error.response?.data);
+    } catch (error) {
+      if (kDebugMode) {
+        print(error.toString());
       }
-      return Result(hasError: true, statusCode: 600, message: error.message);
+      Result(
+          hasError: true,
+          statusCode: 622,
+          message: error.toString(),
+          data: null);
     }
+    return Result(hasError: true, statusCode: 600, message: "some thing wrong", data: null);
   }
 
   static Future<Result<Renter>> storeRenter(
@@ -92,35 +95,32 @@ class RenterServices {
       required Map<String, dynamic> data,
       bool hardFetch = false}) async {
     Result<Build> res = await BuildServices.fetchBuild(id: buildId);
-    Response response;
+    Response? response;
     try {
       response = await HttpProvider.post(
           "${EndPoints.getBuilds}/$buildId/${EndPoints.getRenters}",
           data: data);
-      if (response.statusCode == 200) {
-        Renter renter0 = Renter.fromJson(response.data["Renter"]);
+      if (response?.statusCode == 200) {
+        Renter renter0 = Renter.fromJson(response?.data["Renter"]);
         res.data?.renters?.add(renter0);
         res.data?.numRenters?.value += 1;
         return Result(
             data: renter0,
-            statusCode: response.statusCode,
+            statusCode: response?.statusCode,
             hasError: false,
             message: "successful");
       }
-    } on DioException catch (error) {
-      if (error.response != null) {
-        return Result(
-            hasError: true,
-            statusCode: error.response?.statusCode,
-            message: error.message);
-      }
-      return Result(hasError: true, message: error.message);
     } catch (error) {
       if (kDebugMode) {
         print(error.toString());
       }
+      Result(
+          hasError: true,
+          statusCode: 623,
+          message: error.toString(),
+          data: null);
     }
-    return Result(hasError: true, statusCode: 600, message: "some thing wrong");
+    return Result(hasError: true, statusCode: 623, message: "some thing wrong", data: null);
   }
 
   static Future<Result<Renter>> updateRenter(
@@ -129,37 +129,70 @@ class RenterServices {
         required Map<String, dynamic> data,
         bool hardFetch = false}) async {
     Result<Build> res = await BuildServices.fetchBuild(id: buildId);
-    Response response;
+    Response? response;
     try {
       response = await HttpProvider.patch(
           "${EndPoints.getBuilds}/$buildId/${EndPoints.getRenters}/$renterId",
           data: data);
-      if (response.statusCode == 200) {
-        Renter renter0 = Renter.fromJson(response.data["Renter"]);
+      if (response?.statusCode == 200) {
+        Renter renter0 = Renter.fromJson(response?.data["Renter"]);
         if(res.data?.renters?.indexWhere((e)=>e.id.value == renterId)!=null){
           res.data?.renters?[res.data!.renters!.indexWhere((e)=>e.id.value == renterId)] = renter0;
         }
         return Result(
             data: renter0,
-            statusCode: response.statusCode,
+            statusCode: response?.statusCode,
             hasError: false,
             message: "successful");
       }
-    } on DioException catch (error) {
-      if (error.response != null) {
-        return Result(
-            hasError: true,
-            statusCode: error.response?.statusCode,
-            message: error.message);
-      }
-      return Result(hasError: true, message: error.message);
-    } catch (error) {
+    }  catch (error) {
       if (kDebugMode) {
         print(error.toString());
       }
+      return Result(
+          hasError: true,
+          statusCode: 624,
+          message: error.toString(),
+          data: null);
     }
-    return Result(hasError: true, statusCode: 600, message: "some thing wrong");
+    return Result(hasError: true, statusCode: 624, message: "some thing wrong", data: null);
   }
+
+
+
+
+
+  static Future<Result<Build>> deleteRenter(
+      {required int buildId,
+      required int renterId,
+      bool hardFetch = false}) async {
+    Result<Build> res = await BuildServices.fetchBuild(id: buildId);
+    Response? response;
+    try {
+      response = await HttpProvider.delete(
+          "${EndPoints.getBuilds}/$buildId/${EndPoints.getRenters}/$renterId");
+      if (response?.statusCode == 200) {
+        res.data?.renters
+            ?.removeWhere((element) => element.id.value == renterId);
+        return Result(
+            hasError: false,
+            statusCode: response?.statusCode,
+            message: "successful");
+      }
+    }  catch (error) {
+      if (kDebugMode) {
+        print(error.toString());
+      }
+      return Result(
+          hasError: true,
+          statusCode: 625,
+          message: error.toString(),
+          data: null);
+    }
+    return Result(hasError: true, statusCode: 625, message: "some thing wrong", data: null);
+  }
+
+
 
   static Future<Result<bool>> renterAddPhone(
       {required int buildId,
@@ -168,7 +201,7 @@ class RenterServices {
       bool hardFetch = false}) async {
 
     Result<Build> res = await BuildServices.fetchBuild(id: buildId);
-    Response response;
+    Response? response;
     try {
       if (!(res.data?.renters
           ?.firstWhere((e) => e.id.value == renterId)
@@ -176,7 +209,7 @@ class RenterServices {
           .contains(RxString(data['phone'])) ??
           false)){
         response = await HttpProvider.post("user/renters/$renterId", data: data);
-        if (response.statusCode == 200) {
+        if (response?.statusCode == 200) {
           if (!(res.data?.renters
               ?.firstWhere((e) => e.id.value == renterId)
               .phones!
@@ -188,40 +221,24 @@ class RenterServices {
                 ?.insert(0, RxString(data['phone']));
           }
 
-          return Result(
-              data: true,
-              statusCode: response.statusCode,
-              hasError: false,
-              message: "successful");
+
         }
-        return Result(
-            data: false,
-            statusCode: 600,
-            hasError: false,
-            message: "this phone already exist");
+      }else{
+        Result(hasError: true, statusCode: 701, message: "this phone already exist", data: null);
       }
-    } on DioException catch (error) {
-      if (error.response != null) {
-        return Result(
-            data: false,
-            hasError: true,
-            statusCode: error.response?.statusCode,
-            message: error.response?.data.toString());
-      }
-      return Result(data: false, hasError: true, message: error.message);
-    } catch (error) {
+    }
+    catch (error) {
       if (kDebugMode) {
         print(error.toString());
       }
+      return Result(
+          hasError: true,
+          statusCode: 626,
+          message: error.toString(),
+          data: null);
     }
-    return Result(
-        data: false,
-        hasError: true,
-        statusCode: res.statusCode,
-        message: res.message);
+    return Result(hasError: true, statusCode: 626, message: "some thing wrong", data: null);
   }
-
-
 
   static Future<Result<bool>> renterDeletePhone(
       {required int buildId,
@@ -230,75 +247,31 @@ class RenterServices {
         bool hardFetch = false}) async {
 
     Result<Build> res = await BuildServices.fetchBuild(id: buildId);
-    Response response;
+    Response? response;
     try {
         response = await HttpProvider.delete("user/renters/$renterId", data: data);
-        if (response.statusCode == 200) {
+        if (response?.statusCode == 200) {
             res.data?.renters
                 ?.firstWhere((e) => e.id.value == renterId)
                 .phones
                 ?.removeWhere((e)=>e.value == data['phone']);
           return Result(
               data: true,
-              statusCode: response.statusCode,
+              statusCode: response?.statusCode,
               hasError: false,
               message: "successful");
         }
 
-    } on DioException catch (error) {
-      if (error.response != null) {
-        return Result(
-            data: false,
-            hasError: true,
-            statusCode: error.response?.statusCode,
-            message: error.type.name);
-      }
-      return Result(data: false, hasError: true, message: error.message);
-    } catch (error) {
+    }  catch (error) {
       if (kDebugMode) {
         print(error.toString());
       }
+      return Result(
+          hasError: true,
+          statusCode: 614,
+          message: error.toString(),
+          data: null);
     }
-
-
-    return Result(
-        data: false,
-        hasError: true,
-        statusCode: res.statusCode,
-        message: res.message);
-  }
-
-
-  static Future<Result<Build>> deleteRenter(
-      {required int buildId,
-      required int renterId,
-      bool hardFetch = false}) async {
-    Result<Build> res = await BuildServices.fetchBuild(id: buildId);
-    Response response;
-    try {
-      response = await HttpProvider.delete(
-          "${EndPoints.getBuilds}/$buildId/${EndPoints.getRenters}/$renterId");
-      if (response.statusCode == 200) {
-        res.data?.renters
-            ?.removeWhere((element) => element.id.value == renterId);
-        return Result(
-            hasError: false,
-            statusCode: response.statusCode,
-            message: "successful");
-      }
-    } on DioException catch (error) {
-      if (error.response != null) {
-        return Result(
-            hasError: true,
-            statusCode: error.response?.statusCode,
-            message: error.message);
-      }
-      return Result(hasError: true, message: error.message);
-    } catch (error) {
-      if (kDebugMode) {
-        print(error.toString());
-      }
-    }
-    return Result(hasError: true, statusCode: 600, message: "some thing wrong");
+    return Result(hasError: true, statusCode: 614, message: "some thing wrong", data: null);
   }
 }

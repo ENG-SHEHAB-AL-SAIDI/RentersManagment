@@ -19,37 +19,33 @@ class BuildServices {
           hasError: false,
           message: "successful");
     }
-    Response response;
+    Response? response;
     try {
       _builds = [];
       response = await HttpProvider.get(EndPoints.getBuilds);
-      List result = response.data["Builds"];
-
+      List result = response?.data["Builds"];
       for (int i = 0; i < result.length; i++) {
         _builds.add(Build.fromJson(result[i]));
       }
       return Result(
           data: _builds,
           hasError: false,
-          statusCode: response.statusCode,
+          statusCode: response?.statusCode,
           message: "successful");
-    } on DioException catch (error) {
-      if (error.response != null) {
-        return Result(
-            hasError: true,
-            statusCode: error.response?.statusCode,
-            message: error.response?.data);
-      }
     } catch (error) {
       if (kDebugMode) {
         print(error.toString());
       }
+      return Result(
+          hasError: true,
+          statusCode: 611,
+          message: error.toString(),
+          data: null);
     }
-    return Result(hasError: true, statusCode: 600, message: "some thing wrong");
   }
 
   static Future<Result<Build>> fetchBuild(
-      {required int id,bool hardFetch = false}) async {
+      {required int id, bool hardFetch = false}) async {
     Build build0;
     if (_builds.isNotEmpty && !hardFetch) {
       for (Build build in _builds) {
@@ -63,7 +59,7 @@ class BuildServices {
       }
     }
 
-    Response response;
+    Response? response;
     try {
       for (Build build in _builds) {
         if (build.id.value == id) {
@@ -72,120 +68,110 @@ class BuildServices {
       }
 
       response = await HttpProvider.get("${EndPoints.getBuilds}/$id");
-      build0 = Build.fromJson(response.data);
+      build0 = Build.fromJson(response?.data);
       _builds.add(build0);
       return Result(
           data: build0,
           hasError: false,
-          statusCode: response.statusCode,
+          statusCode: response?.statusCode,
           message: "successful");
-    } on DioException catch (error) {
-      if (error.response != null) {
-        return Result(
-            hasError: true,
-            statusCode: error.response?.statusCode,
-            message: error.message);
-      }
-      return Result(hasError: true, message: error.message);
     } catch (error) {
       if (kDebugMode) {
         print(error.toString());
       }
+      return Result(
+          hasError: true,
+          statusCode: 612,
+          message: error.toString(),
+          data: null);
     }
-    return Result(hasError: true, statusCode: 600, message: "some thing wrong");
   }
 
   static Future<Result<Build>> storeBuild(
       {required Map<String, dynamic> data, bool hardFetch = false}) async {
-    Response response;
+    Response? response;
     try {
-      response =
-          await HttpProvider.post(EndPoints.getBuilds, data: data);
-      if (response.statusCode == 200) {
-        Build build0 = Build.fromJson(response.data["Build"]);
+      response = await HttpProvider.post(EndPoints.getBuilds, data: data);
+      if (response?.statusCode == 200) {
+        Build build0 = Build.fromJson(response?.data["Build"]);
         _builds.add(build0);
-
         return Result(
             data: build0,
-            statusCode: response.statusCode,
+            statusCode: response?.statusCode,
             hasError: false,
             message: "successful");
       }
-    } on DioException catch (error) {
-      if (error.response != null) {
-        return Result(
-            hasError: true,
-            statusCode: error.response?.statusCode,
-            message: error.message);
-      }
-      return Result(hasError: true, message: error.message);
-    } catch (error) {
+    }  catch (error) {
       if (kDebugMode) {
         print(error.toString());
       }
+      return Result(
+          hasError: true,
+          statusCode: 613,
+          message: error.toString(),
+          data: null);
     }
-    return Result(hasError: true, statusCode: 600, message: "some thing wrong");
+    return Result(hasError: true, statusCode: 613, message: "some thing wrong", data: null);
   }
 
+
   static Future<Result<Build>> updateBuild(
-      {required int id ,required Map<String, dynamic> data, bool hardFetch = false}) async {
-    Response response;
+      {required int id,
+      required Map<String, dynamic> data,
+      bool hardFetch = false}) async {
+    Response? response;
     try {
       response =
-      await HttpProvider.patch("${EndPoints.getBuilds}/$id", data: data);
-      if (response.statusCode == 200) {
-        Build build0 = Build.fromJson(response.data["Build"]);
-        _builds[_builds.indexWhere((element)=>element.id.value == id)] = build0;
+          await HttpProvider.patch("${EndPoints.getBuilds}/$id", data: data);
+      if (response?.statusCode == 200) {
+        Build build0 = Build.fromJson(response?.data["Build"]);
+        _builds[_builds.indexWhere((element) => element.id.value == id)] =
+            build0;
 
         return Result(
             data: build0,
-            statusCode: response.statusCode,
+            statusCode: response?.statusCode,
             hasError: false,
             message: "successful");
       }
-    } on DioException catch (error) {
-      if (error.response != null) {
-        return Result(
-            hasError: true,
-            statusCode: error.response?.statusCode,
-            message: error.message);
-      }
-      return Result(hasError: true, message: error.message);
     } catch (error) {
       if (kDebugMode) {
         print(error.toString());
       }
+      return Result(
+          hasError: true,
+          statusCode: 614,
+          message: error.toString(),
+          data: null);
     }
-    return Result(hasError: true, statusCode: 600, message: "some thing wrong");
+    return Result(hasError: true, statusCode: 614, message: "some thing wrong", data: null);
   }
 
   static Future<Result<Build>> deleteBuild(
       {required int id, bool hardFetch = false}) async {
-    Response response;
+    Response? response;
     try {
       response = await HttpProvider.delete("${EndPoints.getBuilds}/$id");
-      if (response.statusCode == 200) {
+      if (response?.statusCode == 200) {
         _builds.removeWhere((element) => element.id.value == id);
         return Result(
             hasError: false,
-            statusCode: response.statusCode,
+            statusCode: response?.statusCode,
             message: "successful");
       }
-    } on DioException catch (error) {
-      if (error.response != null) {
-        return Result(
-            hasError: true,
-            statusCode: error.response?.statusCode,
-            message: error.message);
-      }
-      return Result(hasError: true, message: error.message);
     } catch (error) {
       if (kDebugMode) {
         print(error.toString());
       }
+      return Result(
+          hasError: true,
+          statusCode: 615,
+          message: error.toString(),
+          data: null);
     }
-    return Result(hasError: true, statusCode: 600, message: "some thing wrong");
+    return Result(hasError: true, statusCode: 615, message: "some thing wrong", data: null);
   }
+
 
   static void setBuildRenters(int buildId, List<Renter> renters) {
     for (int i = 0; i < _builds.length; i++) {
@@ -194,9 +180,4 @@ class BuildServices {
       }
     }
   }
-
-
-
-
-
 }

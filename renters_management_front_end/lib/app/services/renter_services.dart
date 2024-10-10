@@ -101,14 +101,16 @@ class RenterServices {
           "${EndPoints.getBuilds}/$buildId/${EndPoints.getRenters}",
           data: data);
       if (response?.statusCode == 200) {
-        Renter renter0 = Renter.fromJson(response?.data["Renter"]);
-        res.data?.renters?.add(renter0);
-        res.data?.numRenters?.value += 1;
-        return Result(
-            data: renter0,
-            statusCode: response?.statusCode,
-            hasError: false,
-            message: "successful");
+        if(response?.data != null){
+          Renter renter0 = Renter.fromJson(response?.data["Renter"]);
+          res.data?.renters?.add(renter0);
+          res.data?.numRenters?.value += 1;
+          return Result(
+              data: renter0,
+              statusCode: response?.statusCode,
+              hasError: false,
+              message: "successful");
+        }
       }
     } catch (error) {
       if (kDebugMode) {
@@ -268,10 +270,10 @@ class RenterServices {
       }
       return Result(
           hasError: true,
-          statusCode: 614,
+          statusCode: 627,
           message: error.toString(),
           data: null);
     }
-    return Result(hasError: true, statusCode: 614, message: "some thing wrong", data: null);
+    return Result(hasError: true, statusCode: 627, message: "some thing wrong", data: null);
   }
 }

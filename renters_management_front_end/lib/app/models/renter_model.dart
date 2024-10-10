@@ -31,14 +31,14 @@ class Renter {
   factory Renter.fromJson(Map<String, dynamic> json) {
     List<Map<String, dynamic>> phones = [];
     Map<String,List<RentPayment>> rentPayments = {};
-    if(json["renter_phones"].isNotEmpty){
+    if((json["renter_phones"]??[]).isNotEmpty){
       for (var item in json["renter_phones"]) {
       if (item != []) {
         phones.add(item);
       }
     }
     }
-    if(json["grouped_rent_payments"].isNotEmpty){
+    if((json["grouped_rent_payments"]??[]).isNotEmpty){
     for (var key in json["grouped_rent_payments"].keys) {
       List<RentPayment> rentPaymentsItems = [];
       for(var item in json["grouped_rent_payments"][key]){
@@ -47,6 +47,7 @@ class Renter {
       rentPayments[key] = rentPaymentsItems;
     }
     }
+
     return Renter(
       id: RxInt(json['id'] ?? 0),
       name: RxString(json['name'] ?? "Unknown"),

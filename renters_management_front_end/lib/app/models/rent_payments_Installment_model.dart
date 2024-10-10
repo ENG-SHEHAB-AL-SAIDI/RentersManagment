@@ -27,7 +27,7 @@ class RentPaymentsInstallment {
       id: RxInt(json['id'] ?? 0),
       amount: RxDouble(json['amount'].toDouble() ?? 0.0),
       date: RxString(json["date"]),
-      notes: RxString(json["date"]),
+      notes: RxString(json["notes"]),
       updatedAt: RxString(json['deleted_at'] ?? "Unknown"),
       createdAt: RxString(json['created_at'] ?? "Unknown"),
       deletedAt: RxString(json['updated_at'] ?? "Unknown"),

@@ -71,7 +71,7 @@ class PhoneRentersListView extends GetView<RenterListController> {
                               : 0,
                           itemBuilder: (BuildContext ctx, int i) {
                             final index = (i ~/ 2) + 1;
-                            if (i.isOdd) return const Divider();
+                            if (i.isOdd) {return const Divider();}
                             return ListTile(
                               contentPadding:
                                   const EdgeInsets.symmetric(horizontal: 6),
@@ -104,7 +104,7 @@ class PhoneRentersListView extends GetView<RenterListController> {
                                 onPressed: ()=>controller.delete(controller
                                     .renters.value[(i ~/ 2)].id.value),
                               ),
-                              onTap: () => controller.rentersDetailsRoute(i),
+                              onTap: () => controller.rentersDetailsRoute((i ~/ 2)),
                             );
                           }))
                 ],

@@ -3,8 +3,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:renters_management_front_end/app/components/pop_up_cards/show_notes.dart';
+import 'package:renters_management_front_end/app/controllers/renter_details_controller.dart';
 import 'package:renters_management_front_end/app/models/rent_payments_model.dart';
 
+import '../controllers/installment_add_controller.dart';
+import '../controllers/show_notes_controller.dart';
 import '../globals.dart';
 import 'buttons.dart';
 import 'custom_text.dart';
@@ -41,7 +45,7 @@ class RentPaymentCard extends StatelessWidget {
   DateFormat timeFormat = DateFormat("hh:mm a"); // Define the expected format
   // DateTime dateTime = format.parse(dateString);
   Rx<List<DropdownMenuItem<String>>> status = Rx([]);
-
+  RenterDetailsController controller = Get.find<RenterDetailsController>();
   @override
   Widget build(BuildContext context) {
     (height < 200) ? height = 240 : null;
@@ -366,7 +370,12 @@ class RentPaymentCard extends StatelessWidget {
                           SizedBox(
                             width: ((Get.width-45) * (1 / 5)),
                             child: TextButton(
-                              onPressed: () {},
+                              onPressed:()async{
+                                await Get.dialog(const PopUpShowNotesCard(),arguments: {
+                                  "notes":rentPayment?.rentPaymentsInstallment?[i].notes?.value??"help",
+                                  'other':"done",
+                                });
+                              },
                               child: SecText(
                                 "show",
                                 textColor: color1,
@@ -379,7 +388,7 @@ class RentPaymentCard extends StatelessWidget {
                           SizedBox(
                             width: ((Get.width-45) * (1 / 5)),
                             child: IconButton(
-                                onPressed: () {},
+                                onPressed: ()=>controller.deleteInstallment(rentPayment?.rentPaymentsInstallment?[i].id.value),
                                 icon: Icon(
                                   Icons.delete,
                                   color: color1,
@@ -394,7 +403,7 @@ class RentPaymentCard extends StatelessWidget {
                     height: 16,
                   ),
                   CustomButton(
-                    onPress: () {},
+                    onPress: controller.addInstallment,
                     text: "Add Installment",
                     color: color1,
                     textColor: color2,

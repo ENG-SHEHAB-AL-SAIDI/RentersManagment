@@ -1,7 +1,9 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:renters_management_front_end/app/components/pop_up_cards/add_installment.dart';
 import 'package:renters_management_front_end/app/components/pop_up_cards/add_phone_card.dart';
+import 'package:renters_management_front_end/app/controllers/show_notes_controller.dart';
 import 'package:renters_management_front_end/app/globals.dart';
 import 'package:renters_management_front_end/app/models/result.dart';
 import 'package:renters_management_front_end/app/services/renter_services.dart';
@@ -9,11 +11,15 @@ import 'package:renters_management_front_end/app/services/renter_services.dart';
 import '../components/custom_text.dart';
 import '../components/pop_up_cards/add_and_update_renter_card.dart';
 import '../components/pop_up_cards/alert_message_card.dart';
+import '../components/pop_up_cards/delete_confirmation_message_card.dart';
+import '../components/pop_up_cards/show_notes.dart';
 import '../models/renter_model.dart';
+import 'installment_add_controller.dart';
 
 class RenterDetailsController extends GetxController {
   TextEditingController searchField = TextEditingController();
   TextEditingController phoneController = TextEditingController();
+  TextEditingController notesController = TextEditingController();
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
   int renterId = -1;
   int buildId = -1;
@@ -28,7 +34,8 @@ class RenterDetailsController extends GetxController {
   void onClose() {
     searchField.dispose();
     phoneController.dispose();
-
+    Get.delete<InstallmentAddController>(force: true);
+    Get.delete<ShowNotesController>(force: true);
   }
 
   @override
@@ -39,7 +46,6 @@ class RenterDetailsController extends GetxController {
     Result<Renter> res = await RenterServices.fetchRenter(buildId, renterId);
     if (res.statusCode == 200 && res.data != null) {
       renter = res.data;
-      print(renter?.rentPayments?[0]?[0].rentPaymentsInstallment);
     } else {
       Get.dialog(PopUpAlertCard(
           "fetch Renters field please check your connection", Icons.warning));
@@ -149,7 +155,7 @@ class RenterDetailsController extends GetxController {
         }
       } else {
         Get.dialog(PopUpAlertCard(
-            res.message ?? "error code:${res.statusCode}", Icons.warning));
+            "${res.message ??""}\n error code:${res.statusCode}", Icons.warning));
       }
     }
     }
@@ -166,11 +172,19 @@ class RenterDetailsController extends GetxController {
       }
     } else {
       Get.dialog(PopUpAlertCard(
-          res.message ?? "error code:${res.statusCode}", Icons.warning));
+          "${res.message ??""}\n error code:${res.statusCode}", Icons.warning));
     }
   }
   }
 
+  void addInstallment()async{
+    Map<String, dynamic>? result = await Get.dialog( const PopUpAddInstallmentCard());
+  }
+
+  void deleteInstallment(int? id)async{
+    bool result = await Get.dialog(PopUpMessageCard(
+        "did you sure want delete this Installment."));
+  }
   void renterUpdate() async {
     Map<String, dynamic>? result =
     await Get.dialog(const PopUpIAddAndUpdateRenterCard(),arguments: {
@@ -198,9 +212,8 @@ class RenterDetailsController extends GetxController {
         }
       } else {
         Get.dialog(PopUpAlertCard(
-            res.message ?? "error code:${res.statusCode}", Icons.warning));
+            "${res.message ??""}\n error code:${res.statusCode}", Icons.warning));
       }
     }
   }
-
   }

@@ -13,7 +13,10 @@ class HttpProvider {
     _dio.interceptors.add(InterceptorsWrapper(
       onError: (DioException error, ErrorInterceptorHandler handler) async {
         if (kDebugMode) {
-          print("HttpProviderError ${error.response?.statusCode}");
+          print("HttpProviderError ------------------ ");
+          print("status code: ${error.response?.statusCode}");
+          print("status headers: ${error.response?.headers}");
+          print("status headers: ${error.response?.isRedirect}");
         }
 
         if (error.response?.statusCode == 401 && error.requestOptions.path != "auth/refresh") {

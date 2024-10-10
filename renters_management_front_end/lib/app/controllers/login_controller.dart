@@ -70,7 +70,7 @@ class LoginController extends GetxController {
         Get.offNamed("/home");
       }else{
         if((res.statusCode??600)%100 == 6){
-          filedMessage.value = "please check your connection";
+          filedMessage.value = "please check your connection \n error code:${res.statusCode}";
         }
        loggingFiled.value = true;
       }

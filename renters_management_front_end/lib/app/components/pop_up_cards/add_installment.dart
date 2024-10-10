@@ -2,16 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:renters_management_front_end/app/components/buttons.dart';
 import 'package:renters_management_front_end/app/components/text_field.dart';
-import 'package:renters_management_front_end/app/controllers/renter_list_controller.dart';
 
-import '../../controllers/renter_add_update_card_controller.dart';
+import '../../controllers/installment_add_controller.dart';
 import '../../globals.dart';
 import '../custom_text.dart';
 
-class PopUpIAddAndUpdateRenterCard extends GetView<RenterAddUpdateCardController> {
-  const PopUpIAddAndUpdateRenterCard({super.key});
-
-
+class PopUpAddInstallmentCard extends GetView<InstallmentAddController> {
+  const PopUpAddInstallmentCard({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -28,9 +25,7 @@ class PopUpIAddAndUpdateRenterCard extends GetView<RenterAddUpdateCardController
                 side: BorderSide(
                   color: AppColors.inverseCardColor,
                   width: 3,
-
-                )
-            ),
+                )),
             child: SizedBox(
                 height: Get.height * 0.6,
                 width: Get.width,
@@ -43,93 +38,7 @@ class PopUpIAddAndUpdateRenterCard extends GetView<RenterAddUpdateCardController
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
                           SecText("Add Renter",
-                              fontWeight: FontWeight.bold,
-                              fontSize: 20),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Row(
-                                children: [
-                                  Icon(
-                                    Icons.person,
-                                    size: 40,
-                                    color: AppColors.inverseIconColor,
-                                  ),
-                                  const SizedBox(
-                                    width: 10,
-                                  ),
-                                  SecText("Name"),
-                                  const SizedBox(
-                                    width: 5,
-                                  ),
-                                ],
-                              ),
-                              CustomTextFormField(
-                                controller: controller.nameController,
-                                validator:controller.validateName,
-                                labelText: 'name'.tr,
-                                focusNode: controller.nameFocus,
-                                  onFieldSubmitted: (e) {
-                                  controller.rentFocus.requestFocus();
-                                  },
-                                width: (Get.width-12)*0.46,
-                              ),
-                            ],
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Row(children: [
-                                Icon(
-                                  Icons.monetization_on_rounded,
-                                  size: 40,
-                                  color: AppColors.inverseIconColor,
-                                ),
-                                const SizedBox(
-                                  width: 10,
-                                ),
-                                SecText("Rent"),
-                              ],),
-                              CustomTextFormField(
-                                controller: controller.rentController,
-                                keyboardType: TextInputType.number,
-                                validator: controller.validateRent,
-                                labelText: "Rent",
-                                focusNode: controller.rentFocus,
-                                onFieldSubmitted: (e) {
-                                  controller.activityFocus.requestFocus();
-                                },
-                                width: (Get.width-12)*0.46,
-                              ),
-                            ],
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Row(
-                                children: [
-                                  Icon(
-                                    Icons.work_outline_rounded,
-                                    size: 40,
-                                    color: AppColors.inverseIconColor,
-                                  ),
-                                  const SizedBox(
-                                    width: 10,
-                                  ),
-                                  SecText("Activity", ),
-                                ],
-                              ),
-                              CustomTextFormField(
-                                controller: controller.activityController,
-                                labelText: "Activity",
-                                focusNode: controller.activityFocus,
-                                onFieldSubmitted: (e) {
-                                  controller.entryYearFocus.requestFocus();
-                                },
-                                width: (Get.width-12)*0.46,
-                              ),
-                            ],
-                          ),
+                              fontWeight: FontWeight.bold, fontSize: 20),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
@@ -143,19 +52,23 @@ class PopUpIAddAndUpdateRenterCard extends GetView<RenterAddUpdateCardController
                                   const SizedBox(
                                     width: 10,
                                   ),
-                                  SecText("Entry Year", ),
+                                  SecText("Date"),
+                                  const SizedBox(
+                                    width: 5,
+                                  ),
                                 ],
                               ),
                               CustomTextFormField(
-                                controller: controller.entryYearController,
-                                validator: controller.validateEntryYear,
-                                keyboardType: TextInputType.datetime,
-                                labelText: "Entry Year",
-                                focusNode: controller.entryYearFocus,
+                                controller: controller.dateController,
+                                validator: controller.validateDate,
+                                labelText: 'Date'.tr,
+                                focusNode: controller.dateFocus,
+                                readOnly: true,
+                                onTap: ()=>controller.datePiker(context),
                                 onFieldSubmitted: (e) {
-                                  controller.phoneFocus.requestFocus();
+                                  controller.timeFocus.requestFocus();
                                 },
-                                width: (Get.width-12)*0.46,
+                                width: (Get.width - 12) * 0.46,
                               ),
                             ],
                           ),
@@ -165,27 +78,84 @@ class PopUpIAddAndUpdateRenterCard extends GetView<RenterAddUpdateCardController
                               Row(
                                 children: [
                                   Icon(
-                                    Icons.phone_android,
+                                    Icons.access_time,
                                     size: 40,
                                     color: AppColors.inverseIconColor,
                                   ),
                                   const SizedBox(
                                     width: 10,
                                   ),
-                                  SecText("Phone", ),
+                                  SecText("Time"),
                                 ],
                               ),
                               CustomTextFormField(
-                                controller: controller.phoneController,
-                                keyboardType: TextInputType.phone,
-                                validator: controller.validatePhone,
-                                labelText: "Phone",
-                                focusNode: controller.phoneFocus,
+                                controller: controller.timeController,
+                                keyboardType: TextInputType.number,
+                                validator: controller.validateTime,
+                                labelText: "Time",
+                                focusNode: controller.timeFocus,
+                                readOnly: true,
+                                onTap: ()=>controller.timePiker(context),
                                 onFieldSubmitted: (e) {
-                                  controller.phoneFocus.unfocus();
-                                  controller.submit();
+                                  controller.amountFocus.requestFocus();
                                 },
-                                width: (Get.width-12)*0.46,
+                                width: (Get.width - 12) * 0.46,
+                              ),
+                            ],
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Row(
+                                children: [
+                                  Icon(
+                                    Icons.monetization_on_rounded,
+                                    size: 40,
+                                    color: AppColors.inverseIconColor,
+                                  ),
+                                  const SizedBox(
+                                    width: 10,
+                                  ),
+                                  SecText("Amount"),
+                                ],
+                              ),
+                              CustomTextFormField(
+                                controller: controller.amountController,
+                                keyboardType: TextInputType.number,
+                                validator: controller.validateAmount,
+                                labelText: "Amount",
+                                focusNode: controller.amountFocus,
+                                onFieldSubmitted: (e) {
+                                  controller.amountFocus.requestFocus();
+                                },
+                                width: (Get.width - 12) * 0.46,
+                              ),
+                            ],
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Row(
+                                children: [
+                                  Icon(
+                                    Icons.note_alt_sharp,
+                                    size: 40,
+                                    color: AppColors.inverseIconColor,
+                                  ),
+                                  const SizedBox(
+                                    width: 10,
+                                  ),
+                                  SecText(
+                                    "Note",
+                                  ),
+                                ],
+                              ),
+                              CustomTextFormField(
+                                controller: controller.noteController,
+                                labelText: "Note",
+                                focusNode: controller.noteFocus,
+                                onFieldSubmitted: (e) {},
+                                width: (Get.width - 12) * 0.46,
                               ),
                             ],
                           ),
@@ -194,7 +164,7 @@ class PopUpIAddAndUpdateRenterCard extends GetView<RenterAddUpdateCardController
                             children: [
                               CustomButton(
                                 onPress: controller.submit,
-                                text: controller.mode.value,
+                                text: "Add",
                               ),
                               CustomButton(
                                 onPress: () => Get.back(result: null),
@@ -210,6 +180,4 @@ class PopUpIAddAndUpdateRenterCard extends GetView<RenterAddUpdateCardController
       ),
     );
   }
-
-
 }

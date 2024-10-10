@@ -72,6 +72,15 @@ class RenterAddUpdateCardController extends GetxController {
     return null;
   }
 
+  String? validateEntryYear(String? entryYear) {
+    if (entryYear == "" || entryYear == null) {
+      return "required entryYear";
+    } else if (!GetUtils.isNum(entryYear)) {
+      return "entryYear most be Year (ex:2024)";
+    }
+    return null;
+  }
+
   void submit() {
     Map<String, dynamic> jsData = {};
     if (formKey.currentState!.validate()) {

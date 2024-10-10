@@ -42,7 +42,8 @@ class RenterListController extends GetxController {
       renters.value = res.data!;
     } else {
       Get.dialog(PopUpAlertCard(
-          "fetch Renters field please check your connection", Icons.warning));
+          "fetch Renters field please check your connection \n error code:${res.statusCode}", Icons.warning));
+
     }
   }
 
@@ -77,7 +78,7 @@ class RenterListController extends GetxController {
 
   void delete(int id) async {
     bool result = await Get.dialog(PopUpMessageCard(
-        "did you sure want delete this renter that will delete all data relative to it."));
+        "did you sure want delete this renter. that will delete all data relative to it."));
     if (result) {
       Result res =
           await RenterServices.deleteRenter(buildId: buildId, renterId: id);
@@ -85,7 +86,7 @@ class RenterListController extends GetxController {
         renters.refresh();
       } else {
         Get.dialog(PopUpAlertCard(
-            res.message ?? "error code:${res.statusCode}", Icons.warning));
+            "${res.message ??""}\n error code:${res.statusCode}", Icons.warning));
       }
     }
   }
@@ -94,18 +95,24 @@ class RenterListController extends GetxController {
     Map<String, dynamic>? result =
         await Get.dialog(const PopUpIAddAndUpdateRenterCard(),arguments: {
           'mode': "Add",
-          'data': null
+          'data': {
+            "name":"renter1",
+            "rent":"1000",
+            "entryYear":"2024",
+          }
         });
     if (result != null) {
       Result res =
           await RenterServices.storeRenter(buildId: buildId, data: result);
+      print(res.statusCode);
       if (res.statusCode == 200) {
         if (res.data != null) {
           renters.refresh();
         }
       } else {
+        print("here");
         Get.dialog(PopUpAlertCard(
-            res.message ?? "error code:${res.statusCode}", Icons.warning));
+            "${res.message ??""}\n error code:${res.statusCode}", Icons.warning));
       }
     }
   }

@@ -32,7 +32,7 @@ class HomeController extends GetxController {
     } else {
       errorMessage.value = "can't fetch builds \n place check your connection";
       Get.dialog(PopUpAlertCard(
-          "fetch Builds field please check your connection", Icons.warning));
+          "fetch Builds field please check your connection \n error code:${res.statusCode}", Icons.warning));
     }
 
     lodeState.value = false;

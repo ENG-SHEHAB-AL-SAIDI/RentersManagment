@@ -31,7 +31,14 @@ class DatabaseSeeder extends Seeder
                 $renters = $renterSeeder->run();
 
                 foreach ($renters as $renter) {
+
                     $renter->addPhone(fake()->randomNumber(9, True));
+
+                    foreach($renter->rentPayments as $rentPayent){
+                        $rentPaymentInstallmentSeedr = new RentPaymentsInstallmentSeeder(3,$rentPayent);
+                        $rentPaymentInstallments = $rentPaymentInstallmentSeedr->run();
+                    }
+
                 }
             }
         }

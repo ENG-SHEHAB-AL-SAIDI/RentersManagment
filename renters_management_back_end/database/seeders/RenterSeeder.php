@@ -26,11 +26,6 @@ class RenterSeeder extends Seeder
 
         $renters = Renter::factory()->count($this->count??1)->for($this->build)->create();
 
-        foreach($renters as $renter){
-            $rentPaymentSeeder = new RentPaymentSeeder(12,['2022','2023','2024'],$renter);
-            $rentPayments = $rentPaymentSeeder->run();
-        }
-
         return $renters;
     }
 }

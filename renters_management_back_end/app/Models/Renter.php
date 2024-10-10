@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Renter extends Model
 {
-    use HasFactory,SoftDeletes;
+    use HasFactory, SoftDeletes;
 
 
     protected $fillable = [
@@ -27,41 +27,52 @@ class Renter extends Model
     {
         parent::boot();
 
-        static::forceDeleting(function($model){
+        static::created(function ($model) {
+            for ($i = 0; $i < 12; $i++) {
+                $model->rentPayments()->create([
+                    'year' => $model->enter_date,
+                    'month' => str($i+1),
+                    'state' => 'not_payed',
+                    'payed_amount' => 0,
+                    'remain_amount' => $model->rent,
+                ]);
+            }
+        });
+        static::forceDeleting(function ($model) {
             $model->renterPhones()->forceDelete();
         });
 
-        static::deleting(function($model){
+        static::deleting(function ($model) {
             $model->renterPhones()->delete();
         });
 
-        static::restoring(function($model){
+        static::restoring(function ($model) {
             $model->renterPhones()->restore();
         });
     }
 
 
-    public function renterPhones() :HasMany
+    public function renterPhones(): HasMany
     {
         return $this->hasMany(RentersPhone::class);
     }
 
 
 
-    public function rentPayments() :HasMany
+    public function rentPayments(): HasMany
     {
         return $this->hasMany(RentPayment::class);
     }
 
 
 
-    public function build():BelongsTo
+    public function build(): BelongsTo
     {
         return $this->belongsTo(Build::class);
     }
 
     public function addPhone(int $phone)
     {
-        $this->renterPhones()->updateOrCreate(['phone'=>$phone]);
+        $this->renterPhones()->updateOrCreate(['phone' => $phone]);
     }
 }

@@ -34,7 +34,7 @@ class RenterRequst extends FormRequest
             'name'=>'required|max:50',
             'rent'=>'required|numeric',
             'job_domain'=>'sometimes|string',
-            'enter_date'=>'sometimes|date',
+            'enter_date'=>'required|date_format:Y',
             'phones' => 'sometimes|array',        // Ensure it's an array
             'phones.*' => 'sometimes|integer',
         ];

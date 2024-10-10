@@ -25,7 +25,7 @@ class RentPaymentsInstallmentSeeder extends Seeder
         $rent = $this->rentPayment->renter->rent;
         RentPaymentsInstallment::factory($this->count??1)->for($this->rentPayment)->create(
             [
-                'amount'=>fake()->randomFloat(0,$rent),
+                'amount'=>fake()->randomFloat(null,0,$rent),
             ]
         );
     }

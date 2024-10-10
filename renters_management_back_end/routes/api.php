@@ -22,10 +22,12 @@ Route::middleware(['api','auth:api'])->prefix('user')->group(
 function () {
     Route::apiResource('builds',BuildController::class);
     Route::apiResource('builds.renters',RenterController::class);
-    Route::apiResource('renters.rent_payments',RentPaymentController::class);
     Route::post('renters/{id}',[RenterController::class,'addPhone'])->name('renters.addPhone');
     Route::delete('renters/{id}',[RenterController::class,'destroyPhone'])->name('renters.deletePhone');
-    Route::apiResource('rent_payments.rentPaymentsInstallment',RentPaymentsInstallmentController::class);
+    Route::apiResource('renters.rent_payments',RentPaymentController::class);
+    Route::post('rent_payments/{id}/installments',[RentPaymentController::class,'addInstallment'])->name('rent_payments.addInstallment');
+    Route::delete('rent_payments/{id}/installments/{installmentId}',[RentPaymentController::class,'deleteInstallment'])->name('rent_payments.deleteInstallment');
+
 
 
     // Route::get('getAllData',[CombinDataController::class, 'getAllUserData']);

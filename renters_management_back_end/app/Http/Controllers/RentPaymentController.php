@@ -13,11 +13,11 @@ class RentPaymentController extends Controller
      */
     public function index(int $renterId)
     {
-        $rentPayments = RentPayment::where('renter_id',$renterId)->with('rentPaymentsInstallments')->get()->groupBy('year');
-            return response()->json([
-                'message' => 'successful',
-                'grouped_rent_payments' => $rentPayments,
-            ], 200);
+        $rentPayments = RentPayment::where('renter_id', $renterId)->with('rentPaymentsInstallments')->get()->groupBy('year');
+        return response()->json([
+            'message' => 'successful',
+            'grouped_rent_payments' => $rentPayments,
+        ], 200);
     }
 
 
@@ -25,19 +25,19 @@ class RentPaymentController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(int $renterId , int $rentPaymentId)
+    public function show(int $renterId, int $rentPaymentId)
     {
         $rentPayment = RentPayment::with('rentPaymentsInstallments')->find($rentPaymentId);
-        if(!$rentPayment){
+        if (!$rentPayment) {
             return response()->json([
                 'message' => 'not found',
                 'rent_payment' => $rentPayment,
             ], 404);
         }
-            return response()->json([
-                'message' => 'successful',
-                'rent_payment' => $rentPayment,
-            ], 200);
+        return response()->json([
+            'message' => 'successful',
+            'rent_payment' => $rentPayment,
+        ], 200);
     }
 
 
@@ -63,7 +63,7 @@ class RentPaymentController extends Controller
     {
         $data = $request->validated();
         $rentPayment = RentPayment::with('rentPaymentsInstallments')->find($rentPaymentId);
-        if(!$rentPayment){
+        if (!$rentPayment) {
             return response()->json([
                 'message' => 'not found',
                 'rent_payment' => $rentPayment,
@@ -83,14 +83,85 @@ class RentPaymentController extends Controller
     public function destroy(int $rentPaymentId)
     {
         $rentPayment = RentPayment::find($rentPaymentId);
-        if(!$rentPayment){
+        if (!$rentPayment) {
             return response()->json([
                 'message' => 'not found',
                 'rent_payment' => $rentPayment,
             ], 404);
         }
+        $rentPayment->forceDelete();
+        return response()->json([
+            'message' => 'Delete Successful',
+        ], 200);
+    }
+
+
+    public function addInstallment(RentPaymentRequest $request, int $rentPaymentId)
+    {
+        $data = $request->validated();
+        $rentPayment = RentPayment::find($rentPaymentId);
+        if (!$rentPayment) {
             return response()->json([
-                'message' => 'Delete Successful',
-            ], 200);
+                'message' => 'payment not found',
+                'rent_payment' => $rentPayment,
+            ], 404);
+        }
+        $installment = $rentPayment->rentPaymentsInstallments()->create($data);
+        $rentPayment->remain_amount -= $data['amount'];
+        $rentPayment->payed_amount += $data['amount'];
+        if ($rentPayment->payed_amount == 0) {
+            $rentPayment->state = 'not_payed';
+        } elseif ($rentPayment->remain_amount == 0) {
+            $rentPayment->state = 'payed';
+        } else {
+            $rentPayment->state = 'partially_payed';
+        }
+        $rentPayment->save();
+
+        return response()->json([
+            'message' => 'Installment Add Successful',
+            'remain_amount' => $rentPayment->remain_amount,
+            'payed_amount' => $rentPayment->payed_amount,
+            'state'=> $rentPayment->state,
+            'installment' => $installment
+        ], 200);
+    }
+
+
+    public function deleteInstallment(int $rentPaymentId, int $installmentId)
+    {
+        $rentPayment = RentPayment::find($rentPaymentId);
+        if (!$rentPayment) {
+            return response()->json([
+                'message' => 'payment not found',
+                'rent_payment' => $rentPayment,
+            ], 404);
+        }
+        $installment = $rentPayment->rentPaymentsInstallments()->find($installmentId);
+
+        if (!$installment) {
+            return response()->json([
+                'message' => 'installment not found',
+
+            ], 404);
+        }
+        $rentPayment->remain_amount += $installment->amount;
+        $rentPayment->payed_amount -= $installment->amount;
+        if ($rentPayment->payed_amount == 0) {
+            $rentPayment->state = 'not_payed';
+        } elseif ($rentPayment->remain_amount == 0) {
+            $rentPayment->state = 'payed';
+        } else {
+            $rentPayment->state = 'partially_payed';
+        }
+        $rentPayment->save();
+
+        $installment->forceDelete();
+        return response()->json([
+            'message' => 'Installment Delete Successful',
+            'remain_amount' => $rentPayment->remain_amount,
+            'payed_amount' => $rentPayment->payed_amount,
+            'state'=> $rentPayment->state
+        ], 200);
     }
 }

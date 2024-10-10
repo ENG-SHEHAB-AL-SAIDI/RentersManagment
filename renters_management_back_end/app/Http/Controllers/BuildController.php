@@ -114,7 +114,7 @@ class BuildController extends Controller
                 'Renter' => $build
             ], 404);
         }
-        $build->delete();
+        $build->forceDelete();
         return response()->json([
             'message' => 'delete successful',
         ], 200);

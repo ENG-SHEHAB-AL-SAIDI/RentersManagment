@@ -9,45 +9,6 @@ use Illuminate\Support\Arr;
 
 class RenterController extends Controller
 {
-
-    public function addPhone(RenterRequst $request, int $renterId)
-    {
-        $data = $request->validated();
-        $renter = Renter::find($renterId);
-        if (!$renter) {
-            return response()->json([
-                'message' => 'renter not found',
-                'Renter' => $renter
-            ], 404);
-        }
-        $renter->addPhone($data['phone']);
-        return response()->json([
-            'message' => 'phone added',
-        ], 200);
-    }
-
-
-    public function destroyPhone(RenterRequst $request, int $renterId)
-    {
-        $data = $request->validated();
-        $renter = Renter::find($renterId);
-        if (!$renter) {
-            return response()->json([
-                'message' => 'renter not found',
-                'Renter' => $renter
-            ], 404);
-        }
-        $isDeleted = $renter->renterPhones()->where('renter_id', $renterId)->where('phone', $data['phone'])->forceDelete();
-        if($isDeleted){
-            return response()->json([
-                'message' => 'phone deleted',
-            ], 200);
-        }
-
-        return response()->json([
-            'message' => 'phone is already deleted or some error happened',
-        ], 500);
-    }
     /**
      * Display a listing of the resource.
      */
@@ -175,7 +136,7 @@ class RenterController extends Controller
     {
 
         $renter = Renter::where('build_id', $buildId)->find($renterId);
-        $renter->delete();
+        $renter->forceDelete();
         if (!$renter) {
             return response()->json([
                 'message' => 'renter not found',
@@ -184,5 +145,46 @@ class RenterController extends Controller
         return response()->json([
             'message' => 'delete successful',
         ], 200);
+    }
+
+
+
+    public function addPhone(RenterRequst $request, int $renterId)
+    {
+        $data = $request->validated();
+        $renter = Renter::find($renterId);
+        if (!$renter) {
+            return response()->json([
+                'message' => 'renter not found',
+                'Renter' => $renter
+            ], 404);
+        }
+        $renter->addPhone($data['phone']);
+        return response()->json([
+            'message' => 'phone added',
+        ], 200);
+    }
+
+
+    public function destroyPhone(RenterRequst $request, int $renterId)
+    {
+        $data = $request->validated();
+        $renter = Renter::find($renterId);
+        if (!$renter) {
+            return response()->json([
+                'message' => 'renter not found',
+                'Renter' => $renter
+            ], 404);
+        }
+        $isDeleted = $renter->renterPhones()->where('renter_id', $renterId)->where('phone', $data['phone'])->forceDelete();
+        if($isDeleted){
+            return response()->json([
+                'message' => 'phone deleted',
+            ], 200);
+        }
+
+        return response()->json([
+            'message' => 'phone is already deleted or some error happened',
+        ], 500);
     }
 }

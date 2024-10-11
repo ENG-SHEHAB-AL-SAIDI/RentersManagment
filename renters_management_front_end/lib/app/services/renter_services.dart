@@ -24,7 +24,7 @@ class RenterServices {
     late Response? response;
     try {
       response = await HttpProvider.get(
-          "${EndPoints.getBuilds}/$buildId/${EndPoints.getRenters}");
+          "user/builds/$buildId/renters");
       List result = response?.data["Renters"];
       List<Renter> renters = [];
       for (int i = 0; i < result.length; i++) {
@@ -66,7 +66,7 @@ class RenterServices {
     late Response? response;
     try {
       response = await HttpProvider.post(
-          "${EndPoints.getBuilds}/$buildId/ ${EndPoints.getRenters}/$renterId");
+          "user/builds/$buildId/renters/$renterId");
       Map<String, dynamic> result = response?.data["Renter"];
       List<Renter>? renters = res.data?.renters ?? [];
       Renter renter = Renter.fromJson(result);

@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:get/get_rx/get_rx.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
+import 'package:get/state_manager.dart';
 import 'package:renters_management_front_end/app/models/rent_payments_model.dart';
 
 class Renter {
@@ -10,7 +11,7 @@ class Renter {
   RxString? jobDomain;
   RxString? enterDate;
   List<RxString>? phones;
-  Map<String,List<RentPayment>>? rentPayments;
+  RxMap<String,List<RentPayment>>? rentPayments;
   RxString? deletedAt;
   RxString? createdAt;
   RxString? updatedAt;
@@ -30,7 +31,6 @@ class Renter {
 
   factory Renter.fromJson(Map<String, dynamic> json) {
     List<Map<String, dynamic>> phones = [];
-    Map<String,List<RentPayment>> rentPayments = {};
     if((json["renter_phones"]??[]).isNotEmpty){
       for (var item in json["renter_phones"]) {
       if (item != []) {
@@ -38,10 +38,11 @@ class Renter {
       }
     }
     }
+    Map<String,List<RentPayment>> rentPayments = {};
     if((json["grouped_rent_payments"]??[]).isNotEmpty){
     for (var key in json["grouped_rent_payments"].keys) {
       List<RentPayment> rentPaymentsItems = [];
-      for(var item in json["grouped_rent_payments"][key]){
+      for(Map<String,dynamic> item in json["grouped_rent_payments"][key]){
         rentPaymentsItems.add(RentPayment.fromJson(item));
       }
       rentPayments[key] = rentPaymentsItems;
@@ -56,7 +57,7 @@ class Renter {
       enterDate: RxString(json['enter_date'] ?? "Unknown"),
       phones: List<RxString>.generate(
           phones.length, (i) => RxString(phones[i]["phone"].toString())),
-      rentPayments: rentPayments,
+      rentPayments: RxMap<String,List<RentPayment>>(rentPayments),
       updatedAt: RxString(json['deleted_at'] ?? "Unknown"),
       createdAt: RxString(json['created_at'] ?? "Unknown"),
       deletedAt: RxString(json['updated_at'] ?? "Unknown"),

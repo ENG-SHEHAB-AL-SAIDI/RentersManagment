@@ -14,15 +14,16 @@ class InstallmentAddController extends GetxController {
   FocusNode timeFocus = FocusNode();
   FocusNode amountFocus = FocusNode();
   FocusNode noteFocus = FocusNode();
+  double remainAmount = 0;
 
 
 
   @override
   void onInit() {
     super.onInit();
+    remainAmount = Get.arguments['amount'];
     dateController.text = DateTime.now().toString().split(" ")[0];
     timeController.text = formatTimeOfDay(TimeOfDay.now());
-
 
   }
   @override
@@ -60,11 +61,13 @@ class InstallmentAddController extends GetxController {
     return null;
   }
 
-  String? validateAmount(String? rent) {
-    if (rent == "" || rent == null) {
+  String? validateAmount(String? amount) {
+    if (amount == "" || amount == null) {
       return "required Rent";
-    } else if (!GetUtils.isNum(rent)) {
-      return "rent most be number";
+    } else if (!GetUtils.isNum(amount)) {
+      return "amount most be number";
+    }else if (double.parse(amount)>remainAmount){
+      return "amount most be equal or\n less than remain amount";
     }
     return null;
   }
@@ -122,16 +125,16 @@ class InstallmentAddController extends GetxController {
     Map<String, dynamic> jsData = {};
     if (formKey.currentState!.validate()) {
       (dateController.text.isNotEmpty && dateController.text != "Unknown".tr)
-          ? jsData["name"] = dateController.text
+          ? jsData["date"] = dateController.text
           : null;
       (timeController.text.isNotEmpty && timeController.text != "Unknown".tr)
-          ? jsData["rent"] = double.parse(timeController.text)
+          ? jsData["time"] = timeController.text
           : null;
       (amountController.text.isNotEmpty && amountController.text != "Unknown".tr)
-          ? jsData["job_domain"] = amountController.text
+          ? jsData["amount"] = amountController.text
           : null;
       (noteController.text.isNotEmpty && noteController.text != "Unknown".tr)
-          ? jsData["enter_date"] = noteController.text
+          ? jsData["note"] = noteController.text
           : null;
       Get.back(result: jsData);
     }

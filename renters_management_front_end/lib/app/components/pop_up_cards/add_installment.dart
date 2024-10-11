@@ -126,7 +126,7 @@ class PopUpAddInstallmentCard extends GetView<InstallmentAddController> {
                                 labelText: "Amount",
                                 focusNode: controller.amountFocus,
                                 onFieldSubmitted: (e) {
-                                  controller.amountFocus.requestFocus();
+                                  controller.noteFocus.requestFocus();
                                 },
                                 width: (Get.width - 12) * 0.46,
                               ),
@@ -154,7 +154,10 @@ class PopUpAddInstallmentCard extends GetView<InstallmentAddController> {
                                 controller: controller.noteController,
                                 labelText: "Note",
                                 focusNode: controller.noteFocus,
-                                onFieldSubmitted: (e) {},
+                                onFieldSubmitted: (e) {
+                                  controller.noteFocus.unfocus();
+                                  controller.submit();
+                                },
                                 width: (Get.width - 12) * 0.46,
                               ),
                             ],

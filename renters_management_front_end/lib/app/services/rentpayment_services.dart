@@ -1,0 +1,321 @@
+import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
+import 'package:get/get_rx/src/rx_types/rx_types.dart';
+import 'package:renters_management_front_end/app/models/build_model.dart';
+import 'package:renters_management_front_end/app/models/rent_payments_Installment_model.dart';
+import 'package:renters_management_front_end/app/models/rent_payments_model.dart';
+import 'package:renters_management_front_end/app/models/result.dart';
+import 'package:renters_management_front_end/app/services/build_services.dart';
+import 'package:renters_management_front_end/app/services/renter_services.dart';
+
+import '../models/renter_model.dart';
+import 'api/api_end_points.dart';
+import 'api/http_provider.dart';
+
+class RentPaymentServices {
+  static Future<Result<Map<String, List<RentPayment>>>> fetchRentPayments(
+      {required int buildId,
+      required int renterId,
+      bool hardFetch = false}) async {
+    Result<Renter> res = await RenterServices.fetchRenter(buildId, renterId);
+    if (res.data != null && res.data?.rentPayments != null && !hardFetch) {
+      return Result(
+          data: res.data!.rentPayments,
+          statusCode: 200,
+          hasError: false,
+          message: "successful");
+    }
+
+    late Response? response;
+    try {
+      response =
+          await HttpProvider.get("user/renters/$renterId/rent_payments/");
+      Map<String, dynamic> result = response?.data["grouped_rent_payments"];
+      Map<String, RxList<RentPayment>> rentPayments = {};
+      if (result.isNotEmpty) {
+        for (String key in result.keys) {
+          List<RentPayment> rentPaymentsItems = [];
+          for (var item in result[key]) {
+            rentPaymentsItems.add(RentPayment.fromJson(item));
+          }
+          rentPayments[key]?.value = rentPaymentsItems;
+        }
+      }
+      res.data?.rentPayments = RxMap<String, RxList<RentPayment>>(rentPayments);
+      return Result(
+          data: rentPayments,
+          hasError: false,
+          statusCode: response?.statusCode,
+          message: "successful");
+    } catch (error) {
+      if (kDebugMode) {
+        print(error.toString());
+      }
+      return Result(
+          hasError: true,
+          statusCode: 621,
+          message: error.toString(),
+          data: null);
+    }
+  }
+
+  static Future<Result<RentPayment>> fetchRentPayment(
+      {required int buildId,
+      required int renterId,
+      required int rentPaymentID,
+      bool hardFetch = false}) async {
+    Result<Renter> res = await RenterServices.fetchRenter(buildId, renterId);
+    if (res.data != null && res.data?.rentPayments != null && !hardFetch) {
+      for (String key in res.data?.rentPayments?.keys ?? {}) {
+        for (RentPayment rentPayment in res.data?.rentPayments?[key] ?? []) {
+          if (rentPayment.id.value == rentPaymentID) {
+            return Result(
+                data: rentPayment,
+                statusCode: 200,
+                hasError: false,
+                message: "successful");
+          }
+        }
+      }
+    }
+
+    late Response? response;
+    try {
+      response = await HttpProvider.post(
+          "user/renters/$renterId/rent_payments/$rentPaymentID");
+
+      Map<String, dynamic> result = response?.data["rent_payment"];
+      RentPayment rentPayment = RentPayment.fromJson(result);
+
+      int? index = res.data?.rentPayments?[rentPayment.year?.value]
+          ?.indexWhere((e) => e.id == rentPayment.id);
+      if (index != null) {
+        res.data?.rentPayments?[rentPayment.year?.value]?[index] = rentPayment;
+      } else {
+        res.data?.rentPayments?[rentPayment.year?.value]?.add(rentPayment);
+      }
+
+      return Result(
+          data: rentPayment,
+          hasError: false,
+          statusCode: response?.statusCode,
+          message: "successful");
+    } catch (error) {
+      if (kDebugMode) {
+        print(error.toString());
+      }
+      Result(
+          hasError: true,
+          statusCode: 622,
+          message: error.toString(),
+          data: null);
+    }
+    return Result(
+        hasError: true,
+        statusCode: 600,
+        message: "some thing wrong",
+        data: null);
+  }
+
+  static Future<Result<Renter>> storeRenter(
+      {required int buildId,
+      required Map<String, dynamic> data,
+      bool hardFetch = false}) async {
+    Result<Build> res = await BuildServices.fetchBuild(id: buildId);
+    Response? response;
+    try {
+      response = await HttpProvider.post(
+          "${EndPoints.getBuilds}/$buildId/${EndPoints.getRenters}",
+          data: data);
+      if (response?.statusCode == 200) {
+        if (response?.data != null) {
+          Renter renter0 = Renter.fromJson(response?.data["Renter"]);
+          res.data?.renters?.add(renter0);
+          res.data?.numRenters?.value += 1;
+          return Result(
+              data: renter0,
+              statusCode: response?.statusCode,
+              hasError: false,
+              message: "successful");
+        }
+      }
+    } catch (error) {
+      if (kDebugMode) {
+        print(error.toString());
+      }
+      Result(
+          hasError: true,
+          statusCode: 623,
+          message: error.toString(),
+          data: null);
+    }
+    return Result(
+        hasError: true,
+        statusCode: 623,
+        message: "some thing wrong",
+        data: null);
+  }
+
+  static Future<Result<Renter>> updateRenter(
+      {required int buildId,
+      required int renterId,
+      required Map<String, dynamic> data,
+      bool hardFetch = false}) async {
+    Result<Build> res = await BuildServices.fetchBuild(id: buildId);
+    Response? response;
+    try {
+      response = await HttpProvider.patch(
+          "${EndPoints.getBuilds}/$buildId/${EndPoints.getRenters}/$renterId",
+          data: data);
+      if (response?.statusCode == 200) {
+        Renter renter0 = Renter.fromJson(response?.data["Renter"]);
+        if (res.data?.renters?.indexWhere((e) => e.id.value == renterId) !=
+            null) {
+          res.data?.renters?[res.data!.renters!
+              .indexWhere((e) => e.id.value == renterId)] = renter0;
+        }
+        return Result(
+            data: renter0,
+            statusCode: response?.statusCode,
+            hasError: false,
+            message: "successful");
+      }
+    } catch (error) {
+      if (kDebugMode) {
+        print(error.toString());
+      }
+      return Result(
+          hasError: true,
+          statusCode: 624,
+          message: error.toString(),
+          data: null);
+    }
+    return Result(
+        hasError: true,
+        statusCode: 624,
+        message: "some thing wrong",
+        data: null);
+  }
+
+  static Future<Result<Build>> deleteRenter(
+      {required int buildId,
+      required int renterId,
+      bool hardFetch = false}) async {
+    Result<Build> res = await BuildServices.fetchBuild(id: buildId);
+    Response? response;
+    try {
+      response = await HttpProvider.delete(
+          "${EndPoints.getBuilds}/$buildId/${EndPoints.getRenters}/$renterId");
+      if (response?.statusCode == 200) {
+        res.data?.renters
+            ?.removeWhere((element) => element.id.value == renterId);
+        return Result(
+            hasError: false,
+            statusCode: response?.statusCode,
+            message: "successful");
+      }
+    } catch (error) {
+      if (kDebugMode) {
+        print(error.toString());
+      }
+      return Result(
+          hasError: true,
+          statusCode: 625,
+          message: error.toString(),
+          data: null);
+    }
+    return Result(
+        hasError: true,
+        statusCode: 625,
+        message: "some thing wrong",
+        data: null);
+  }
+
+  static Future<Result<bool>> rentPaymentAddInstallment(
+      {required int buildId,
+      required int renterId,
+      required int rentPaymentId,
+      required Map<String, dynamic> data,
+      bool hardFetch = false}) async {
+    Result<RentPayment> rentPayment = await fetchRentPayment(
+        buildId: buildId, renterId: renterId, rentPaymentID: rentPaymentId);
+    Response? response;
+    try {
+      response = await HttpProvider.post(
+          "user/rent_payments/$rentPaymentId/installments",
+          data: data);
+      if (response?.statusCode == 200) {
+        RentPaymentsInstallment installment =
+            RentPaymentsInstallment.fromJson(response?.data["installment"]);
+        rentPayment.data?.remainAmount?.value =
+            response?.data["remain_amount"].toDouble();
+        rentPayment.data?.payedAmount?.value =
+            response?.data["payed_amount"].toDouble();
+        rentPayment.data?.state?.value = response?.data["state"];
+        rentPayment.data?.rentPaymentsInstallment?.add(installment);
+        return Result(
+            hasError: false,
+            statusCode: response?.statusCode,
+            message: response?.statusMessage,
+            data: true);
+      }
+    } catch (error) {
+      if (kDebugMode) {
+        print(error.toString());
+      }
+      return Result(
+          hasError: true,
+          statusCode: 636,
+          message: error.toString(),
+          data: null);
+    }
+    return Result(
+        hasError: true,
+        statusCode: 636,
+        message: "some thing wrong",
+        data: null);
+  }
+
+  static Future<Result<bool>> rentPaymentDeleteInstallment(
+      {required int buildId,
+      required int renterId,
+      required int rentPaymentId,
+      required int installmentId,
+      bool hardFetch = false}) async {
+    Result<RentPayment> rentPayment = await fetchRentPayment(
+        buildId: buildId, renterId: renterId, rentPaymentID: rentPaymentId);
+    Response? response;
+    try {
+      response = await HttpProvider.delete(
+          "user/rent_payments/$rentPaymentId/installments/$installmentId");
+      if (response?.statusCode == 200) {
+        rentPayment.data?.remainAmount?.value =
+            response?.data["remain_amount"].toDouble();
+        rentPayment.data?.payedAmount?.value =
+            response?.data["payed_amount"].toDouble();
+        rentPayment.data?.state?.value = response?.data["state"];
+        rentPayment.data?.rentPaymentsInstallment
+            ?.removeWhere((e) => e.id.value == installmentId);
+        return Result(
+            hasError: false,
+            statusCode: response?.statusCode,
+            message: response?.statusMessage,
+            data: true);
+      }
+    } catch (error) {
+      if (kDebugMode) {
+        print(error.toString());
+      }
+      return Result(
+          hasError: true,
+          statusCode: 636,
+          message: error.toString(),
+          data: null);
+    }
+    return Result(
+        hasError: true,
+        statusCode: 636,
+        message: "some thing wrong",
+        data: null);
+  }
+}

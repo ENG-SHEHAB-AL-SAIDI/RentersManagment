@@ -50,24 +50,30 @@ class PhoneRentersDetailsView extends GetView<RenterDetailsController> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
                                     children: [
-                                    Row(
-                                      children: [
-                                        SecText(
-                                          "Name:",
-                                          textColor: AppColors.mainTextColor,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                        const SizedBox(width: 10),
-                                        SecText(
-                                            controller.renter?.name?.value ??
-                                                "Unknown",
-                                            textColor: AppColors.mainTextColor),
-                                      ],
-                                    ),
-                                    IconButton(onPressed: controller.renterUpdate, icon: Icon(Icons.edit, color: AppColors.mainIconColor))
-                                  ],),
+                                      Row(
+                                        children: [
+                                          SecText(
+                                            "Name:",
+                                            textColor: AppColors.mainTextColor,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                          const SizedBox(width: 10),
+                                          SecText(
+                                              controller.renter?.name?.value ??
+                                                  "Unknown",
+                                              textColor:
+                                                  AppColors.mainTextColor),
+                                        ],
+                                      ),
+                                      IconButton(
+                                          onPressed: controller.renterUpdate,
+                                          icon: Icon(Icons.edit,
+                                              color: AppColors.mainIconColor))
+                                    ],
+                                  ),
                                   Obx(() => Row(
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceBetween,
@@ -104,8 +110,9 @@ class PhoneRentersDetailsView extends GetView<RenterDetailsController> {
                                                           .phones.value,
                                                     )
                                                   : IconButton(
-                                                      onPressed:
-                                                      ()=>controller.changeSelectedPhone(""),
+                                                      onPressed: () => controller
+                                                          .changeSelectedPhone(
+                                                              ""),
                                                       icon: Icon(Icons.add,
                                                           color: AppColors
                                                               .mainIconColor)),
@@ -240,11 +247,11 @@ class PhoneRentersDetailsView extends GetView<RenterDetailsController> {
                                             ?.length ??
                                         0);
                                 i++) ...[
-                              RentPaymentCard(
+                              Obx(()=>RentPaymentCard(
                                   rentPayment: controller.renter?.rentPayments![
-                                      controller.selectedYear.value]?[i],
+                                  controller.selectedYear.value]?[i],
                                   height: 10,
-                                  type: 1),
+                                  type: 1)),
                               const SizedBox(
                                 height: 10,
                               ),

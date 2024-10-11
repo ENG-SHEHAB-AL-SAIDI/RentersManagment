@@ -40,11 +40,7 @@ class RentPaymentCard extends StatelessWidget {
   });
 
   double expansionTileChildrenFontSize = 12;
-  DateFormat dateFormat =
-      DateFormat("yyyy-dd-MM"); // Define the expected format
-  DateFormat timeFormat = DateFormat("hh:mm a"); // Define the expected format
-  // DateTime dateTime = format.parse(dateString);
-  Rx<List<DropdownMenuItem<String>>> status = Rx([]);
+  Rx<Map<String,Row>> status = Rx({});
   RenterDetailsController controller = Get.find<RenterDetailsController>();
   @override
   Widget build(BuildContext context) {
@@ -61,53 +57,44 @@ class RentPaymentCard extends StatelessWidget {
       color2 = AppColors.backColor;
       textColor = AppColors.mainTextColor;
     }
-    status.value = [
-      DropdownMenuItem<String>(
-        value: 'payed',
-        child: Row(
-          children: [
-            const Icon(
-              Icons.check,
-              color: Colors.greenAccent,
-            ),
-            const SizedBox(
-              width: 6,
-            ),
-            SecText('Payed', textColor: color2)
-          ],
-        ),
+    status.value = {
+      "payed": Row(
+        children: [
+          const Icon(
+            Icons.check,
+            color: Colors.greenAccent,
+          ),
+          const SizedBox(
+            width: 6,
+          ),
+          SecText('Payed', textColor: color2)
+        ],
       ),
-      DropdownMenuItem<String>(
-        value: 'partially_payed',
-        child: Row(
-          children: [
-            const Icon(
-              Icons.pie_chart_rounded,
-              color: Colors.grey,
-            ),
-            const SizedBox(
-              width: 6,
-            ),
-            SecText('Partially Payed', textColor: color2),
-          ],
-        ),
+      "partially_payed":Row(
+        children: [
+          const Icon(
+            Icons.pie_chart_rounded,
+            color: Colors.grey,
+          ),
+          const SizedBox(
+            width: 6,
+          ),
+          SecText('Partially Payed', textColor: color2),
+        ],
       ),
-      DropdownMenuItem<String>(
-        value: 'not_payed',
-        child: Row(
-          children: [
-            const Icon(
-              Icons.close,
-              color: Colors.red,
-            ),
-            const SizedBox(
-              width: 6,
-            ),
-            SecText('Not Payed', textColor: color2),
-          ],
-        ),
-      )
-    ];
+      "not_payed":Row(
+        children: [
+          const Icon(
+            Icons.close,
+            color: Colors.red,
+          ),
+          const SizedBox(
+            width: 6,
+          ),
+          SecText('Not Payed', textColor: color2),
+        ],
+      ),
+    };
     RxString? selectedState = rentPayment?.state;
     return Container(
         margin: const EdgeInsets.all(4),
@@ -167,25 +154,7 @@ class RentPaymentCard extends StatelessWidget {
                         width: 10,
                       ),
                       Container(
-                        decoration: BoxDecoration(
-                          border: Border.all(color: color2, width: 1),
-                          // Border color and width
-                          borderRadius: BorderRadius.circular(
-                              16), // Rounded corners (optional)
-                        ),
-                        height: 30,
-                        child: DropdownButton<String>(
-                          value: selectedState?.value,
-                          elevation: 6,
-                          icon:
-                              Icon(Icons.arrow_drop_down_sharp, color: color2),
-                          underline: const SizedBox(),
-                          dropdownColor: color1,
-                          borderRadius:
-                              const BorderRadius.all(Radius.circular(24)),
-                          onChanged: (value) {},
-                          items: status.value,
-                        ),
+                        child: status.value[rentPayment?.state?.value??""],
                       ),
 
                       // SecText(
@@ -328,7 +297,7 @@ class RentPaymentCard extends StatelessWidget {
                             (rentPayment?.rentPaymentsInstallment?[i].date
                                         ?.value !=
                                     null)
-                                ? dateFormat
+                                ? controller.dateFormat
                                     .format(DateTime.parse(rentPayment!
                                         .rentPaymentsInstallment![i]
                                         .date!
@@ -346,7 +315,7 @@ class RentPaymentCard extends StatelessWidget {
                             (rentPayment?.rentPaymentsInstallment?[i].date
                                         ?.value !=
                                     null)
-                                ? timeFormat
+                                ? controller.timeFormat
                                     .format(DateTime.parse(rentPayment!
                                         .rentPaymentsInstallment![i]
                                         .date!
@@ -388,7 +357,7 @@ class RentPaymentCard extends StatelessWidget {
                           SizedBox(
                             width: ((Get.width-45) * (1 / 5)),
                             child: IconButton(
-                                onPressed: ()=>controller.deleteInstallment(rentPayment?.rentPaymentsInstallment?[i].id.value),
+                                onPressed: ()=>controller.deleteInstallment(rentPayment?.id.value,rentPayment?.rentPaymentsInstallment?[i].id.value),
                                 icon: Icon(
                                   Icons.delete,
                                   color: color1,
@@ -403,7 +372,7 @@ class RentPaymentCard extends StatelessWidget {
                     height: 16,
                   ),
                   CustomButton(
-                    onPress: controller.addInstallment,
+                    onPress:()=> controller.addInstallment(rentPayment?.id.value,rentPayment?.remainAmount?.value),
                     text: "Add Installment",
                     color: color1,
                     textColor: color2,

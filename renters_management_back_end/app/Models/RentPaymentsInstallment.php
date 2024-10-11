@@ -11,7 +11,7 @@ class RentPaymentsInstallment extends Model
 {
     use HasFactory,SoftDeletes;
 
-    protected $fillable = 
+    protected $fillable =
     [
         'date',
         'amount',
@@ -21,5 +21,10 @@ class RentPaymentsInstallment extends Model
     public function rentPayment():BelongsTo
     {
         return $this->belongsTo(RentPayment::class);
+    }
+
+    public function income():BelongsTo
+    {
+        return $this->belongsTo(Income::class);
     }
 }

@@ -7,18 +7,18 @@ class HttpProvider {
 
   static init({String baseUrl = "", String contentType = 'application/json'}) {
     _dio.options.baseUrl = baseUrl;
-    _dio.options.contentType = contentType;
+    _dio.options.headers["Accept"] = contentType;
     _dio.options.connectTimeout = const Duration(seconds: 15);
     _dio.interceptors.add(InterceptorsWrapper(
       onError: (DioException error, ErrorInterceptorHandler handler) async {
         if (kDebugMode) {
           print("HttpProviderError ------------------ ");
           print("status code: ${error.response?.statusCode}");
-          print("status headers: ${error.response?.headers.toString()}");
           print("status headers: ${error.response?.isRedirect}");
         }
 
-        if (error.response?.statusCode == 401 && error.requestOptions.path != "auth/refresh") {
+        if (error.response?.statusCode == 401 &&
+            error.requestOptions.path != "auth/refresh") {
           try {
             Response? response = await _refreshAndRetry(error.requestOptions);
             if (response != null) {
@@ -47,7 +47,7 @@ class HttpProvider {
         }
         return error.response;
       }
-    }catch(e){
+    } catch (e) {
       rethrow;
     }
     return null;
@@ -62,9 +62,9 @@ class HttpProvider {
         if (kDebugMode) {
           print(error.response?.statusCode);
         }
-          return error.response;
+        return error.response;
       }
-    }catch(e){
+    } catch (e) {
       rethrow;
     }
     return null;
@@ -81,7 +81,7 @@ class HttpProvider {
         }
         return error.response;
       }
-    }catch(e){
+    } catch (e) {
       rethrow;
     }
     return null;
@@ -91,14 +91,14 @@ class HttpProvider {
     try {
       final response = await _dio.delete(url, data: data);
       return response;
-    }  on DioException catch (error) {
+    } on DioException catch (error) {
       if (error.response != null) {
         if (kDebugMode) {
           print(error.response?.statusCode);
         }
         return error.response;
       }
-    }catch(e){
+    } catch (e) {
       rethrow;
     }
     return null;
@@ -127,13 +127,14 @@ class HttpProvider {
   }
 
   static void addAuthTokenInterceptor(String authToken) {
-    _authInterceptor = InterceptorsWrapper(
-      onRequest: (options, handler) {
-        options.headers['Authorization'] = 'Bearer $authToken';
-        return handler.next(options);
-      },
-    );
-    _dio.interceptors.add(_authInterceptor!);
+    _dio.options.headers["Authorization"] = "Bearer $authToken";
+    // _authInterceptor = InterceptorsWrapper(
+    //   onRequest: (options, handler) {
+    //     options.headers['Authorization'] = 'Bearer $authToken';
+    //     return handler.next(options);
+    //   },
+    // );
+    // _dio.interceptors.add(_authInterceptor!);
   }
 
   static void removeAuthTokenInterceptor() {

@@ -3,9 +3,6 @@ import 'package:get/get.dart';
 import 'package:renters_management_front_end/app/components/buttons.dart';
 import 'package:renters_management_front_end/app/components/text_field.dart';
 import 'package:renters_management_front_end/app/controllers/renter_details_controller.dart';
-import 'package:renters_management_front_end/app/controllers/renter_list_controller.dart';
-
-import '../../controllers/renter_add_update_card_controller.dart';
 import '../../globals.dart';
 import '../custom_text.dart';
 

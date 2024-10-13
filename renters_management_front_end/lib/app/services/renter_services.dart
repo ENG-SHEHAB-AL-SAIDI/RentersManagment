@@ -6,7 +6,6 @@ import 'package:renters_management_front_end/app/models/result.dart';
 import 'package:renters_management_front_end/app/services/build_services.dart';
 
 import '../models/renter_model.dart';
-import 'api/api_end_points.dart';
 import 'api/http_provider.dart';
 
 class RenterServices {
@@ -98,7 +97,7 @@ class RenterServices {
     Response? response;
     try {
       response = await HttpProvider.post(
-          "${EndPoints.getBuilds}/$buildId/${EndPoints.getRenters}",
+          "user/builds/$buildId/renters",
           data: data);
       if (response?.statusCode == 200) {
         if(response?.data != null){
@@ -134,7 +133,7 @@ class RenterServices {
     Response? response;
     try {
       response = await HttpProvider.patch(
-          "${EndPoints.getBuilds}/$buildId/${EndPoints.getRenters}/$renterId",
+          "user/builds/$buildId/renters/$renterId",
           data: data);
       if (response?.statusCode == 200) {
         Renter renter0 = Renter.fromJson(response?.data["Renter"]);
@@ -172,7 +171,7 @@ class RenterServices {
     Response? response;
     try {
       response = await HttpProvider.delete(
-          "${EndPoints.getBuilds}/$buildId/${EndPoints.getRenters}/$renterId");
+          "user/builds/$buildId/renters/$renterId");
       if (response?.statusCode == 200) {
         res.data?.renters
             ?.removeWhere((element) => element.id.value == renterId);

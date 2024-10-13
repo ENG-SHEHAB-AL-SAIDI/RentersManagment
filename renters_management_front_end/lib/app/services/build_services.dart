@@ -4,7 +4,6 @@ import 'package:renters_management_front_end/app/models/result.dart';
 
 import '../models/build_model.dart';
 import '../models/renter_model.dart';
-import 'api/api_end_points.dart';
 import 'api/http_provider.dart';
 
 class BuildServices {
@@ -22,7 +21,7 @@ class BuildServices {
     Response? response;
     try {
       _builds = [];
-      response = await HttpProvider.get(EndPoints.getBuilds);
+      response = await HttpProvider.get("user/builds/");
       List result = response?.data["Builds"];
       for (int i = 0; i < result.length; i++) {
         _builds.add(Build.fromJson(result[i]));
@@ -67,7 +66,7 @@ class BuildServices {
         }
       }
 
-      response = await HttpProvider.get("${EndPoints.getBuilds}/$id");
+      response = await HttpProvider.get("user/builds/$id");
       build0 = Build.fromJson(response?.data);
       _builds.add(build0);
       return Result(
@@ -91,7 +90,7 @@ class BuildServices {
       {required Map<String, dynamic> data, bool hardFetch = false}) async {
     Response? response;
     try {
-      response = await HttpProvider.post(EndPoints.getBuilds, data: data);
+      response = await HttpProvider.post("user/builds/", data: data);
       if (response?.statusCode == 200) {
         Build build0 = Build.fromJson(response?.data["Build"]);
         _builds.add(build0);
@@ -122,7 +121,7 @@ class BuildServices {
     Response? response;
     try {
       response =
-          await HttpProvider.patch("${EndPoints.getBuilds}/$id", data: data);
+          await HttpProvider.patch("user/builds/$id", data: data);
       if (response?.statusCode == 200) {
         Build build0 = Build.fromJson(response?.data["Build"]);
         _builds[_builds.indexWhere((element) => element.id.value == id)] =
@@ -151,7 +150,7 @@ class BuildServices {
       {required int id, bool hardFetch = false}) async {
     Response? response;
     try {
-      response = await HttpProvider.delete("${EndPoints.getBuilds}/$id");
+      response = await HttpProvider.delete("user/builds/$id");
       if (response?.statusCode == 200) {
         _builds.removeWhere((element) => element.id.value == id);
         return Result(

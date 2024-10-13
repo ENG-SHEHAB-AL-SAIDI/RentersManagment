@@ -1,6 +1,5 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
-import 'package:renters_management_front_end/app/services/api/api_end_points.dart';
 
 class HttpProvider {
   static final Dio _dio = Dio();
@@ -15,7 +14,7 @@ class HttpProvider {
         if (kDebugMode) {
           print("HttpProviderError ------------------ ");
           print("status code: ${error.response?.statusCode}");
-          print("status headers: ${error.response?.headers}");
+          print("status headers: ${error.response?.headers.toString()}");
           print("status headers: ${error.response?.isRedirect}");
         }
 

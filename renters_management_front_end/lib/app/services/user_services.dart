@@ -4,7 +4,6 @@ import 'package:get/get.dart' as get_x;
 import 'package:renters_management_front_end/app/models/result.dart';
 
 import '../models/user_model.dart';
-import 'api/api_end_points.dart';
 import 'api/http_provider.dart';
 
 class UserServices {
@@ -34,7 +33,7 @@ class UserServices {
   static Future<Result?> userLogout() async {
     Response? response;
     try {
-      response = await HttpProvider.post(EndPoints.logOut);
+      response = await HttpProvider.post("auth/logout");
       if (response?.statusCode == 200) {
         get_x.Get.offAllNamed("/login");
         return null ;
@@ -60,7 +59,7 @@ class UserServices {
 
     late Response? response;
     try {
-      response = await HttpProvider.post(EndPoints.getUserData);
+      response = await HttpProvider.post("auth/me");
       _user = User.fromJson(response?.data["user"]);
       return Result(
           data: _user,

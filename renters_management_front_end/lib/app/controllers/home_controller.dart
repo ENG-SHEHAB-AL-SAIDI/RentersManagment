@@ -131,7 +131,7 @@ class HomeController extends GetxController {
 
   void rentersListRoute(int id) async {
     await Get.toNamed("/rentersList", arguments: {'buildId': id});
-    builds.value.firstWhere((test)=>test.id==id).numRenters?.refresh();
+    builds.value.firstWhere((e)=>e.id.value==id).numRenters?.refresh();
   }
 
   void buildReportRoute(int id) {

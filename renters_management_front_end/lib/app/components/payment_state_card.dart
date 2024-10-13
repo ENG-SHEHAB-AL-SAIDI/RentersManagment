@@ -2,13 +2,9 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
 import 'package:renters_management_front_end/app/components/pop_up_cards/show_notes.dart';
 import 'package:renters_management_front_end/app/controllers/renter_details_controller.dart';
 import 'package:renters_management_front_end/app/models/rent_payments_model.dart';
-
-import '../controllers/installment_add_controller.dart';
-import '../controllers/show_notes_controller.dart';
 import '../globals.dart';
 import 'buttons.dart';
 import 'custom_text.dart';
@@ -95,7 +91,6 @@ class RentPaymentCard extends StatelessWidget {
         ],
       ),
     };
-    RxString? selectedState = rentPayment?.state;
     return Container(
         margin: const EdgeInsets.all(4),
         decoration: BoxDecoration(

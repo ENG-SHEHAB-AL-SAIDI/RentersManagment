@@ -13,6 +13,7 @@ class InstallmentAddController extends GetxController {
   FocusNode timeFocus = FocusNode();
   FocusNode amountFocus = FocusNode();
   FocusNode noteFocus = FocusNode();
+  RxInt? radioGroupValue = 0.obs;
   double remainAmount = 0;
 
 
@@ -71,6 +72,10 @@ class InstallmentAddController extends GetxController {
     return null;
   }
 
+
+  void changeRadioGroupValue(val){
+    radioGroupValue?.value = val;
+  }
 
   void datePiker(BuildContext context) async {
     DateTime? pikeDate = await showDatePicker(

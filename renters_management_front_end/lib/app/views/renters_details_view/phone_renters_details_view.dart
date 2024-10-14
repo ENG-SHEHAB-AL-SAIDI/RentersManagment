@@ -247,11 +247,14 @@ class PhoneRentersDetailsView extends GetView<RenterDetailsController> {
                                             ?.length ??
                                         0);
                                 i++) ...[
-                              Obx(()=>RentPaymentCard(
-                                  rentPayment: controller.renter?.rentPayments![
-                                  controller.selectedYear.value]?[i],
-                                  height: 10,
-                                  type: 1)),
+                              Obx(() => RentPaymentCard(
+                                    rentPayment:
+                                        controller.renter?.rentPayments![
+                                            controller.selectedYear.value]?[i],
+                                    height: 10,
+                                    type: 1,
+                                    initiallyExpanded: (i == 0) ? true : false,
+                                  )),
                               const SizedBox(
                                 height: 10,
                               ),

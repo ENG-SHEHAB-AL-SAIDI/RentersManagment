@@ -33,11 +33,13 @@ class RentPaymentCard extends StatelessWidget {
     required this.rentPayment,
     required this.height,
     required this.type,
+    this.initiallyExpanded = false
   });
 
   double expansionTileChildrenFontSize = 12;
   Rx<Map<String,Row>> status = Rx({});
   RenterDetailsController controller = Get.find<RenterDetailsController>();
+  bool initiallyExpanded;
   @override
   Widget build(BuildContext context) {
     (height < 200) ? height = 240 : null;
@@ -214,6 +216,7 @@ class RentPaymentCard extends StatelessWidget {
               child: ExpansionTile(
                 iconColor: color1,
                 collapsedIconColor: color1,
+                initiallyExpanded: initiallyExpanded,
                 title: SecText(
                   "Rent Payments Installment",
                   textColor: color1,

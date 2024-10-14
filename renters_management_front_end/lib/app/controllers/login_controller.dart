@@ -1,10 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
-import 'package:get/get_rx/get_rx.dart';
 import 'package:renters_management_front_end/app/models/result.dart';
 import 'package:renters_management_front_end/app/services/user_services.dart';
-
-
 
 class LoginController extends GetxController {
   TextEditingController id = TextEditingController();
@@ -18,7 +15,6 @@ class LoginController extends GetxController {
   RxBool loggingFiled = false.obs;
   RxDouble heightScale = 0.6.obs;
 
-
   @override
   void onClose() {
     id.dispose();
@@ -26,6 +22,7 @@ class LoginController extends GetxController {
     idFocus.dispose();
     passwordFocus.dispose();
   }
+
   @override
   void onInit() {
     id.text = "shehab8@gmail.com";
@@ -40,12 +37,11 @@ class LoginController extends GetxController {
     } else if (GetUtils.isNumericOnly(id)) {
       logWith = "ID";
       valid = true;
-    }
-    else if (GetUtils.isEmail(id)) {
+    } else if (GetUtils.isEmail(id)) {
       logWith = "Email";
       valid = true;
     }
-    return (valid)?null:"Invalid ID";
+    return (valid) ? null : "Invalid ID";
   }
 
   String? validatePassword(String? password) {
@@ -58,28 +54,31 @@ class LoginController extends GetxController {
     }
   }
 
-  void forgotPassword(){
+  void forgotPassword() {
     Get.toNamed("/forgotPassword");
   }
 
   Future<void> onLogin() async {
+    loggingFiled.value = true;
     if (formKey.currentState!.validate()) {
       logging.value = true;
       Result res = await UserServices.userLogin(id.text, password.text);
-      if (res.statusCode==200) {
+      if (res.statusCode == 200) {
         Get.offNamed("/home");
-      }else{
-        if((res.statusCode??600)%100 == 6){
-          filedMessage.value = "please check your connection \n error code:${res.statusCode}";
-        }
-       loggingFiled.value = true;
+      } else if (res.statusCode == 900) {
+        filedMessage.value =
+            "no internet connection \n please check your connection ";
+      } else if (res.statusCode == 401) {
+        filedMessage.value = "password or id is wrong";
+      } else {
+        filedMessage.value =
+            "something get wrong \n please check your connection ";
       }
-      logging.value = false;
     }
+    logging.value = false;
   }
 
-
-  void changeLang(String lang){
+  void changeLang(String lang) {
     Get.updateLocale(Locale(lang));
   }
 }

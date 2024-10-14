@@ -1,3 +1,4 @@
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 
@@ -5,18 +6,22 @@ class HttpProvider {
   static final Dio _dio = Dio();
   static InterceptorsWrapper? _authInterceptor;
 
-  static init({String baseUrl = "", String contentType = 'application/json'}) {
+  static init({String baseUrl = "", String contentType = 'application/json'})  {
     _dio.options.baseUrl = baseUrl;
     _dio.options.headers["Accept"] = contentType;
     _dio.options.connectTimeout = const Duration(seconds: 15);
     _dio.interceptors.add(InterceptorsWrapper(
       onError: (DioException error, ErrorInterceptorHandler handler) async {
+        List<ConnectivityResult> connectivityResult = await (Connectivity().checkConnectivity());
         if (kDebugMode) {
           print("HttpProviderError ------------------ ");
           print("status code: ${error.response?.statusCode}");
           print("status headers: ${error.response?.isRedirect}");
+          print(connectivityResult);
         }
-
+        if(connectivityResult.contains(ConnectivityResult.none)){
+           return handler.resolve(Response(requestOptions: error.requestOptions,statusCode: 900));
+        }
         if (error.response?.statusCode == 401 &&
             error.requestOptions.path != "auth/refresh") {
           try {

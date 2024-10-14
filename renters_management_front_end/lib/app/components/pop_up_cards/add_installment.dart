@@ -64,7 +64,7 @@ class PopUpAddInstallmentCard extends GetView<InstallmentAddController> {
                                 labelText: 'Date'.tr,
                                 focusNode: controller.dateFocus,
                                 readOnly: true,
-                                onTap: ()=>controller.datePiker(context),
+                                onTap: () => controller.datePiker(context),
                                 onFieldSubmitted: (e) {
                                   controller.timeFocus.requestFocus();
                                 },
@@ -95,7 +95,7 @@ class PopUpAddInstallmentCard extends GetView<InstallmentAddController> {
                                 labelText: "Time",
                                 focusNode: controller.timeFocus,
                                 readOnly: true,
-                                onTap: ()=>controller.timePiker(context),
+                                onTap: () => controller.timePiker(context),
                                 onFieldSubmitted: (e) {
                                   controller.amountFocus.requestFocus();
                                 },
@@ -161,6 +161,41 @@ class PopUpAddInstallmentCard extends GetView<InstallmentAddController> {
                                 width: (Get.width - 12) * 0.46,
                               ),
                             ],
+                          ),
+                          Obx(
+                            () => Column(
+                              children: [
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceAround,
+                                  children: [
+                                    SecText("Add to new income"),
+                                    Radio(
+                                        value: 0,
+                                        groupValue:
+                                            controller.radioGroupValue?.value,
+                                        onChanged:
+                                            controller.changeRadioGroupValue,
+                                        activeColor: AppColors.inverseIconColor)
+                                  ],
+                                ),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceAround,
+                                  children: [
+                                    SecText("Add to exist income"),
+                                    Radio(
+                                      value: 1,
+                                      groupValue:
+                                          controller.radioGroupValue?.value,
+                                      onChanged:
+                                          controller.changeRadioGroupValue,
+                                      activeColor: AppColors.inverseIconColor,
+                                    )
+                                  ],
+                                ),
+                              ],
+                            ),
                           ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,

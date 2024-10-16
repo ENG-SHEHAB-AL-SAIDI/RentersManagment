@@ -59,7 +59,7 @@ class WebLoginView extends GetView<LoginController> {
                             MainText('login'.tr,
                                 fontWeight: FontWeight.bold,
                                 fontSize: 32,
-                                textColor: Colors.black),
+                                textColor: AppColors.secTextColor),
                             PopupMenuButton<String>(
                               initialValue: Get.locale?.languageCode.toString(),
                               itemBuilder: (BuildContext context) => menuItems,

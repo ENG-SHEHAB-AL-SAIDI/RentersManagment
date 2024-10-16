@@ -68,10 +68,30 @@ class PhoneRentersDetailsView extends GetView<RenterDetailsController> {
                                                   AppColors.mainTextColor),
                                         ],
                                       ),
-                                      IconButton(
-                                          onPressed: controller.renterUpdate,
-                                          icon: Icon(Icons.edit,
-                                              color: AppColors.mainIconColor))
+                                      PopupMenuButton<String>(
+
+                                        onSelected:controller.more,
+                                        color: AppColors.inverseCardColor,
+                                        itemBuilder: (ctx) => [
+                                          PopupMenuItem(
+                                            value: "edit",
+                                            child: SecText(
+                                              "Edit",
+                                              textColor:
+                                                  AppColors.mainTextColor,
+                                            ),
+                                          ),
+                                          PopupMenuItem(
+                                              value: "print",
+                                              child: SecText(
+                                                "Print",
+                                                textColor:
+                                                    AppColors.mainTextColor,
+                                              )),
+                                        ],
+                                        child: Icon(Icons.more_vert_outlined,
+                                            color: AppColors.mainTextColor),
+                                      ),
                                     ],
                                   ),
                                   Obx(() => Row(

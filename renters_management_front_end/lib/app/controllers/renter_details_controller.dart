@@ -6,7 +6,10 @@ import 'package:renters_management_front_end/app/components/pop_up_cards/add_ins
 import 'package:renters_management_front_end/app/components/pop_up_cards/add_phone_card.dart';
 import 'package:renters_management_front_end/app/controllers/show_notes_controller.dart';
 import 'package:renters_management_front_end/app/globals.dart';
+import 'package:renters_management_front_end/app/models/rent_payments_model.dart';
 import 'package:renters_management_front_end/app/models/result.dart';
+import 'package:renters_management_front_end/app/services/print/print_renter_details.dart';
+import 'package:renters_management_front_end/app/services/print/print_renter_rent_payment.dart';
 import 'package:renters_management_front_end/app/services/renter_services.dart';
 import 'package:renters_management_front_end/app/services/rentpayment_services.dart';
 
@@ -183,12 +186,13 @@ class RenterDetailsController extends GetxController {
     }
   }
 
-  void addInstallment(int? paymentId,double? amount) async {
+  void addInstallment(int? paymentId, double? amount) async {
     if (paymentId == null || amount == null) {
       return;
     }
-    Map<String, dynamic>? result =
-        await Get.dialog(const PopUpAddInstallmentCard(),arguments: {"amount":amount});
+    Map<String, dynamic>? result = await Get.dialog(
+        const PopUpAddInstallmentCard(),
+        arguments: {"amount": amount});
     if (result != null) {
       DateTime time = timeFormat.parse(result["time"]);
       DateTime date = dateFormat.parse(result["date"]);
@@ -273,6 +277,25 @@ class RenterDetailsController extends GetxController {
             "${res.message ?? ""}\n error code:${res.statusCode}",
             Icons.warning));
       }
+    }
+  }
+
+  void more(String val) {
+    if (val == "edit") {
+      renterUpdate();
+    } else if (val == "print") {
+      PrintRenterDetails.printing(renter);
+    }
+  }
+
+  void paymentMore(String val, RentPayment rentPayment) {
+    if (val == "clear") {
+      if (kDebugMode) {
+        print("clear");
+      }
+    } else if (val == "print") {
+      PrintRentPayment.printing(
+          rentPayment, renter?.name?.value ?? "", renter?.rent?.value ?? 0);
     }
   }
 }

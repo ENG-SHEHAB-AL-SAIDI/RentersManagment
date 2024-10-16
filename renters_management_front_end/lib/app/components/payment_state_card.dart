@@ -120,20 +120,48 @@ class RentPaymentCard extends StatelessWidget {
               child: Column(
                 children: [
                   Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      SecText(
-                        "Month:",
-                        textColor: textColor,
-                        fontWeight: FontWeight.bold,
+                      Row(
+                        children: [
+                          SecText(
+                            "Month:",
+                            textColor: textColor,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          const SizedBox(
+                            width: 10,
+                          ),
+                          SecText(
+                            (rentPayment?.month?.value != null)
+                                ? "${months[rentPayment?.month?.value]} (${rentPayment?.month?.value})"
+                                : "Unknown",
+                            textColor: textColor,
+                          ),
+                        ],
                       ),
-                      const SizedBox(
-                        width: 10,
-                      ),
-                      SecText(
-                        (rentPayment?.month?.value != null)
-                            ? "${months[rentPayment?.month?.value]} (${rentPayment?.month?.value})"
-                            : "Unknown",
-                        textColor: textColor,
+                      PopupMenuButton<String>(
+                        onSelected:(val)=>controller.paymentMore(val,rentPayment!),
+                        color: AppColors.inverseCardColor,
+                        itemBuilder: (ctx) => [
+                          PopupMenuItem(
+                            value: "clear",
+                            child: SecText(
+                              "Clear",
+                              textColor:
+                              AppColors.mainTextColor,
+                            ),
+                          ),
+                          PopupMenuItem(
+                              value: "print",
+                              child: SecText(
+                                "Print",
+                                textColor:
+                                AppColors.mainTextColor,
+                              )),
+                        ],
+                        child: Icon(Icons.more_vert_outlined,
+                            color: AppColors.mainTextColor),
                       ),
                     ],
                   ),

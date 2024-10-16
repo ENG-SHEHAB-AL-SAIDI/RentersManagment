@@ -59,20 +59,22 @@ class LoginController extends GetxController {
   }
 
   Future<void> onLogin() async {
-    loggingFiled.value = true;
-    if (formKey.currentState!.validate()) {
       logging.value = true;
+    if (formKey.currentState!.validate()) {
       Result res = await UserServices.userLogin(id.text, password.text);
       if (res.statusCode == 200) {
         Get.offNamed("/home");
       } else if (res.statusCode == 900) {
         filedMessage.value =
             "no internet connection \n please check your connection ";
+        loggingFiled.value = true;
       } else if (res.statusCode == 401) {
         filedMessage.value = "password or id is wrong";
+        loggingFiled.value = true;
       } else {
         filedMessage.value =
             "something get wrong \n please check your connection ";
+        loggingFiled.value = true;
       }
     }
     logging.value = false;

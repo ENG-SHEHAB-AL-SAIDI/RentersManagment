@@ -162,41 +162,34 @@ class PopUpAddInstallmentCard extends GetView<InstallmentAddController> {
                               ),
                             ],
                           ),
-                          Obx(
-                            () => Column(
-                              children: [
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceAround,
-                                  children: [
-                                    SecText("Add to new income"),
-                                    Radio(
-                                        value: 0,
-                                        groupValue:
-                                            controller.radioGroupValue?.value,
-                                        onChanged:
-                                            controller.changeRadioGroupValue,
-                                        activeColor: AppColors.inverseIconColor)
-                                  ],
-                                ),
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceAround,
-                                  children: [
-                                    SecText("Add to exist income"),
-                                    Radio(
-                                      value: 1,
-                                      groupValue:
-                                          controller.radioGroupValue?.value,
-                                      onChanged:
-                                          controller.changeRadioGroupValue,
-                                      activeColor: AppColors.inverseIconColor,
-                                    )
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ),
+                          // Row(
+                          //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          //   children: [
+                          //     Row(
+                          //       children: [
+                          //         Icon(
+                          //           Icons.account_balance_wallet,
+                          //           size: 40,
+                          //           color: AppColors.inverseIconColor,
+                          //         ),
+                          //         const SizedBox(
+                          //           width: 10,
+                          //         ),
+                          //         SecText(
+                          //           "Statement",
+                          //         ),
+                          //       ],
+                          //     ),
+                          //     CustomTextFormField(
+                          //       controller: controller.incomeController,
+                          //       labelText: " Statement ",
+                          //       readOnly: true,
+                          //       focusNode: controller.incomeFocus,
+                          //       onTap: controller.showBottomSheet,
+                          //       width: (Get.width - 12) * 0.46,
+                          //     ),
+                          //   ],
+                          // ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [

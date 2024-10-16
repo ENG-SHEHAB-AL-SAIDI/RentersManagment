@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:renters_management_front_end/app/components/custom_text.dart';
 
 import '../globals.dart';
 
@@ -8,11 +9,13 @@ class InstallmentAddController extends GetxController {
   TextEditingController timeController = TextEditingController();
   TextEditingController amountController = TextEditingController();
   TextEditingController noteController = TextEditingController();
+  TextEditingController incomeController = TextEditingController();
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
   FocusNode dateFocus = FocusNode();
   FocusNode timeFocus = FocusNode();
   FocusNode amountFocus = FocusNode();
   FocusNode noteFocus = FocusNode();
+  FocusNode incomeFocus = FocusNode();
   RxInt? radioGroupValue = 0.obs;
   double remainAmount = 0;
 
@@ -75,6 +78,56 @@ class InstallmentAddController extends GetxController {
 
   void changeRadioGroupValue(val){
     radioGroupValue?.value = val;
+  }
+
+  void showBottomSheet(){
+    incomeFocus.requestFocus();
+    Get.bottomSheet(Container(
+      height: Get.height*0.6,
+      width: Get.width,
+      decoration: BoxDecoration(
+          color: AppColors.backColor,
+        borderRadius: BorderRadius.circular(32),
+      ),
+      padding: EdgeInsets.all(8),
+      child: Column(children: [
+        SecText("Statement",fontWeight: FontWeight.bold,),
+        Row(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(
+                  children: [
+                    Icon(
+                      Icons.account_balance_wallet,
+                      size: 40,
+                      color: AppColors.inverseIconColor,
+                    ),
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    SecText(
+                      "Statement",
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: 10,
+                  width: Get.width*0.6,
+                  child: DropdownMenu(
+                      dropdownMenuEntries: [
+                        DropdownMenuEntry<String>(
+                            value: "income", label: 'Income')
+                      ]),
+                )
+              ],
+            ),
+          ],
+        ),
+
+      ],),
+    ));
   }
 
   void datePiker(BuildContext context) async {

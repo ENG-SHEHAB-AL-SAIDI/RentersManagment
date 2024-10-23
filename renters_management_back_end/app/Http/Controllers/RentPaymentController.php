@@ -106,7 +106,22 @@ class RentPaymentController extends Controller
                 'rent_payment' => $rentPayment,
             ], 404);
         }
-        $installment = $rentPayment->rentPaymentsInstallments()->create($data);
+        $statement = $rentPayment->renter->build->statment()->where('year', $rentPayment->year)->where('month', $rentPayment->month)->get()->first();
+        $income = $statement->incomes()->create([
+            'date' => $data['date'],
+            'amount' => $data['amount'],
+            'paymentType' => $data['paymentType'],
+            'paymentID' => $data['paymentID']??0,
+            'describe' => $data['note']??null,
+        ]);
+
+
+        $installment = $rentPayment->rentPaymentsInstallments()->create([
+            'date' => $data['date'],
+            'amount' => $data['amount'],
+            'notes' => $data['note']??null,
+            'income_id'=> $income->id
+        ]);
         $rentPayment->remain_amount -= $data['amount'];
         $rentPayment->payed_amount += $data['amount'];
         if ($rentPayment->payed_amount == 0) {
@@ -122,7 +137,7 @@ class RentPaymentController extends Controller
             'message' => 'Installment Add Successful',
             'remain_amount' => $rentPayment->remain_amount,
             'payed_amount' => $rentPayment->payed_amount,
-            'state'=> $rentPayment->state,
+            'state' => $rentPayment->state,
             'installment' => $installment
         ], 200);
     }
@@ -161,7 +176,7 @@ class RentPaymentController extends Controller
             'message' => 'Installment Delete Successful',
             'remain_amount' => $rentPayment->remain_amount,
             'payed_amount' => $rentPayment->payed_amount,
-            'state'=> $rentPayment->state
+            'state' => $rentPayment->state
         ], 200);
     }
 }

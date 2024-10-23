@@ -21,9 +21,9 @@ return new class extends Migration
 
             $table->primary('id');
             $table->foreignId('rent_payment_id')
-                ->constrained('rent_payments')->onUpdate('cascade')->onDelete('cascade');;
-            $table->foreignId('income_id')
-                ->constrained('incomes')->onUpdate('cascade')->onDelete('cascade');;
+                ->constrained('rent_payments')->onUpdagte('cascade')->onDelete('cascade');
+            $table->foreignId('income_id')->nullable()
+                ->constrained('incomes')->onUpdate('cascade')->onDelete('cascade');
         });
     }
 

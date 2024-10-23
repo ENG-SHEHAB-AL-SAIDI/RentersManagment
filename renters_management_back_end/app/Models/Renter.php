@@ -18,7 +18,7 @@ class Renter extends Model
         'name',
         'rent',
         'job_domain',
-        'enter_date',
+        'entery_year',
     ];
 
 
@@ -28,14 +28,24 @@ class Renter extends Model
         parent::boot();
 
         static::created(function ($model) {
+
             for ($i = 0; $i < 12; $i++) {
                 $model->rentPayments()->create([
-                    'year' => $model->enter_date,
+                    'year' => $model->entery_year,
                     'month' => str($i+1),
                     'state' => 'not_payed',
                     'payed_amount' => 0,
                     'remain_amount' => $model->rent,
                 ]);
+            }
+
+            if($model->build->statment()->where('year',$model->entery_year)->get()->isEmpty()){
+                for ($i = 0; $i < 12; $i++) {
+                    $model->build->statment()->create([
+                        'year'=>$model->entery_year,
+                        'month'=>str($i+1),
+                    ]);
+                }
             }
         });
         static::forceDeleting(function ($model) {

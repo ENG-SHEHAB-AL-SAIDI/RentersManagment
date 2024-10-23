@@ -47,6 +47,11 @@ class Build extends Model
         return $this->hasMany(Renter::class);
     }
 
+    public function statment():HasMany
+    {
+        return $this->hasMany(Statement::class);
+    }
+
     public function user():BelongsTo
     {
         return $this->belongsTo(User::class);

@@ -37,7 +37,7 @@ class Income extends Model
         });
     }
 
-    public function rentPayments(): HasMany
+    public function rentPaymentsInstallment(): HasMany
     {
         return $this->hasMany(RentPaymentsInstallment::class);
     }

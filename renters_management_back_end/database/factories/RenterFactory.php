@@ -21,7 +21,7 @@ class RenterFactory extends Factory
             'name'=>fake()->name(),
             'rent'=>fake()->randomFloat(2,0,100000),
             'job_domain'=>fake()->jobTitle(),
-            'enter_date'=>fake()->year(),
+            'entery_year'=>fake()->year(),
         ];
     }
 }

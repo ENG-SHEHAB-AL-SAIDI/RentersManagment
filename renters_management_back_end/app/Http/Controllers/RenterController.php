@@ -35,6 +35,7 @@ class RenterController extends Controller
     public function store(RenterRequst $request, $buildId)
     {
 
+
         $data = $request->validated();
         if (array_key_exists('phones', $data)) {
             $phones = $data['phones'];
@@ -42,6 +43,15 @@ class RenterController extends Controller
         }
 
         $build = Build::find($buildId);
+        if($build->statment()->where('year',$data['entery_year'])->get() == []){
+            for ($i = 0; $i < 12; $i++) {
+                $build->statment->create([
+                    'year'=>$data['entery_year'],
+                    'month'=>str($i+1),
+                ]);
+            }
+        }
+
         if (!$build) {
             return response()->json(['error' => 'Building not found'], 404);
         }

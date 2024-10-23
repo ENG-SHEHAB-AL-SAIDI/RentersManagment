@@ -29,6 +29,8 @@ class RentPaymentRequest extends FormRequest
                 'date'=> 'required|date',
                 'amount'=>"required|lte:$remain_amount|gt:0",
                 'notes'=>'nullable|string',
+                'paymentType'=>'required|in:cash,trans',
+                'paymentID'=> 'sometimes',
             ];
         }
         $rent = Renter::find($this->route('renter'))->rent;

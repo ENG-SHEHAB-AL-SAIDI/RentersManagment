@@ -2,8 +2,11 @@
 
 namespace Database\Seeders;
 
+use App\Models\Income;
 use App\Models\RentPayment;
 use App\Models\RentPaymentsInstallment;
+use App\Models\Statement;
+use DateTime;
 use Illuminate\Database\Seeder;
 
 class RentPaymentsInstallmentSeeder extends Seeder
@@ -23,10 +26,18 @@ class RentPaymentsInstallmentSeeder extends Seeder
     public function run(): void
     {
         for ($i = 0; $i < $this->count; $i++) {
-
-            $installment = RentPaymentsInstallment::factory()->for($this->rentPayment)->create(
+            $amount = fake()->randomFloat(null, 0, $this->rentPayment->remain_amount);
+            $date = fake()->date();
+            $statement = $this->rentPayment->renter->build->statment()->where('year',$this->rentPayment->year)->where('month',$this->rentPayment->month)->get()->first();
+            $income = $statement->incomes()->create([
+            'date'=>$date,
+            'amount'=>$amount,
+            'paymentType'=>'cash',
+        ]);
+            $installment = RentPaymentsInstallment::factory()->for($this->rentPayment)->for($income)->create(
                 [
-                    'amount' => fake()->randomFloat(null, 0, $this->rentPayment->remain_amount),
+                    'date'=>$date,
+                    'amount' => $amount,
                 ]
             );
             $this->rentPayment->remain_amount -= $installment->amount;

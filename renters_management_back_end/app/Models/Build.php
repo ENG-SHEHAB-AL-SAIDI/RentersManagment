@@ -18,16 +18,12 @@ class Build extends Model
         'user_id',
     ];
 
-    public function getTotalRent()
+    protected $appends = ['total_rent'];
+
+    public function getTotalRentAttribute()
     {
         return $this->renters()->sum('rent');
     }
-
-    public function getRentersNumber()
-    {
-        return $this->renters()->count();
-    }
-
 
     protected static function boot()
     {
@@ -49,6 +45,11 @@ class Build extends Model
     public function renters():HasMany
     {
         return $this->hasMany(Renter::class);
+    }
+
+    public function statment():HasMany
+    {
+        return $this->hasMany(Statement::class);
     }
 
     public function user():BelongsTo

@@ -11,16 +11,19 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('rent_payments_installment', function (Blueprint $table) {
+        Schema::create('rent_payments_installments', function (Blueprint $table) {
+            $table->id();
             $table->dateTime('date');
             $table->float('amount');
             $table->text('notes')->nullable();
             $table->softDeletes();
             $table->timestamps();
 
-            $table->primary(['rent_payments_id','date']);
-            $table->foreignId('rent_payments_id')->constrained('rent_payments')
-            ->onUpdate('cascade')->onDelete('cascade');
+            $table->primary('id');
+            $table->foreignId('rent_payment_id')
+                ->constrained('rent_payments')->onUpdagte('cascade')->onDelete('cascade');
+            $table->foreignId('income_id')->nullable()
+                ->constrained('incomes')->onUpdate('cascade')->onDelete('cascade');
         });
     }
 
@@ -29,6 +32,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('rent_payments_installment');
+        Schema::dropIfExists('rent_payments_installments');
     }
 };

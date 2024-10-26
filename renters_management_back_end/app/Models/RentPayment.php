@@ -10,15 +10,15 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class RentPayment extends Model
 {
-    use HasFactory,SoftDeletes;
+    use HasFactory, SoftDeletes;
 
     protected $fillable =
     [
         'year',
         'month',
         'state',
-        'PayedAmount',
-        'remainAmount',
+        'payed_amount',
+        'remain_amount',
     ];
 
 
@@ -26,33 +26,27 @@ class RentPayment extends Model
     {
         parent::boot();
 
-        static::forceDeleting(function($model){
+        static::forceDeleting(function ($model) {
             $model->rentPaymentsInstallments()->forceDelete();
         });
 
-        static::deleting(function($model){
-            $model->rentPaymentsInstallments()->delete();
-        });
-
-        static::restoring(function($model){
+        static::restoring(function ($model) {
             $model->rentPaymentsInstallments()->restore();
         });
 
-        static::creating(function($model){
-            $model->remainAmount = $model->renter()->first()->rent;
+        static::creating(function ($model) {
+            $model->remain_amount = $model->renter->rent;
         });
     }
 
 
-    public function renter():BelongsTo
+    public function renter(): BelongsTo
     {
         return $this->belongsTo(Renter::class);
     }
 
-    public function rentPaymentsInstallments():HasMany
+    public function rentPaymentsInstallments(): HasMany
     {
         return $this->hasMany(RentPaymentsInstallment::class);
     }
-
-
 }

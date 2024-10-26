@@ -3,13 +3,26 @@
 namespace App\Http\Controllers;
 
 use App\Models\Build;
+use App\Models\Renter;
 use Illuminate\Http\Request;
 
 class CombinDataController extends Controller
 {
-    public function getAllUserData(int $id)
+    public function getAllUserData()
     {
-        $builds =  Build::with('renter.renterPhones','renters.renterRentPayments')->get()->where('id',$id);
-        return $builds;
+        $builds = auth()->guard('api')->user()->builds()->withCount('renters')->get();
+        $builds = $builds->load('renters','renters.renterPhones');
+
+        $builds->each(function ($build) {
+            $build->renters->each(function ($renter) {
+                $groupedRentPayments = $renter->rentPayments->groupBy('year');
+                $renter->groupedRentPayments = $groupedRentPayments;
+            });
+        });
+
+
+        return response()->json([
+            'Builds' => $builds
+        ], 200);
     }
 }

@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Income extends Model
@@ -34,6 +35,11 @@ class Income extends Model
 
             $model->statement()->first()->TotalExpenses -= $model->amount;
         });
+    }
+
+    public function rentPaymentsInstallment(): HasMany
+    {
+        return $this->hasMany(RentPaymentsInstallment::class);
     }
 
     public function statement():BelongsTo

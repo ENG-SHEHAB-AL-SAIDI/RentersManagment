@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Build;
 use App\Models\Renter;
+use App\Models\RentPayment;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -24,6 +25,7 @@ class RenterSeeder extends Seeder
     {
 
         $renters = Renter::factory()->count($this->count??1)->for($this->build)->create();
+
         return $renters;
     }
 }

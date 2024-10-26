@@ -7,8 +7,11 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\RegisterRequest;
 use App\Models\User;
 use GuzzleHttp\Middleware;
+use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
 use Illuminate\Routing\Controllers\HasMiddleware;
+use Tymon\JWTAuth\Exceptions\JWTException;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 class AuthController extends Controller
 {
@@ -38,7 +41,6 @@ class AuthController extends Controller
         if (! $token = auth()->guard('api')->attempt($credentials)) {
             return response()->json(['error' => 'Unauthorized'], 401);
         }
-
         $response = response()->json([
             'user'=>$user,
             'token'=>$this->respondWithToken($token),
@@ -52,14 +54,13 @@ class AuthController extends Controller
     {
         $credentials = request(['email', 'password']);
 
-
-        if (! $token = auth()->guard('api')->attempt($credentials)) {
+        if (! $accessToken = auth()->guard('api')->attempt($credentials)) {
             return response()->json(['error' => 'Unauthorized'], 401);
         }
         $user = auth()->guard('api')->user();
         $response = response()->json([
             'user'=>$user,
-            'token'=>$this->respondWithToken($token),
+            'token'=>$this->respondWithToken($accessToken),
         ]);
 
         return $response ;
@@ -72,7 +73,9 @@ class AuthController extends Controller
      */
     public function me()
     {
-        return response()->json(auth()->guard('api')->user());
+        return response()->json([
+            'user'=>auth()->guard('api')->user(),
+        ]);
     }
 
     /**
@@ -93,7 +96,18 @@ class AuthController extends Controller
      */
     public function refresh()
     {
-        return $this->respondWithToken(auth()->guard('api')->refresh());
+        try {
+                $token = auth()->guard('api')->refresh();
+            return response()->json([
+                'token'=>$this->respondWithToken($token)
+            ]);
+
+        } catch (JWTException $e) {
+            return response()->json([
+                'status' => $e->getMessage(),
+                'message' => 'Token could not be refreshed.'
+            ], 401);
+        }
     }
 
     /**
@@ -103,12 +117,11 @@ class AuthController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    protected function respondWithToken($token)
+    protected function respondWithToken($accessToken)
     {
         return response()->json([
-            'access_token' => $token,
+            'access_token' => $accessToken,
             'token_type' => 'bearer',
-            //@intelephense-ignore-line
             'expires_in' => auth()->guard('api')->factory()->getTTL() * 60
         ]);
     }

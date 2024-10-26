@@ -2,11 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\BuildRequest;
-use App\Http\Requests\BuildStoreRequst;
-use App\Http\Requests\BuildUpdateRequst;
+use App\Http\Requests\BuildRequst;
 use App\Models\Build;
-use Illuminate\Http\Request;
 
 class BuildController extends Controller
 {
@@ -15,82 +12,111 @@ class BuildController extends Controller
      */
     public function index()
     {
+        $builds = auth()->guard('api')->user()->builds()->with(['renters', 'renters.renterPhones'])->withCount('renters')->get();
 
-        $builds = auth()->guard('api')->user()->builds()->get();
+        $builds->each(function ($build) {
+            $build->renters->each(function ($renter) {
+                $groupedRentPayments = $renter->rentPayments()->with('rentPaymentsInstallments')->get()->groupBy('year');
+                $renter->unsetRelation('rentPayments');
+                $renter->grouped_rent_payments = $groupedRentPayments;
+            });
+        });
+
         return response()->json([
-            "Builds"=>$builds
-        ],200);
+            'Builds' => $builds
+        ], 200);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(BuildStoreRequst $request)
+    public function store(BuildRequst $request)
     {
         $request->validated();
         $data = $request->except('token');
 
-        $build = auth()->guard('api')->user()->builds()->create($data);
+        $build = auth()->guard('api')->user()->builds()->with('renters', 'renters.renterPhones')->create($data);
+        $build->renters->each(function ($renter) {
+            $groupedRentPayments = $renter->rentPayments()->with('rentPaymentsInstallments')->get()->groupBy('year');
+            $renter->unsetRelation('rentPayments');
+            $renter->grouped_rent_payments = $groupedRentPayments;
+        });
         return response()->json([
-            'message'=>'Store done',
-            'build' => $build,
-        ],200);
+            'message' => 'store successful',
+            'Build' => $build
+        ], 200);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(int $id)
+    public function show(BuildRequst $request, int $id)
     {
-        $build = Build::find($id);
+        $request->authorize();
+        $build = Build::withCount('renters')->find($id);
 
-        if(auth()->guard('api')->user()->id === $build->user_id){
+        if(!$build){
             return response()->json([
-                'message'=>'done',
-                "Build" => $build
-            ],200);
+                'message' => 'build not found',
+                'Renter' => $build
+            ], 404);
         }
 
+        $build->renters->each(function ($renter) {
+            $groupedRentPayments = $renter->rentPayments()->with('rentPaymentsInstallments')->get()->groupBy('year');
+            $renter->unsetRelation('rentPayments');
+            $renter->grouped_rent_payments = $groupedRentPayments;
+        });
         return response()->json([
-            'message' => 'UnAuthorize access',
-            'data' => null
-        ],401);
+            'Build' => $build,
+        ], 200);
     }
+
+
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(BuildUpdateRequst $request, int $id)
+    public function update(BuildRequst $request, int $id)
     {
         $request->validated();
+        $build = Build::withCount('renters')->with('renters', 'renters.renterPhones')->find($id);
 
-        $build = Build::find($id);
-        $build->name = $request->query('name');
-        $build->save();
+        if(!$build){
+            return response()->json([
+                'message' => 'build not found',
+                'Renter' => $build
+            ], 404);
+        }
+
+        $build->renters->each(function ($renter) {
+            $groupedRentPayments = $renter->rentPayments()->with('rentPaymentsInstallments')->get()->groupBy('year');
+            $renter->unsetRelation('rentPayments');
+            $renter->grouped_rent_payments = $groupedRentPayments;
+        });
+        $build->update($request->all());
         return response()->json([
-            'message'=>'update done',
-            'build' => $build,
-        ],200);
+            'message' => 'update successful',
+            'Build' => $build,
+        ], 200);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(BuildRequst $request, string $id)
     {
+
         $build = Build::find($id);
-
-        if(auth()->guard('api')->user()->id === $build->user_id){
-            $build->delete();
+        if(!$build){
             return response()->json([
-                'message'=>'delete done',
-                'Build' => $build
-            ],200);
+                'message' => 'build not found',
+                'Renter' => $build
+            ], 404);
         }
-
+        $build->forceDelete();
         return response()->json([
-            'message' => 'UnAuthorize access',
-            'data' => null
-        ],401);
+            'message' => 'delete successful',
+        ], 200);
     }
 }

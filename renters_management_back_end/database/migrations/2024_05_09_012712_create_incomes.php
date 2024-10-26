@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Nette\Utils\Random;
 
 return new class extends Migration
 {
@@ -16,13 +17,13 @@ return new class extends Migration
             $table->date('date');
             $table->float('amount');
             $table->enum('paymentType',['cash','trans']);
-            $table->bigInteger('paymentID')->default(0);
+            $table->bigInteger('paymentID')->nullable();
             $table->text('describe')->nullable();
             $table->softDeletes();
             $table->timestamps();
 
             $table->primary('id');
-            $table->foreignId('statements_id')->constrained('statements')
+            $table->foreignId('statement_id')->constrained('statements')
             ->onUpdate('cascade')->onDelete('cascade');
         });
     }

@@ -2,21 +2,33 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BuildController;
-use Illuminate\Http\Request;
+use App\Http\Controllers\CombinDataController;
+use App\Http\Controllers\RenterController;
+use App\Http\Controllers\RentPaymentController;
+use App\Http\Controllers\RentPaymentsInstallmentController;
+use App\Models\RentPayment;
 use Illuminate\Support\Facades\Route;
-use App\Models\Build;
-use GuzzleHttp\Middleware;
 
 Route::middleware(['api'])->prefix('auth')->group(
 function ($router) {
     Route::post('/register', [AuthController::class, 'register'])->name('register');
     Route::post('/login', [AuthController::class, 'login'])->name('login');
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout')->middleware('auth:api');
-    Route::post('/refresh', [AuthController::class, 'refresh'])->name('refresh')->middleware('auth:api');
+    Route::post('/refresh', [AuthController::class, 'refresh'])->name('refresh');
     Route::post('/me', [AuthController::class, 'me'])->name('me')->middleware('auth:api');
 });
 
 Route::middleware(['api','auth:api'])->prefix('user')->group(
 function () {
-    Route::resource('builds',BuildController::class);
+    Route::apiResource('builds',BuildController::class);
+    Route::apiResource('builds.renters',RenterController::class);
+    Route::post('renters/{id}',[RenterController::class,'addPhone'])->name('renters.addPhone');
+    Route::delete('renters/{id}',[RenterController::class,'destroyPhone'])->name('renters.deletePhone');
+    Route::apiResource('renters.rent_payments',RentPaymentController::class);
+    Route::post('rent_payments/{id}/installments',[RentPaymentController::class,'addInstallment'])->name('rent_payments.addInstallment');
+    Route::delete('rent_payments/{id}/installments/{installmentId}',[RentPaymentController::class,'deleteInstallment'])->name('rent_payments.deleteInstallment');
+
+
+
+    // Route::get('getAllData',[CombinDataController::class, 'getAllUserData']);
 });

@@ -19,9 +19,9 @@ class RenterFactory extends Factory
     {
         return [
             'name'=>fake()->name(),
-            'rent'=>fake()->numberBetween(100,200),
-            'job_bomain'=>fake()->jobTitle(),
-            'enter_date'=>fake()->date(),
+            'rent'=>fake()->randomFloat(2,0,100000),
+            'job_domain'=>fake()->jobTitle(),
+            'entery_year'=>fake()->year(),
         ];
     }
 }

@@ -16,7 +16,7 @@ class PrintRenterDetails {
     final pdf = Document();
     for (Renter? renter in renters) {
       pdf.addPage(
-         await renterLayout(renter,includeInstallment: includeInstallment)
+         await _renterLayout(renter,includeInstallment: includeInstallment)
       );
     }
 
@@ -24,30 +24,35 @@ class PrintRenterDetails {
     return pdf;
   }
 
-  static Future<MultiPage> renterLayout(Renter? renter,
+  static Future<MultiPage> _renterLayout(Renter? renter,
           {bool includeInstallment = true}) async =>
       MultiPage(
         build: (context) => [
           renterInfoPrintLayout(renter!),
-          SizedBox(height: 1 * PdfPageFormat.cm),
+          SizedBox(height: 0.5 * PdfPageFormat.cm),
           Divider(),
+          SizedBox(height: 0.3 * PdfPageFormat.cm),
           _rentPayments(renter.rentPayments ?? RxMap({}),
-              includeInstallment: includeInstallment)
+              includeInstallment: includeInstallment),
         ],
       );
 
   static Widget _rentPayments(RxMap<String, List<RentPayment>> rentPayments,
           {bool includeInstallment = true}) =>
       Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-        Text("RentPayments per year:"),
-        SizedBox(height: 0.5 * PdfPageFormat.cm),
         for (String key in rentPayments.keys) ...[
-          Text("      Year $key"),
-          SizedBox(height: 0.5 * PdfPageFormat.cm),
+          Text("Year $key"),
+          SizedBox(height: 0.3 * PdfPageFormat.cm),
+          Divider(),
           for (RentPayment rentPayment in rentPayments[key] ?? []) ...[
-            rentPaymentPrintLayout(rentPayment,
-                includeInstallment: includeInstallment),
-            SizedBox(height: 1 * PdfPageFormat.cm),
+            Container(
+              decoration: BoxDecoration(
+                border: Border.all()
+              ),
+              child: rentPaymentPrintLayout(rentPayment,
+                  includeInstallment: includeInstallment),
+            ),
+            SizedBox(height: 0.8 * PdfPageFormat.cm),
           ]
         ]
       ]);

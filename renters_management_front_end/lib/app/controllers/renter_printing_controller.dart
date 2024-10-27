@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:renters_management_front_end/app/controllers/renter_add_update_card_controller.dart';
+import 'package:renters_management_front_end/app/services/print/printing.dart';
 
 import '../components/custom_text.dart';
 import '../globals.dart';
 import '../models/renter_model.dart';
-import '../services/print/print_renter_details.dart';
+import '../services/print/printing_components/renter_details_print_layout.dart';
 
 class RenterPrintingController extends GetxController {
   List<Renter> renters = [];
@@ -68,7 +69,7 @@ class RenterPrintingController extends GetxController {
     includeInstallment.value = val ?? false;
   }
   void printing() {
-      PrintRenterDetails.printing(renters,includeInstallment: includeInstallment.value);
+      AppPrinting.printRenterDetailsPrintLayout(renters,includeInstallment: includeInstallment.value);
 
   }
 }

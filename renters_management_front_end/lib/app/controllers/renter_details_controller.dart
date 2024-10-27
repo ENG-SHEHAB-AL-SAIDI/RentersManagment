@@ -9,8 +9,9 @@ import 'package:renters_management_front_end/app/controllers/show_notes_controll
 import 'package:renters_management_front_end/app/globals.dart';
 import 'package:renters_management_front_end/app/models/rent_payments_model.dart';
 import 'package:renters_management_front_end/app/models/result.dart';
-import 'package:renters_management_front_end/app/services/print/print_renter_details.dart';
-import 'package:renters_management_front_end/app/services/print/print_renter_rent_payment.dart';
+import 'package:renters_management_front_end/app/services/print/printing.dart';
+import 'package:renters_management_front_end/app/services/print/printing_components/renter_details_print_layout.dart';
+import 'package:renters_management_front_end/app/services/print/printing_components/renter_rent_payment_print_layout.dart';
 import 'package:renters_management_front_end/app/services/renter_services.dart';
 import 'package:renters_management_front_end/app/services/rentpayment_services.dart';
 
@@ -300,7 +301,7 @@ class RenterDetailsController extends GetxController {
         print("clear");
       }
     } else if (val == "print") {
-      PrintRentPayment.printing(
+      AppPrinting.printSingleRentPaymentPrintLayout(
           rentPayment, renter?.name?.value ?? "", renter?.rent?.value ?? 0);
     }
   }

@@ -6,17 +6,16 @@ import 'package:pdf/widgets.dart';
 import 'package:printing/printing.dart';
 import 'package:renters_management_front_end/app/services/print/printing_components/rent_payment.dart';
 import 'package:renters_management_front_end/app/services/print/printing_components/renter_info.dart';
+import '../../../models/rent_payments_model.dart';
+import '../../../models/renter_model.dart';
 
-import '../../models/rent_payments_model.dart';
-import '../../models/renter_model.dart';
-
-class PrintRenterDetails {
+class RenterDetailsPrintLayout {
   static Future<Document> generate(List<Renter?> renters,
       {bool includeInstallment = true}) async {
     final pdf = Document();
     for (Renter? renter in renters) {
       pdf.addPage(
-         await _renterLayout(renter,includeInstallment: includeInstallment)
+         await renterLayout(renter,includeInstallment: includeInstallment)
       );
     }
 
@@ -24,7 +23,7 @@ class PrintRenterDetails {
     return pdf;
   }
 
-  static Future<MultiPage> _renterLayout(Renter? renter,
+  static Future<MultiPage> renterLayout(Renter? renter,
           {bool includeInstallment = true}) async =>
       MultiPage(
         build: (context) => [
@@ -57,13 +56,4 @@ class PrintRenterDetails {
         ]
       ]);
 
-
-  static printing(List<Renter?> renters,
-      {bool includeInstallment = true}) async {
-      Document pdf =
-          await generate(renters, includeInstallment: includeInstallment);
-    Printing.layoutPdf(
-      onLayout: (format) async => pdf.save(),
-    );
-  }
 }

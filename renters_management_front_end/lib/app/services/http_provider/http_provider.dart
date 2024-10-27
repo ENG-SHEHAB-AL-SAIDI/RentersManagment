@@ -3,11 +3,13 @@ import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 
 class HttpProvider {
-  static final Dio _dio = Dio();
+  static  final Dio _dio = Dio();
   static InterceptorsWrapper? _authInterceptor;
 
   static init({String baseUrl = "", String contentType = 'application/json'})  {
+    print(baseUrl);
     _dio.options.baseUrl = baseUrl;
+    print(_dio.options.baseUrl);
     _dio.options.headers["Accept"] = contentType;
     _dio.options.connectTimeout = const Duration(seconds: 15);
     _dio.interceptors.add(InterceptorsWrapper(
@@ -15,6 +17,7 @@ class HttpProvider {
         List<ConnectivityResult> connectivityResult = await (Connectivity().checkConnectivity());
         if (kDebugMode) {
           print("HttpProviderError ------------------ ");
+          print("error: ${error.message}");
           print("status code: ${error.response?.statusCode}");
           print("status headers: ${error.response?.isRedirect}");
           print(connectivityResult);

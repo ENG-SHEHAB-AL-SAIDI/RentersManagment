@@ -6,7 +6,7 @@ import 'package:renters_management_front_end/app/models/result.dart';
 import 'package:renters_management_front_end/app/services/build_services.dart';
 
 import '../models/renter_model.dart';
-import 'api/http_provider.dart';
+import 'http_provider/http_provider.dart';
 
 class RenterServices {
   static Future<Result<List<Renter>>> fetchRenters(int buildId,

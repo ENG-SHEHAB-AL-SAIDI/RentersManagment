@@ -4,7 +4,7 @@ import 'package:get/get.dart' as get_x;
 import 'package:renters_management_front_end/app/models/result.dart';
 
 import '../models/user_model.dart';
-import 'api/http_provider.dart';
+import 'http_provider/http_provider.dart';
 
 class UserServices {
   static User? _user;

@@ -7,6 +7,7 @@ import 'package:renters_management_front_end/app/services/renter_services.dart';
 
 import '../components/pop_up_cards/alert_message_card.dart';
 import '../components/pop_up_cards/delete_confirmation_message_card.dart';
+import '../components/pop_up_cards/renter_print_setting_card.dart';
 import '../models/renter_model.dart';
 
 class RenterListController extends GetxController {
@@ -117,7 +118,11 @@ class RenterListController extends GetxController {
     }
   }
 
-  void changeLang(String lang) {
-    Get.updateLocale(Locale(lang));
+  void more(String val) {
+    if (val == "print") {
+      Get.dialog(PopUpRenterPrintSettingCard(),arguments: {
+        "renters":renters.value
+      });
+    }
   }
 }

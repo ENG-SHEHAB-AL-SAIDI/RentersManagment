@@ -4,7 +4,7 @@ import 'package:renters_management_front_end/app/models/result.dart';
 
 import '../models/build_model.dart';
 import '../models/renter_model.dart';
-import 'api/http_provider.dart';
+import 'http_provider/http_provider.dart';
 
 class BuildServices {
   static List<Build> _builds = [];

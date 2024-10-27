@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:renters_management_front_end/app/components/pop_up_cards/add_installment.dart';
 import 'package:renters_management_front_end/app/components/pop_up_cards/add_phone_card.dart';
+import 'package:renters_management_front_end/app/components/pop_up_cards/renter_print_setting_card.dart';
 import 'package:renters_management_front_end/app/controllers/show_notes_controller.dart';
 import 'package:renters_management_front_end/app/globals.dart';
 import 'package:renters_management_front_end/app/models/rent_payments_model.dart';
@@ -284,7 +285,12 @@ class RenterDetailsController extends GetxController {
     if (val == "edit") {
       renterUpdate();
     } else if (val == "print") {
-      PrintRenterDetails.printing(renter);
+      if(renter == null){
+        return;
+      }
+      Get.dialog(PopUpRenterPrintSettingCard(),arguments: {
+        "renters":[renter!]
+      });
     }
   }
 

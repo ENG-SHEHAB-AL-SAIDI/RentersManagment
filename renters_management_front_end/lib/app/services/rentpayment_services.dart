@@ -9,7 +9,7 @@ import 'package:renters_management_front_end/app/services/build_services.dart';
 import 'package:renters_management_front_end/app/services/renter_services.dart';
 
 import '../models/renter_model.dart';
-import 'api/http_provider.dart';
+import 'http_provider/http_provider.dart';
 
 class RentPaymentServices {
   static Future<Result<Map<String, List<RentPayment>>>> fetchRentPayments(

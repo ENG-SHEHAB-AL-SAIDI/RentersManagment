@@ -2,12 +2,13 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
 import '../../components/buttons.dart';
 import '../../components/custom_text.dart';
 import '../../components/text_field.dart';
 import '../../controllers/login_controller.dart';
 import '../../globals.dart';
+import '../../services/http_provider/http_provider.dart';
+
 
 class PhoneLoginView extends GetView<LoginController> {
   PhoneLoginView({
@@ -16,6 +17,7 @@ class PhoneLoginView extends GetView<LoginController> {
 
   double height = Get.height;
   double width = Get.width;
+  RxBool state = true.obs;
 
   List<PopupMenuItem<String>> menuItems = [
     PopupMenuItem<String>(value: "en", child: SecText("En")),
@@ -180,6 +182,21 @@ class PhoneLoginView extends GetView<LoginController> {
                     ),
                     Obx(() => Column(
                           children: [
+                            Checkbox(
+                                value: state.value,
+                                onChanged: (val) async{
+                                  if (val == true) {
+                                    await HttpProvider.init(
+                                        baseUrl:
+                                        "http://rentersmanagementapi.mooo.com/api/");
+                                    state.value = true;
+                                  } else {
+                                    await HttpProvider.init(
+                                        baseUrl:
+                                        "http://192.168.0.31:8000/api/");
+                                    state.value = false;
+                                  }
+                                }),
                             (controller.logging.value)
                                 ? CustomButton(
                                     onPress: controller.onLogin,

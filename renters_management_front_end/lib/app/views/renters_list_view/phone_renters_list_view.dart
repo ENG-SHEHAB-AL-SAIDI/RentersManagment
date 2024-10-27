@@ -30,12 +30,22 @@ class PhoneRentersListView extends GetView<RenterListController> {
                 Icons.sort_outlined,
                 color: AppColors.mainIconColor,
               )),
-          IconButton(
-              onPressed: () {},
-              icon: Icon(
-                Icons.more_vert_outlined,
-                color: AppColors.mainIconColor,
-              )),
+          PopupMenuButton<String>(
+            onSelected:controller.more,
+            color: AppColors.inverseCardColor,
+            itemBuilder: (ctx) => [
+              PopupMenuItem(
+                  value: "print",
+                  child: SecText(
+                    "Print",
+                    textColor:
+                    AppColors.mainTextColor,
+                  )),
+            ],
+            child: Icon(Icons.more_vert_outlined,
+                color: AppColors.mainTextColor),
+          ),
+          SizedBox(width: 10,)
         ],
       ),
       floatingActionButton: FloatingActionButton(

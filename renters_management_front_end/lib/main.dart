@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import './app/localization/languages.dart';
 import './app/routes.dart';
-import 'app/services/api/http_provider.dart';
+import 'app/services/http_provider/http_provider.dart';
 
 void main() async{
-  await HttpProvider.init(baseUrl:"http://192.168.0.31:8000/api/");
+  await HttpProvider.init(baseUrl:"http://rentersmanagementapi.mooo.com/api/");
   runApp(const MyApp());
 }
 

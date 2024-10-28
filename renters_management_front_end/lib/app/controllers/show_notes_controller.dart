@@ -21,8 +21,6 @@ class ShowNotesController extends GetxController {
 
   @override
   void onInit() {
-    print(Get.arguments['notes']);
-    print(Get.arguments['other']);
     noteController.text =Get.arguments['notes']??"";
     super.onInit();
   }

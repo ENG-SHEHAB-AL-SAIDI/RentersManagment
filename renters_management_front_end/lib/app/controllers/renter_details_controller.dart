@@ -14,6 +14,7 @@ import 'package:renters_management_front_end/app/services/print/printing.dart';
 import 'package:renters_management_front_end/app/services/renter_services.dart';
 import 'package:renters_management_front_end/app/services/rentpayment_services.dart';
 import 'package:renters_management_front_end/app/services/year_services.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../components/custom_text.dart';
 import '../components/pop_up_cards/add_and_update_renter_card.dart';
@@ -93,8 +94,7 @@ class RenterDetailsController extends GetxController {
   }
 
   String? validateYear(String? year) {
-    if ((renter?.rentPayments!.containsKey(year) ??
-        false)) {
+    if ((renter?.rentPayments!.containsKey(year) ?? false)) {
       return "this year already exist";
     }
     return null;
@@ -201,9 +201,10 @@ class RenterDetailsController extends GetxController {
   void addYear() async {
     if (formKey.currentState?.validate() ?? false) {
       Result res = await YearServices.addYearToRenter(
-          buildId: buildId,
-          renterId: renterId,
-          data: {"year": yearController.text},);
+        buildId: buildId,
+        renterId: renterId,
+        data: {"year": yearController.text},
+      );
 
       if (res.statusCode == 200) {
         if (res.data) {
@@ -336,11 +337,11 @@ class RenterDetailsController extends GetxController {
     if (val == "edit") {
       renterUpdate();
     } else if (val == "print") {
-      if(renter == null){
+      if (renter == null) {
         return;
       }
-      Get.dialog(PopUpRenterPrintSettingCard(),arguments: {
-        "renters":[renter!]
+      Get.dialog(PopUpRenterPrintSettingCard(), arguments: {
+        "renters": [renter!]
       });
     }
   }
@@ -354,5 +355,19 @@ class RenterDetailsController extends GetxController {
       AppPrinting.printSingleRentPaymentPrintLayout(
           rentPayment, renter?.name?.value ?? "", renter?.rent?.value ?? 0);
     }
+  }
+
+  void callRenter() async {
+    if(selectedPhone.value == "")return;
+
+    final phoneUri = Uri(scheme: 'tel', path: selectedPhone.value);
+    await launchUrl(phoneUri);
+  }
+
+  void sendSMS() async {
+    if(selectedPhone.value == "")return;
+
+    final smsUri = Uri(scheme: 'sms', path: selectedPhone.value);
+    await launchUrl(smsUri);
   }
 }

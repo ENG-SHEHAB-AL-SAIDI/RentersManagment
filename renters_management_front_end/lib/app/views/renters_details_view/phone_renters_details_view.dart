@@ -69,8 +69,7 @@ class PhoneRentersDetailsView extends GetView<RenterDetailsController> {
                                         ],
                                       ),
                                       PopupMenuButton<String>(
-
-                                        onSelected:controller.more,
+                                        onSelected: controller.more,
                                         color: AppColors.inverseCardColor,
                                         itemBuilder: (ctx) => [
                                           PopupMenuItem(
@@ -150,18 +149,14 @@ class PhoneRentersDetailsView extends GetView<RenterDetailsController> {
                                                         AppColors.mainTextColor,
                                                   )),
                                               IconButton(
-                                                  onPressed: () {
-                                                    // _callrenter();
-                                                  },
+                                                  onPressed: controller.callRenter,
                                                   icon: Icon(
                                                     Icons.phone,
                                                     color:
                                                         AppColors.mainIconColor,
                                                   )),
                                               IconButton(
-                                                  onPressed: () {
-                                                    // _sendSMS();
-                                                  },
+                                                  onPressed: controller.sendSMS,
                                                   icon: Icon(Icons.sms_outlined,
                                                       color: AppColors
                                                           .mainIconColor))
@@ -245,11 +240,11 @@ class PhoneRentersDetailsView extends GetView<RenterDetailsController> {
                                               ),
                                               IconButton(
                                                   onPressed:
-                                                  controller.deleteYear,
+                                                      controller.deleteYear,
                                                   icon: Icon(
                                                     Icons.delete,
                                                     color:
-                                                    AppColors.mainTextColor,
+                                                        AppColors.mainTextColor,
                                                   )),
                                             ],
                                           ),
@@ -298,20 +293,4 @@ class PhoneRentersDetailsView extends GetView<RenterDetailsController> {
                 child: CircularProgressIndicator(),
               )));
   }
-
-// void _callrenter() async {
-//   if (DataCollection.rentersInfo[widget.name]?.phone != null) {
-//     final phoneUri = Uri(
-//         scheme: 'tel', path: DataCollection.rentersInfo[widget.name]!.phone);
-//     await launchUrl(phoneUri);
-//   }
-// }
-//
-// void _sendSMS() async {
-//   if (DataCollection.rentersInfo[widget.name]?.phone != null) {
-//     final smsUri = Uri(
-//         scheme: 'sms', path: DataCollection.rentersInfo[widget.name]!.phone);
-//     await launchUrl(smsUri);
-//   }
-// }
 }

@@ -43,6 +43,7 @@ dependencies:
   open_file: ^3.5.9
   pdf: ^3.11.1
   printing: ^5.13.3
+  url_launcher: ^6.3.1
 #  flutter_dotenv: ^5.1.0
 
 dev_dependencies:

@@ -7,9 +7,7 @@ class HttpProvider {
   static InterceptorsWrapper? _authInterceptor;
 
   static init({String baseUrl = "", String contentType = 'application/json'}) {
-    print(baseUrl);
     _dio.options.baseUrl = baseUrl;
-    print(_dio.options.baseUrl);
     _dio.options.headers["Accept"] = contentType;
     _dio.options.connectTimeout = const Duration(seconds: 15);
     _dio.interceptors.add(InterceptorsWrapper(

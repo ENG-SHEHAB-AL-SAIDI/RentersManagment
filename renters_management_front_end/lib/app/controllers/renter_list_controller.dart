@@ -105,13 +105,11 @@ class RenterListController extends GetxController {
     if (result != null) {
       Result res =
           await RenterServices.storeRenter(buildId: buildId, data: result);
-      print(res.statusCode);
       if (res.statusCode == 200) {
         if (res.data != null) {
           renters.refresh();
         }
       } else {
-        print("here");
         Get.dialog(PopUpAlertCard(
             "${res.message ??""}\n error code:${res.statusCode}", Icons.warning));
       }

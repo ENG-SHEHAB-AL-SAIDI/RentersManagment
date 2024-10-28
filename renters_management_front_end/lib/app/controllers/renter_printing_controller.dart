@@ -6,7 +6,6 @@ import 'package:renters_management_front_end/app/services/print/printing.dart';
 import '../components/custom_text.dart';
 import '../globals.dart';
 import '../models/renter_model.dart';
-import '../services/print/printing_components/renter_details_print_layout.dart';
 
 class RenterPrintingController extends GetxController {
   List<Renter> renters = [];
@@ -37,16 +36,16 @@ class RenterPrintingController extends GetxController {
             children: [
               ListTile(
                 leading: Obx(() => Checkbox(
-                  value: (selectAll.value) || selectedYears.contains(year),
-                  onChanged: (value){
-                    if (value == true) {
-                      selectedYears.addIf((selectedYears.contains(year) == false), year);
-                    } else {
-                      selectedYears.remove(year);
-                    }
-                    print(selectedYears);
-                  },
-                )),
+                      value: (selectAll.value) || selectedYears.contains(year),
+                      onChanged: (value) {
+                        if (value == true) {
+                          selectedYears.addIf(
+                              (selectedYears.contains(year) == false), year);
+                        } else {
+                          selectedYears.remove(year);
+                        }
+                      },
+                    )),
                 title: SecText(
                   year,
                   textColor: AppColors.secTextColor,
@@ -68,8 +67,9 @@ class RenterPrintingController extends GetxController {
   void includeInstallmentChange(bool? val) {
     includeInstallment.value = val ?? false;
   }
-  void printing() {
-      AppPrinting.printRenterDetailsPrintLayout(renters,includeInstallment: includeInstallment.value);
 
+  void printing() {
+    AppPrinting.printRenterDetailsPrintLayout(renters,
+        includeInstallment: includeInstallment.value);
   }
 }

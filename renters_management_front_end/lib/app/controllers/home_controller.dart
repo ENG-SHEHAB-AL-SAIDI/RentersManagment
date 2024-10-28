@@ -13,6 +13,7 @@ class HomeController extends GetxController {
   Rx<List<Build>> builds = Rx([]);
   RxBool lodeState = true.obs;
   RxString errorMessage = "No Builds yet\n add some ".obs;
+  ScrollController scrollController = ScrollController();
 
   @override
   void onInit() async {
@@ -79,6 +80,10 @@ class HomeController extends GetxController {
       if (res.statusCode == 200) {
         if (res.data != null) {
           builds.refresh();
+          scrollController.animateTo(scrollController.position.maxScrollExtent+500,
+            duration: Duration(milliseconds:300 ), // Adjust duration as needed
+            curve: Curves.easeOut,          // Adjust curve for scroll animation
+          );
         }
       } else {
         Get.dialog(PopUpAlertCard(

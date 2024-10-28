@@ -38,7 +38,6 @@ class RenterDetailsPrintLayout {
           {bool includeInstallment = true,List<String>? selectedYears}) {
     List<String>? years ;
     (selectedYears != null )?(years = selectedYears):(years = rentPayments.keys.toList());
-    print(selectedYears);
     return  Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         for (String key in years) ...[
           Text("Year $key"),

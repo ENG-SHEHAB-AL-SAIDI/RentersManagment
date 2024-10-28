@@ -28,7 +28,7 @@ class BuildCard extends StatelessWidget {
     Color color1;
     Color color2;
     Color textColor;
-    double rightPadding = 70;
+
     if (type == 0) {
       color1 = AppColors.mainCardColor;
       color2 = AppColors.inverseCardColor;
@@ -69,7 +69,7 @@ class BuildCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   SizedBox(
-                    height: 20,
+                    height: Utils.fontSizeScale(20),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [

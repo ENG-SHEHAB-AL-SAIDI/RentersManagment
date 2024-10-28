@@ -80,6 +80,7 @@ class PhoneHomeView extends GetView<HomeController> {
                           ),
                           Expanded(child: SingleChildScrollView(
                             physics: const AlwaysScrollableScrollPhysics(),
+                            controller: controller.scrollController,
                             child: Column(
                               children: [
                                 for (int i = 0;

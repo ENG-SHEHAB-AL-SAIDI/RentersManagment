@@ -96,11 +96,6 @@ class RenterListController extends GetxController {
     Map<String, dynamic>? result =
         await Get.dialog(const PopUpIAddAndUpdateRenterCard(),arguments: {
           'mode': "Add",
-          'data': {
-            "name":"renter1",
-            "rent":"1000",
-            "entryYear":"2024",
-          }
         });
     if (result != null) {
       Result res =

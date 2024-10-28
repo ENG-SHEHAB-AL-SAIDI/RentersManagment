@@ -43,8 +43,11 @@ class PopUpRenterPrintSettingCard extends GetView<RenterPrintingController> {
                             const SizedBox(
                               width: 10,
                             ),
-                            SecText("Years to include"),
+                            SecText("Years to include:",fontWeight: FontWeight.bold,),
                           ],
+                        ),
+                        SizedBox(
+                          height: Get.height * 0.01,
                         ),
                         Container(
                             margin: EdgeInsets.only(left: 10),

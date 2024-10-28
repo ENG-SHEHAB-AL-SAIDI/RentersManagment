@@ -9,9 +9,9 @@ import '../../models/renter_model.dart';
 class AppPrinting{
 
   static printRenterDetailsPrintLayout(List<Renter?> renters,
-      {bool includeInstallment = true}) async {
+      {bool includeInstallment = true, List<String>? selectedYears}) async {
     Document pdf =
-    await RenterDetailsPrintLayout.generate(renters, includeInstallment: includeInstallment);
+    await RenterDetailsPrintLayout.generate(renters, includeInstallment: includeInstallment,selectedYears: selectedYears);
     Printing.layoutPdf(
       onLayout: (format) async => pdf.save(),
     );

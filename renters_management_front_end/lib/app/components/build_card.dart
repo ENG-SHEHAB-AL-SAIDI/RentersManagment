@@ -24,7 +24,7 @@ class BuildCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    (height < 200) ? height = 240 : null;
+    (height < 200) ? height = 270 : null;
     Color color1;
     Color color2;
     Color textColor;
@@ -38,7 +38,7 @@ class BuildCard extends StatelessWidget {
       color2 = AppColors.backColor;
       textColor = AppColors.mainTextColor;
     }
-    return Obx(()=>Container(
+    return Obx(() => Container(
         height: height,
         width: double.maxFinite,
         decoration: BoxDecoration(
@@ -65,15 +65,15 @@ class BuildCard extends StatelessWidget {
               height: ((height - 2) * 0.6),
               padding: const EdgeInsets.all(12),
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      SizedBox(
-                        width: (Get.width - rightPadding) * 0.6,
-                        child: Row(
+                  SizedBox(
+                    height: 20,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(
                           children: [
                             SecText(
                               "Build Name:  ",
@@ -86,32 +86,32 @@ class BuildCard extends StatelessWidget {
                             ),
                           ],
                         ),
-                      ),
-                      SizedBox(
-                        width: (Get.width - rightPadding) * 0.30,
-                        child: Row(
+                        Row(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
                             IconButton(
-                                onPressed: () =>
-                                    controller.edit(buildInfo.id.value),
-                                icon: Icon(
-                                  Icons.edit,
-                                  color: textColor,
-                                )),
+                              onPressed: () =>
+                                  controller.edit(buildInfo.id.value),
+                              icon: Icon(
+                                Icons.edit,
+                                color: textColor,
+                              ),
+                              padding: EdgeInsets.zero,
+                            ),
                             IconButton(
-                                onPressed: () =>
-                                    controller.delete(buildInfo.id.value),
-                                icon: Icon(
-                                  Icons.delete,
-                                  color: textColor,
-                                ))
+                              onPressed: () =>
+                                  controller.delete(buildInfo.id.value),
+                              icon: Icon(
+                                Icons.delete,
+                                color: textColor,
+                              ),
+                              padding: EdgeInsets.zero,
+                            )
                           ],
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-
                   Row(
                     children: [
                       SecText(
@@ -125,7 +125,6 @@ class BuildCard extends StatelessWidget {
                       ),
                     ],
                   ),
-
                   Row(
                     children: [
                       SecText(
@@ -141,36 +140,27 @@ class BuildCard extends StatelessWidget {
                   ),
                   Row(
                     children: [
-                      SizedBox(
-                        width: (Get.width - rightPadding) * 0.4,
-                        child: Row(
-                          children: [
-                            SecText(
-                              "No.Renters:  ",
-                              textColor: textColor,
-                              fontWeight: FontWeight.bold,
-                            ),
-                            SecText(
-                              buildInfo.numRenters?.value.toString() ?? '0',
-                              textColor: textColor,
-                            ),
-                          ],
-                        ),
+                      SecText(
+                        "No.Renters:  ",
+                        textColor: textColor,
+                        fontWeight: FontWeight.bold,
                       ),
-                      SizedBox(
-                        child: Row(
-                          children: [
-                            SecText(
-                              "Total Rent:  ",
-                              textColor: textColor,
-                              fontWeight: FontWeight.bold,
-                            ),
-                            SecText(
-                              "${buildInfo.totalRent}",
-                              textColor: textColor,
-                            ),
-                          ],
-                        ),
+                      SecText(
+                        buildInfo.numRenters?.value.toString() ?? '0',
+                        textColor: textColor,
+                      ),
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      SecText(
+                        "Total Rent:  ",
+                        textColor: textColor,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      SecText(
+                        "${buildInfo.totalRent}",
+                        textColor: textColor,
                       ),
                     ],
                   ),
@@ -182,7 +172,7 @@ class BuildCard extends StatelessWidget {
               width: double.maxFinite,
               color: color2,
               child: InkWell(
-                onTap: () =>controller.rentersListRoute(buildInfo.id.value),
+                onTap: () => controller.rentersListRoute(buildInfo.id.value),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -218,7 +208,7 @@ class BuildCard extends StatelessWidget {
                 ),
               ),
               child: InkWell(
-                onTap: () =>controller.buildReportRoute(buildInfo.id.value),
+                onTap: () => controller.buildReportRoute(buildInfo.id.value),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [

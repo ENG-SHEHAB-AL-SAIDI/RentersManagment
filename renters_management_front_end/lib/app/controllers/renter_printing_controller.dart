@@ -10,7 +10,7 @@ import '../models/renter_model.dart';
 class RenterPrintingController extends GetxController {
   List<Renter> renters = [];
   Rx<List<Widget>> years = Rx([]);
-  RxList<String> selectedYears = RxList();
+  RxList<String>? selectedYears = RxList();
   RxBool selectAll = false.obs;
   RxBool includeInstallment = false.obs;
 
@@ -36,13 +36,14 @@ class RenterPrintingController extends GetxController {
             children: [
               ListTile(
                 leading: Obx(() => Checkbox(
-                      value: (selectAll.value) || selectedYears.contains(year),
+                      value: (selectAll.value) ||
+                          (selectedYears?.contains(year) ?? false),
                       onChanged: (value) {
                         if (value == true) {
-                          selectedYears.addIf(
-                              (selectedYears.contains(year) == false), year);
+                          selectedYears?.addIf(
+                              ((selectedYears?.contains(year)??false) == false), year);
                         } else {
-                          selectedYears.remove(year);
+                          selectedYears?.remove(year);
                         }
                       },
                     )),
@@ -61,7 +62,13 @@ class RenterPrintingController extends GetxController {
   }
 
   void selectAllChange(bool? val) {
-    selectAll.value = val ?? false;
+    if (val == true) {
+      selectAll.value = true;
+      selectedYears = null;
+    } else {
+      selectAll.value = false;
+      selectedYears = RxList();
+    }
   }
 
   void includeInstallmentChange(bool? val) {
@@ -70,6 +77,7 @@ class RenterPrintingController extends GetxController {
 
   void printing() {
     AppPrinting.printRenterDetailsPrintLayout(renters,
-        includeInstallment: includeInstallment.value);
+        includeInstallment: includeInstallment.value,
+        selectedYears: selectedYears);
   }
 }

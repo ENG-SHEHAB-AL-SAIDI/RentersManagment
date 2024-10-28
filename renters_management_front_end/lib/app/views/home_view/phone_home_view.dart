@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:renters_management_front_end/app/components/build_card.dart';
 import 'package:renters_management_front_end/app/components/custom_text.dart';
 import 'package:renters_management_front_end/app/globals.dart';
+
 import '../../controllers/home_controller.dart';
 
 class PhoneHomeView extends GetView<HomeController> {
@@ -25,7 +26,7 @@ class PhoneHomeView extends GetView<HomeController> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed:controller.add,
+        onPressed: controller.add,
         backgroundColor: AppColors.inverseCardColor,
         child: Icon(
           Icons.add,
@@ -35,7 +36,7 @@ class PhoneHomeView extends GetView<HomeController> {
       body: Padding(
           padding: EdgeInsets.all(width * 0.05),
           child: Obx(() => (!(controller.lodeState.value))
-              ?(controller.builds.value.isEmpty)
+              ? (controller.builds.value.isEmpty)
                   ? Center(
                       child: Column(
                       mainAxisSize: MainAxisSize.min,
@@ -62,36 +63,43 @@ class PhoneHomeView extends GetView<HomeController> {
                     ))
                   : RefreshIndicator(
                       onRefresh: controller.refresh,
-                      child: SingleChildScrollView(
-                        physics: const AlwaysScrollableScrollPhysics(),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            SizedBox(
-                              height: height * 0.01,
-                            ),
-                            SecText(
-                              "Your Builds",
-                              textColor: AppColors.inverseSecTextColor,
-                            ),
-                            SizedBox(
-                              height: height * 0.03,
-                            ),
-                            for (int i = 0;
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SizedBox(
+                            height: height * 0.01,
+                          ),
+                          SecText(
+                            "Your Builds:",
+                            textColor: AppColors.inverseSecTextColor,
+                            fontWeight: FontWeight.bold,
+                            fontSize: Utils.fontSizeScale(20),
+                          ),
+                          SizedBox(
+                            height: height * 0.01,
+                          ),
+                          Expanded(child: SingleChildScrollView(
+                            physics: const AlwaysScrollableScrollPhysics(),
+                            child: Column(
+                              children: [
+                                for (int i = 0;
                                 i < controller.builds.value.length;
                                 i++) ...[
-                              BuildCard(
-                                buildInfo: controller.builds.value[i],
-                                height: height * 0.16,
-                                type: 1,
-                              ),
-                              SizedBox(
-                                height: height * 0.03,
-                              ),
-                            ]
-                          ],
-                        ),
-                      ))
+                                  BuildCard(
+                                    buildInfo: controller.builds.value[i],
+                                    height: height * 0.16,
+                                    type: 1,
+                                  ),
+                                  SizedBox(
+                                    height: height * 0.03,
+                                  ),
+                                ]
+                              ],
+                            ),
+                          ))
+                        ],
+                      ),
+                    )
               : const Center(
                   child: CircularProgressIndicator(),
                 ))),

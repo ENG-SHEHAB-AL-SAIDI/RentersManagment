@@ -7,12 +7,13 @@ import '../../../models/rent_payments_model.dart';
 import '../../../models/renter_model.dart';
 
 class RenterDetailsPrintLayout {
+
   static Future<Document> generate(List<Renter?> renters,
-      {bool includeInstallment = true}) async {
+      {bool includeInstallment = true,List<String>? selectedYears}) async {
     final pdf = Document();
     for (Renter? renter in renters) {
       pdf.addPage(
-         await renterLayout(renter,includeInstallment: includeInstallment)
+         await renterLayout(renter,includeInstallment: includeInstallment,selectedYears: selectedYears)
       );
     }
 
@@ -21,7 +22,7 @@ class RenterDetailsPrintLayout {
   }
 
   static Future<MultiPage> renterLayout(Renter? renter,
-          {bool includeInstallment = true}) async =>
+          {bool includeInstallment = true,List<String>? selectedYears}) async =>
       MultiPage(
         build: (context) => [
           renterInfoPrintLayout(renter!),
@@ -29,14 +30,17 @@ class RenterDetailsPrintLayout {
           Divider(),
           SizedBox(height: 0.3 * PdfPageFormat.cm),
           _rentPayments(renter.rentPayments ?? RxMap({}),
-              includeInstallment: includeInstallment),
+              includeInstallment: includeInstallment,selectedYears: selectedYears),
         ],
       );
 
   static Widget _rentPayments(RxMap<String, List<RentPayment>> rentPayments,
-          {bool includeInstallment = true}) =>
-      Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-        for (String key in rentPayments.keys) ...[
+          {bool includeInstallment = true,List<String>? selectedYears}) {
+    List<String>? years ;
+    (selectedYears != null )?(years = selectedYears):(years = rentPayments.keys.toList());
+    print(selectedYears);
+    return  Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+        for (String key in years) ...[
           Text("Year $key"),
           SizedBox(height: 0.3 * PdfPageFormat.cm),
           Divider(),
@@ -52,5 +56,6 @@ class RenterDetailsPrintLayout {
           ]
         ]
       ]);
+  }
 
 }

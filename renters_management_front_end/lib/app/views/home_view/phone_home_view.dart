@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:renters_management_front_end/app/components/build_card.dart';
 import 'package:renters_management_front_end/app/components/custom_text.dart';
+import 'package:renters_management_front_end/app/components/drawer.dart';
 import 'package:renters_management_front_end/app/globals.dart';
 
 import '../../controllers/home_controller.dart';
@@ -19,12 +20,14 @@ class PhoneHomeView extends GetView<HomeController> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: AppColors.appBarColor,
+        foregroundColor: AppColors.mainIconColor,
         title: MainText("Renters Management"),
         leading: Icon(
           Icons.home,
           color: AppColors.mainIconColor,
         ),
       ),
+      endDrawer: CustomDrawer(),
       floatingActionButton: FloatingActionButton(
         onPressed: controller.add,
         backgroundColor: AppColors.inverseCardColor,

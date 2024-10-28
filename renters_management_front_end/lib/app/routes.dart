@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:renters_management_front_end/app/bindings/home_binding.dart';
 import 'package:renters_management_front_end/app/bindings/renter_list_binding.dart';
+import 'package:renters_management_front_end/app/views/build_reports_view/main_build_reports_view.dart';
 import 'package:renters_management_front_end/app/views/home_view/main_home_view.dart';
 import 'package:renters_management_front_end/app/views/login_view/main_login_view.dart';
 import 'package:renters_management_front_end/app/views/renters_details_view/main_renters_details_view.dart';
@@ -32,7 +33,7 @@ class AppRoutes {
     ),
     GetPage(
       name: '/buildReports',
-      page: ()=>   const RentersStateView(),
+      page: ()=>   const BuildReportsView(),
       //binding: LoginViewBinding(),
     ),
     // Add more routes here

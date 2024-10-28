@@ -8,18 +8,21 @@ import 'package:renters_management_front_end/app/services/build_services.dart';
 import '../components/pop_up_cards/add_and_update_build_card.dart';
 import '../components/pop_up_cards/delete_confirmation_message_card.dart';
 import '../models/build_model.dart';
+import '../models/user_model.dart';
+import '../services/user_services.dart';
 
 class HomeController extends GetxController {
   Rx<List<Build>> builds = Rx([]);
   RxBool lodeState = true.obs;
   RxString errorMessage = "No Builds yet\n add some ".obs;
   ScrollController scrollController = ScrollController();
+  User? user ;
 
   @override
   void onInit() async {
-    if (kDebugMode) {
-      print("init");
-    }
+    Result res1 = await UserServices.fetchUser();
+    user = res1.data;
+
     Result<List<Build>> res = await BuildServices.fetchBuilds();
     if (res.statusCode == 200 && res.data != null) {
       if (res.data != null) {

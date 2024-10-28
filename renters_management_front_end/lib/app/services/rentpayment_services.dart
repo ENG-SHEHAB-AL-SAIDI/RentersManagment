@@ -29,23 +29,25 @@ class RentPaymentServices {
     try {
       response =
           await HttpProvider.get("user/renters/$renterId/rent_payments/");
-      Map<String, dynamic> result = response?.data["grouped_rent_payments"];
-      Map<String, RxList<RentPayment>> rentPayments = {};
-      if (result.isNotEmpty) {
-        for (String key in result.keys) {
-          List<RentPayment> rentPaymentsItems = [];
-          for (var item in result[key]) {
-            rentPaymentsItems.add(RentPayment.fromJson(item));
+      if(response?.statusCode == 200){
+        Map<String, dynamic> result = response?.data["grouped_rent_payments"];
+        Map<String, RxList<RentPayment>> rentPayments = {};
+        if (result.isNotEmpty) {
+          for (String key in result.keys) {
+            List<RentPayment> rentPaymentsItems = [];
+            for (var item in result[key]) {
+              rentPaymentsItems.add(RentPayment.fromJson(item));
+            }
+            rentPayments[key]?.value = rentPaymentsItems;
           }
-          rentPayments[key]?.value = rentPaymentsItems;
         }
+        res.data?.rentPayments = RxMap<String, RxList<RentPayment>>(rentPayments);
+        return Result(
+            data: rentPayments,
+            hasError: false,
+            statusCode: response?.statusCode,
+            message: "successful");
       }
-      res.data?.rentPayments = RxMap<String, RxList<RentPayment>>(rentPayments);
-      return Result(
-          data: rentPayments,
-          hasError: false,
-          statusCode: response?.statusCode,
-          message: "successful");
     } catch (error) {
       if (kDebugMode) {
         print(error.toString());
@@ -56,6 +58,11 @@ class RentPaymentServices {
           message: error.toString(),
           data: null);
     }
+    return Result(
+        hasError: true,
+        statusCode: response?.statusCode?? 700,
+        message: response?.data["message"]?? "some thing wrong",
+        data: null);
   }
 
   static Future<Result<RentPayment>> fetchRentPayment(
@@ -111,8 +118,8 @@ class RentPaymentServices {
     }
     return Result(
         hasError: true,
-        statusCode: 600,
-        message: "some thing wrong",
+        statusCode: response?.statusCode?? 700,
+        message: response?.data["message"]?? "some thing wrong",
         data: null);
   }
 
@@ -150,8 +157,8 @@ class RentPaymentServices {
     }
     return Result(
         hasError: true,
-        statusCode: 623,
-        message: "some thing wrong",
+        statusCode: response?.statusCode?? 700,
+        message: response?.data["message"]?? "some thing wrong",
         data: null);
   }
 
@@ -191,8 +198,8 @@ class RentPaymentServices {
     }
     return Result(
         hasError: true,
-        statusCode: 624,
-        message: "some thing wrong",
+        statusCode: response?.statusCode?? 700,
+        message: response?.data["message"]?? "some thing wrong",
         data: null);
   }
 
@@ -270,8 +277,8 @@ class RentPaymentServices {
     }
     return Result(
         hasError: true,
-        statusCode: 636,
-        message: "some thing wrong",
+        statusCode: response?.statusCode?? 700,
+        message: response?.data["message"]?? "some thing wrong",
         data: null);
   }
 
@@ -313,8 +320,8 @@ class RentPaymentServices {
     }
     return Result(
         hasError: true,
-        statusCode: 636,
-        message: "some thing wrong",
+        statusCode: response?.statusCode?? 700,
+        message: response?.data["message"]?? "some thing wrong",
         data: null);
   }
 }

@@ -19,23 +19,23 @@ class RenterServices {
           hasError: false,
           message: "successful");
     }
-
-    late Response? response;
+    Response? response;
     try {
-      response = await HttpProvider.get(
-          "user/builds/$buildId/renters");
-      List result = response?.data["Renters"];
-      List<Renter> renters = [];
-      for (int i = 0; i < result.length; i++) {
-        renters.add(Renter.fromJson(result[i]));
+      response = await HttpProvider.get("user/builds/$buildId/renters");
+      if (response?.statusCode == 200) {
+        List result = response?.data["Renters"];
+        List<Renter> renters = [];
+        for (int i = 0; i < result.length; i++) {
+          renters.add(Renter.fromJson(result[i]));
+        }
+        BuildServices.setBuildRenters(buildId, renters);
+        return Result(
+            data: renters,
+            hasError: false,
+            statusCode: response?.statusCode,
+            message: "successful");
       }
-      BuildServices.setBuildRenters(buildId, renters);
-      return Result(
-          data: renters,
-          hasError: false,
-          statusCode: response?.statusCode,
-          message: "successful");
-    }  catch (error) {
+    } catch (error) {
       if (kDebugMode) {
         print(error.toString());
       }
@@ -45,6 +45,12 @@ class RenterServices {
           message: error.toString(),
           data: null);
     }
+    return Result(
+        hasError: true,
+        statusCode: response?.statusCode?? 623,
+        message: response?.data["message"]?? "some thing wrong",
+        data: null);
+
   }
 
   static Future<Result<Renter>> fetchRenter(int buildId, int renterId,
@@ -64,8 +70,8 @@ class RenterServices {
 
     late Response? response;
     try {
-      response = await HttpProvider.post(
-          "user/builds/$buildId/renters/$renterId");
+      response =
+          await HttpProvider.post("user/builds/$buildId/renters/$renterId");
       Map<String, dynamic> result = response?.data["Renter"];
       List<Renter>? renters = res.data?.renters ?? [];
       Renter renter = Renter.fromJson(result);
@@ -86,7 +92,12 @@ class RenterServices {
           message: error.toString(),
           data: null);
     }
-    return Result(hasError: true, statusCode: 600, message: "some thing wrong", data: null);
+    return Result(
+        hasError: true,
+        statusCode: response?.statusCode?? 623,
+        message: response?.data["message"]?? "some thing wrong",
+        data: null);
+
   }
 
   static Future<Result<Renter>> storeRenter(
@@ -96,11 +107,10 @@ class RenterServices {
     Result<Build> res = await BuildServices.fetchBuild(id: buildId);
     Response? response;
     try {
-      response = await HttpProvider.post(
-          "user/builds/$buildId/renters",
-          data: data);
+      response =
+          await HttpProvider.post("user/builds/$buildId/renters", data: data);
       if (response?.statusCode == 200) {
-        if(response?.data != null){
+        if (response?.data != null) {
           Renter renter0 = Renter.fromJson(response?.data["Renter"]);
           res.data?.renters?.add(renter0);
           res.data?.numRenters?.value += 1;
@@ -121,14 +131,18 @@ class RenterServices {
           message: error.toString(),
           data: null);
     }
-    return Result(hasError: true, statusCode: 623, message: "some thing wrong", data: null);
+    return Result(
+        hasError: true,
+        statusCode: response?.statusCode?? 623,
+        message: response?.data["message"]?? "some thing wrong",
+        data: null);
   }
 
   static Future<Result<Renter>> updateRenter(
       {required int buildId,
-        required int renterId,
-        required Map<String, dynamic> data,
-        bool hardFetch = false}) async {
+      required int renterId,
+      required Map<String, dynamic> data,
+      bool hardFetch = false}) async {
     Result<Build> res = await BuildServices.fetchBuild(id: buildId);
     Response? response;
     try {
@@ -137,8 +151,10 @@ class RenterServices {
           data: data);
       if (response?.statusCode == 200) {
         Renter renter0 = Renter.fromJson(response?.data["Renter"]);
-        if(res.data?.renters?.indexWhere((e)=>e.id.value == renterId)!=null){
-          res.data?.renters?[res.data!.renters!.indexWhere((e)=>e.id.value == renterId)] = renter0;
+        if (res.data?.renters?.indexWhere((e) => e.id.value == renterId) !=
+            null) {
+          res.data?.renters?[res.data!.renters!
+              .indexWhere((e) => e.id.value == renterId)] = renter0;
         }
         return Result(
             data: renter0,
@@ -146,7 +162,7 @@ class RenterServices {
             hasError: false,
             message: "successful");
       }
-    }  catch (error) {
+    } catch (error) {
       if (kDebugMode) {
         print(error.toString());
       }
@@ -156,12 +172,12 @@ class RenterServices {
           message: error.toString(),
           data: null);
     }
-    return Result(hasError: true, statusCode: 624, message: "some thing wrong", data: null);
+    return Result(
+        hasError: true,
+        statusCode: response?.statusCode?? 623,
+        message: response?.data["message"]?? "some thing wrong",
+        data: null);
   }
-
-
-
-
 
   static Future<Result<Build>> deleteRenter(
       {required int buildId,
@@ -170,8 +186,8 @@ class RenterServices {
     Result<Build> res = await BuildServices.fetchBuild(id: buildId);
     Response? response;
     try {
-      response = await HttpProvider.delete(
-          "user/builds/$buildId/renters/$renterId");
+      response =
+          await HttpProvider.delete("user/builds/$buildId/renters/$renterId");
       if (response?.statusCode == 200) {
         res.data?.renters
             ?.removeWhere((element) => element.id.value == renterId);
@@ -180,7 +196,7 @@ class RenterServices {
             statusCode: response?.statusCode,
             message: "successful");
       }
-    }  catch (error) {
+    } catch (error) {
       if (kDebugMode) {
         print(error.toString());
       }
@@ -190,45 +206,52 @@ class RenterServices {
           message: error.toString(),
           data: null);
     }
-    return Result(hasError: true, statusCode: 625, message: "some thing wrong", data: null);
+    return Result(
+        hasError: true,
+        statusCode: response?.statusCode?? 623,
+        message: response?.data["message"]?? "some thing wrong",
+        data: null);
   }
-
-
 
   static Future<Result<bool>> renterAddPhone(
       {required int buildId,
       required int renterId,
       required Map<String, dynamic> data,
       bool hardFetch = false}) async {
-
     Result<Build> res = await BuildServices.fetchBuild(id: buildId);
     Response? response;
     try {
       if (!(res.data?.renters
-          ?.firstWhere((e) => e.id.value == renterId)
-          .phones!
-          .contains(RxString(data['phone'])) ??
-          false)){
-        response = await HttpProvider.post("user/renters/$renterId", data: data);
-        if (response?.statusCode == 200) {
-          if (!(res.data?.renters
               ?.firstWhere((e) => e.id.value == renterId)
               .phones!
               .contains(RxString(data['phone'])) ??
+          false)) {
+        response =
+            await HttpProvider.post("user/renters/$renterId/phones", data: data);
+        if (response?.statusCode == 200) {
+          if (!(res.data?.renters
+                  ?.firstWhere((e) => e.id.value == renterId)
+                  .phones!
+                  .contains(RxString(data['phone'])) ??
               false)) {
             res.data?.renters
                 ?.firstWhere((e) => e.id.value == renterId)
                 .phones
                 ?.insert(0, RxString(data['phone']));
           }
-
-
+          return Result(
+              hasError: true,
+              statusCode: response?.statusCode,
+              data: true);
         }
-      }else{
-        Result(hasError: true, statusCode: 701, message: "this phone already exist", data: null);
+      } else {
+        Result(
+            hasError: true,
+            statusCode: 701,
+            message: "this phone already exist",
+            data: null);
       }
-    }
-    catch (error) {
+    } catch (error) {
       if (kDebugMode) {
         print(error.toString());
       }
@@ -238,32 +261,35 @@ class RenterServices {
           message: error.toString(),
           data: null);
     }
-    return Result(hasError: true, statusCode: 626, message: "some thing wrong", data: null);
+    return Result(
+        hasError: true,
+        statusCode: response?.statusCode?? 623,
+        message: response?.data["message"]?? "some thing wrong",
+        data: null);
   }
 
   static Future<Result<bool>> renterDeletePhone(
       {required int buildId,
-        required int renterId,
-        required Map<String, dynamic> data,
-        bool hardFetch = false}) async {
-
+      required int renterId,
+      required Map<String, dynamic> data,
+      bool hardFetch = false}) async {
     Result<Build> res = await BuildServices.fetchBuild(id: buildId);
     Response? response;
     try {
-        response = await HttpProvider.delete("user/renters/$renterId", data: data);
-        if (response?.statusCode == 200) {
-            res.data?.renters
-                ?.firstWhere((e) => e.id.value == renterId)
-                .phones
-                ?.removeWhere((e)=>e.value == data['phone']);
-          return Result(
-              data: true,
-              statusCode: response?.statusCode,
-              hasError: false,
-              message: "successful");
-        }
-
-    }  catch (error) {
+      response =
+          await HttpProvider.delete("user/renters/$renterId/phones", data: data);
+      if (response?.statusCode == 200) {
+        res.data?.renters
+            ?.firstWhere((e) => e.id.value == renterId)
+            .phones
+            ?.removeWhere((e) => e.value == data['phone']);
+        return Result(
+            data: true,
+            statusCode: response?.statusCode,
+            hasError: false,
+            message: "successful");
+      }
+    } catch (error) {
       if (kDebugMode) {
         print(error.toString());
       }
@@ -273,6 +299,10 @@ class RenterServices {
           message: error.toString(),
           data: null);
     }
-    return Result(hasError: true, statusCode: 627, message: "some thing wrong", data: null);
+    return Result(
+        hasError: true,
+        statusCode: response?.statusCode?? 700,
+        message: response?.data["message"]?? "some thing wrong",
+        data: null);
   }
 }

@@ -1,7 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:renters_management_front_end/app/models/result.dart';
-
 import '../models/build_model.dart';
 import '../models/renter_model.dart';
 import 'http_provider/http_provider.dart';
@@ -37,8 +36,8 @@ class BuildServices {
       }
       return Result(
           hasError: true,
-          statusCode: 611,
-          message: error.toString(),
+          statusCode: response?.statusCode?? 700,
+          message: response?.data["message"]?? "some thing wrong",
           data: null);
     }
   }
@@ -80,8 +79,8 @@ class BuildServices {
       }
       return Result(
           hasError: true,
-          statusCode: 612,
-          message: error.toString(),
+          statusCode: response?.statusCode?? 700,
+          message: response?.data["message"]?? "some thing wrong",
           data: null);
     }
   }
@@ -110,7 +109,11 @@ class BuildServices {
           message: error.toString(),
           data: null);
     }
-    return Result(hasError: true, statusCode: 613, message: "some thing wrong", data: null);
+    return Result(
+        hasError: true,
+        statusCode: response?.statusCode?? 700,
+        message: response?.data["message"]?? "some thing wrong",
+        data: null);
   }
 
 
@@ -143,7 +146,11 @@ class BuildServices {
           message: error.toString(),
           data: null);
     }
-    return Result(hasError: true, statusCode: 614, message: "some thing wrong", data: null);
+    return Result(
+        hasError: true,
+        statusCode: response?.statusCode?? 700,
+        message: response?.data["message"]?? "some thing wrong",
+        data: null);
   }
 
   static Future<Result<Build>> deleteBuild(
@@ -168,7 +175,11 @@ class BuildServices {
           message: error.toString(),
           data: null);
     }
-    return Result(hasError: true, statusCode: 615, message: "some thing wrong", data: null);
+    return Result(
+        hasError: true,
+        statusCode: response?.statusCode?? 700,
+        message: response?.data["message"]?? "some thing wrong",
+        data: null);
   }
 
 

@@ -3,10 +3,10 @@ import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 
 class HttpProvider {
-  static  final Dio _dio = Dio();
+  static final Dio _dio = Dio();
   static InterceptorsWrapper? _authInterceptor;
 
-  static init({String baseUrl = "", String contentType = 'application/json'})  {
+  static init({String baseUrl = "", String contentType = 'application/json'}) {
     print(baseUrl);
     _dio.options.baseUrl = baseUrl;
     print(_dio.options.baseUrl);
@@ -14,7 +14,8 @@ class HttpProvider {
     _dio.options.connectTimeout = const Duration(seconds: 15);
     _dio.interceptors.add(InterceptorsWrapper(
       onError: (DioException error, ErrorInterceptorHandler handler) async {
-        List<ConnectivityResult> connectivityResult = await (Connectivity().checkConnectivity());
+        List<ConnectivityResult> connectivityResult =
+            await (Connectivity().checkConnectivity());
         if (kDebugMode) {
           print("HttpProviderError ------------------ ");
           print("error: ${error.message}");
@@ -22,8 +23,9 @@ class HttpProvider {
           print("status headers: ${error.response?.isRedirect}");
           print(connectivityResult);
         }
-        if(connectivityResult.contains(ConnectivityResult.none)){
-           return handler.resolve(Response(requestOptions: error.requestOptions,statusCode: 900));
+        if (connectivityResult.contains(ConnectivityResult.none)) {
+          return handler.resolve(
+              Response(requestOptions: error.requestOptions, statusCode: 900));
         }
         if (error.response?.statusCode == 401 &&
             error.requestOptions.path != "auth/refresh") {
@@ -37,8 +39,9 @@ class HttpProvider {
               print(e);
             }
           }
+        } else if (((error.response?.statusCode) ?? 0) == 422) {
+          return handler.resolve(error.response!);
         }
-
         return handler.next(error);
       },
     ));

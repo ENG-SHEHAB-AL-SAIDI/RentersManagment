@@ -94,7 +94,7 @@ class RenterAddUpdateCardController extends GetxController {
           ? jsData["job_domain"] = activityController.text
           : null;
       (entryYearController.text.isNotEmpty && entryYearController.text != "Unknown".tr)
-          ? jsData["enter_date"] = entryYearController.text
+          ? jsData["entery_year"] = entryYearController.text
           : null;
       (phoneController.text.isNotEmpty && phoneController.text != "Unknown".tr )
           ? jsData["phones"] = [phoneController.text]

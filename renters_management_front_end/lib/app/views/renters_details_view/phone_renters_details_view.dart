@@ -25,7 +25,7 @@ class PhoneRentersDetailsView extends GetView<RenterDetailsController> {
                 Icons.arrow_back_outlined,
                 color: AppColors.mainIconColor,
               )),
-          title: MainText("Renters List"),
+          title: MainText("Renters Details"),
         ),
         body: Obx(() => (!controller.loadingState.value)
             ? Container(
@@ -243,6 +243,14 @@ class PhoneRentersDetailsView extends GetView<RenterDetailsController> {
                                                     .changeSelectedYear,
                                                 items: controller.years.value,
                                               ),
+                                              IconButton(
+                                                  onPressed:
+                                                  controller.deleteYear,
+                                                  icon: Icon(
+                                                    Icons.delete,
+                                                    color:
+                                                    AppColors.mainTextColor,
+                                                  )),
                                             ],
                                           ),
                                         ),

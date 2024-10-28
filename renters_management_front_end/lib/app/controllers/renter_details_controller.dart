@@ -4,16 +4,16 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:renters_management_front_end/app/components/pop_up_cards/add_installment.dart';
 import 'package:renters_management_front_end/app/components/pop_up_cards/add_phone_card.dart';
+import 'package:renters_management_front_end/app/components/pop_up_cards/add_year.dart';
 import 'package:renters_management_front_end/app/components/pop_up_cards/renter_print_setting_card.dart';
 import 'package:renters_management_front_end/app/controllers/show_notes_controller.dart';
 import 'package:renters_management_front_end/app/globals.dart';
 import 'package:renters_management_front_end/app/models/rent_payments_model.dart';
 import 'package:renters_management_front_end/app/models/result.dart';
 import 'package:renters_management_front_end/app/services/print/printing.dart';
-import 'package:renters_management_front_end/app/services/print/printing_components/renter_details_print_layout.dart';
-import 'package:renters_management_front_end/app/services/print/printing_components/renter_rent_payment_print_layout.dart';
 import 'package:renters_management_front_end/app/services/renter_services.dart';
 import 'package:renters_management_front_end/app/services/rentpayment_services.dart';
+import 'package:renters_management_front_end/app/services/year_services.dart';
 
 import '../components/custom_text.dart';
 import '../components/pop_up_cards/add_and_update_renter_card.dart';
@@ -25,6 +25,7 @@ import 'installment_add_controller.dart';
 class RenterDetailsController extends GetxController {
   TextEditingController searchField = TextEditingController();
   TextEditingController phoneController = TextEditingController();
+  TextEditingController yearController = TextEditingController();
   TextEditingController notesController = TextEditingController();
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
   int renterId = -1;
@@ -45,6 +46,7 @@ class RenterDetailsController extends GetxController {
   void onClose() {
     searchField.dispose();
     phoneController.dispose();
+    yearController.dispose();
     Get.delete<InstallmentAddController>(force: true);
     Get.delete<ShowNotesController>(force: true);
   }
@@ -86,6 +88,14 @@ class RenterDetailsController extends GetxController {
     } else if ((renter?.phones!.contains(RxString(phoneController.text)) ??
         false)) {
       return "this number already exist";
+    }
+    return null;
+  }
+
+  String? validateYear(String? year) {
+    if ((renter?.rentPayments!.containsKey(year) ??
+        false)) {
+      return "this year already exist";
     }
     return null;
   }
@@ -136,6 +146,7 @@ class RenterDetailsController extends GetxController {
       value: "",
       child: Icon(Icons.add, color: AppColors.mainIconColor),
     ));
+
     selectedYear.value =
         (years.value.isNotEmpty) ? years.value.first.value ?? "" : "";
   }
@@ -144,9 +155,7 @@ class RenterDetailsController extends GetxController {
     if (value != "") {
       selectedYear.value = value;
     } else {
-      if (kDebugMode) {
-        print("tab");
-      }
+      Get.dialog(const PopUpAddYearCard());
     }
   }
 
@@ -160,6 +169,7 @@ class RenterDetailsController extends GetxController {
         if (res.data) {
           Get.back();
           getPhonesDropItemList();
+          selectedPhone.value = phoneController.text;
           phoneController.clear();
         }
       } else {
@@ -179,6 +189,46 @@ class RenterDetailsController extends GetxController {
       if (res.statusCode == 200) {
         if (res.data) {
           getPhonesDropItemList();
+        }
+      } else {
+        Get.dialog(PopUpAlertCard(
+            "${res.message ?? ""}\n error code:${res.statusCode}",
+            Icons.warning));
+      }
+    }
+  }
+
+  void addYear() async {
+    if (formKey.currentState?.validate() ?? false) {
+      Result res = await YearServices.addYearToRenter(
+          buildId: buildId,
+          renterId: renterId,
+          data: {"year": yearController.text},);
+
+      if (res.statusCode == 200) {
+        if (res.data) {
+          Get.back();
+          getYearsDropItemList();
+          selectedYear.value = yearController.text;
+          yearController.clear();
+        }
+      } else {
+        Get.dialog(PopUpAlertCard(
+            "${res.message ?? ""}\n error code:${res.statusCode}",
+            Icons.warning));
+      }
+    }
+  }
+
+  void deleteYear() async {
+    if (selectedYear.value != "") {
+      Result res = await YearServices.deleteYearFromRenter(
+          buildId: buildId,
+          data: {"year": selectedYear.value},
+          renterId: renterId);
+      if (res.statusCode == 200) {
+        if (res.data) {
+          getYearsDropItemList();
         }
       } else {
         Get.dialog(PopUpAlertCard(

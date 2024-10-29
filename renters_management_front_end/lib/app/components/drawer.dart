@@ -3,12 +3,10 @@ import 'package:get/get.dart';
 import 'package:renters_management_front_end/app/controllers/home_controller.dart';
 import 'package:renters_management_front_end/app/globals.dart';
 import 'package:renters_management_front_end/app/services/user_services.dart';
-
-import '../models/user_model.dart';
 import 'custom_text.dart';
 
 class CustomDrawer extends GetView<HomeController> {
-   CustomDrawer({super.key});
+   const CustomDrawer({super.key});
 
 
   @override

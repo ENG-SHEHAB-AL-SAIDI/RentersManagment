@@ -143,7 +143,7 @@ class HomeController extends GetxController {
   }
 
   void buildReportRoute(int id) {
-    Get.toNamed("/buildReports", arguments: {'buildId': id});
+    Get.toNamed("/buildReportsList", arguments: {'buildId': id});
 
   }
 }

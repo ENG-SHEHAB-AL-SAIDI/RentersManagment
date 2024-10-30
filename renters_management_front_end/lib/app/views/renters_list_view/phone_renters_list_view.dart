@@ -31,21 +31,22 @@ class PhoneRentersListView extends GetView<RenterListController> {
                 color: AppColors.mainIconColor,
               )),
           PopupMenuButton<String>(
-            onSelected:controller.more,
+            onSelected: controller.more,
             color: AppColors.inverseCardColor,
             itemBuilder: (ctx) => [
               PopupMenuItem(
                   value: "print",
                   child: SecText(
                     "Print",
-                    textColor:
-                    AppColors.mainTextColor,
+                    textColor: AppColors.mainTextColor,
                   )),
             ],
-            child: Icon(Icons.more_vert_outlined,
-                color: AppColors.mainTextColor),
+            child:
+                Icon(Icons.more_vert_outlined, color: AppColors.mainTextColor),
           ),
-          SizedBox(width: 10,)
+          SizedBox(
+            width: 10,
+          )
         ],
       ),
       floatingActionButton: FloatingActionButton(
@@ -56,69 +57,75 @@ class PhoneRentersListView extends GetView<RenterListController> {
           color: AppColors.mainIconColor,
         ),
       ),
-      body: Obx(() => (controller.renters.value.isEmpty)
-          ? Center(
-              child: MainText(
-              "No renters yet ${controller.renters.value.length}",
-              textColor: AppColors.inverseSecTextColor,
-            ))
-          : RefreshIndicator(
-              onRefresh: controller.refresh,
-              child: Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(16),
-                    child: CustomTextFormField(
-                      icon: Icons.search_rounded,
-                      onChange: controller.searching,
-                      labelText: "Search",
+      body: Container(
+        color: AppColors.backColor,
+        child: Obx(() => (controller.renters.value.isEmpty)
+            ? Center(
+                child: MainText(
+                "No renters yet ${controller.renters.value.length}",
+                textColor: AppColors.inverseSecTextColor,
+              ))
+            : RefreshIndicator(
+                onRefresh: controller.refresh,
+                child: Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(16),
+                      child: CustomTextFormField(
+                        icon: Icons.search_rounded,
+                        onChange: controller.searching,
+                        labelText: "Search",
+                      ),
                     ),
-                  ),
-                  Expanded(
-                      child: ListView.builder(
-                          itemCount: (controller.renters.value.isNotEmpty)
-                              ? ((controller.renters.value.length) * 2)
-                              : 0,
-                          itemBuilder: (BuildContext ctx, int i) {
-                            final index = (i ~/ 2) + 1;
-                            if (i.isOdd) {return const Divider();}
-                            return ListTile(
-                              contentPadding:
-                                  const EdgeInsets.symmetric(horizontal: 6),
-                              leading: CircleAvatar(
-                                backgroundColor: AppColors.inverseIconColor,
-                                child: MainText(
-                                  "$index",
+                    Expanded(
+                        child: ListView.builder(
+                            itemCount: (controller.renters.value.isNotEmpty)
+                                ? ((controller.renters.value.length) * 2)
+                                : 0,
+                            itemBuilder: (BuildContext ctx, int i) {
+                              final index = (i ~/ 2) + 1;
+                              if (i.isOdd) {
+                                return const Divider();
+                              }
+                              return ListTile(
+                                contentPadding:
+                                    const EdgeInsets.symmetric(horizontal: 6),
+                                leading: CircleAvatar(
+                                  backgroundColor: AppColors.inverseIconColor,
+                                  child: MainText(
+                                    "$index",
+                                    textAlign: TextAlign.start,
+                                  ),
+                                ),
+                                title: MainText(
+                                  controller
+                                          .renters.value[(i ~/ 2)].name?.value ??
+                                      "Unknown",
+                                  textColor: AppColors.inverseMainTextColor,
                                   textAlign: TextAlign.start,
                                 ),
-                              ),
-                              title: MainText(
-                                controller
-                                        .renters.value[(i ~/ 2)].name?.value ??
-                                    "Unknown",
-                                textColor: AppColors.inverseMainTextColor,
-                                textAlign: TextAlign.start,
-                              ),
-                              subtitle: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  SecText(" last payment date: 2024-4-5")
-                                ],
-                              ),
-                              trailing: IconButton(
-                                icon: Icon(
-                                  Icons.delete,
-                                  color: AppColors.inverseIconColor,
+                                subtitle: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    SecText(" last payment date: 2024-4-5")
+                                  ],
                                 ),
-                                onPressed: ()=>controller.delete(controller
-                                    .renters.value[(i ~/ 2)].id.value),
-                              ),
-                              onTap: () => controller.rentersDetailsRoute((i ~/ 2)),
-                            );
-                          }))
-                ],
-              ))),
+                                trailing: IconButton(
+                                  icon: Icon(
+                                    Icons.delete,
+                                    color: AppColors.inverseIconColor,
+                                  ),
+                                  onPressed: () => controller.delete(controller
+                                      .renters.value[(i ~/ 2)].id.value),
+                                ),
+                                onTap: () =>
+                                    controller.rentersDetailsRoute((i ~/ 2)),
+                              );
+                            }))
+                  ],
+                ))),
+      ),
     );
   }
 }

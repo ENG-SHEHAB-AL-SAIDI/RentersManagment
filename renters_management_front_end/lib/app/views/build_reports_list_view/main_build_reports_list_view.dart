@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:renters_management_front_end/app/views/build_reports_view/phone_build_reports_view.dart';
+import 'package:renters_management_front_end/app/views/build_reports_list_view/phone_build_reports_list_view.dart';
 
 
-class BuildReportsView extends StatelessWidget {
-  const BuildReportsView({super.key});
+
+
+
+class BuildReportsListView extends StatelessWidget {
+  const BuildReportsListView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +18,7 @@ class BuildReportsView extends StatelessWidget {
       child: LayoutBuilder(
         builder: (context, constraints) {
           if (constraints.maxWidth <= 768 && constraints.maxHeight <= 1025) {
-            return  PhoneBuildReportsView();
+            return  PhoneBuildReportsListView();
           } else {
             return  const Placeholder();
           }

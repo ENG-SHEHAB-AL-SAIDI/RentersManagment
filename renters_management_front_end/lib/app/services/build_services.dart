@@ -182,6 +182,16 @@ class BuildServices {
         data: null);
   }
 
+  static Future<List<String>> getBuildYears(int buildId) async{
+    List<String> years = [];
+    Build? build = await fetchBuild(id: buildId).then((res)=>res.data);
+    for (Renter renter in (build?.renters??[])) {
+      for (String year in (renter.rentPayments?.keys??[])) {
+        years.add(year);
+      }
+    }
+    return years;
+  }
 
   static void setBuildRenters(int buildId, List<Renter> renters) {
     for (int i = 0; i < _builds.length; i++) {

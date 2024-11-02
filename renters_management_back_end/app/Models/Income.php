@@ -28,12 +28,14 @@ class Income extends Model
 
         static::created(function($model){
 
-            $model->statement()->first()->TotalExpenses += $model->amount;
+            $model->statement->TotalIncomes += $model->amount;
+            $model->statement->save();
         });
 
         static::deleted(function($model){
 
-            $model->statement()->first()->TotalExpenses -= $model->amount;
+            $model->statement->TotalIncomes -= $model->amount;
+            $model->statement->save();
         });
     }
 

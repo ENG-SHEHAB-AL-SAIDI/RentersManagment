@@ -16,7 +16,7 @@ return new class extends Migration
             $table->id();
             $table->date('date');
             $table->float('amount');
-            $table->enum('paymentType',['cash','trans']);
+            $table->enum('paymentType',['cash','trans','part_from_trans']);
             $table->bigInteger('paymentID')->nullable();
             $table->text('describe')->nullable();
             $table->softDeletes();

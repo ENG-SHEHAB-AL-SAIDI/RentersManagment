@@ -20,7 +20,7 @@ return new class extends Migration
             $table->timestamps();
 
             $table->primary('id');
-            $table->foreignId('statements_id')->constrained('statements')
+            $table->foreignId('statement_id')->constrained('statements')
             ->onUpdate('cascade')->onDelete('cascade');
         });
     }

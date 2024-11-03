@@ -1,30 +1,30 @@
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
 
-class RentPaymentsInstallment {
+class Expens {
   RxInt id;
   RxDouble? amount;
   RxString? date;
-  RxString? notes;
+  RxString? description;
   RxString? deletedAt;
   RxString? createdAt;
   RxString? updatedAt;
 
-  RentPaymentsInstallment({
+  Expens({
     required this.id,
     this.amount,
     this.date,
-    this.notes,
+    this.description,
     this.deletedAt,
     this.createdAt,
     this.updatedAt,
   });
 
-  factory RentPaymentsInstallment.fromJson(Map<String, dynamic> json) {
-    return RentPaymentsInstallment(
+  factory Expens.fromJson(Map<String, dynamic> json) {
+    return Expens(
       id: RxInt(json['id'] ?? 0),
       amount: RxDouble(double.tryParse(json['amount'].toString()) ?? 0.0),
       date: RxString(json["date"]),
-      notes: RxString(json["notes"] ?? ""),
+      description: RxString(json["describe"] ?? ""),
       updatedAt: RxString(json['deleted_at'] ?? "Unknown"),
       createdAt: RxString(json['created_at'] ?? "Unknown"),
       deletedAt: RxString(json['updated_at'] ?? "Unknown"),
@@ -36,7 +36,7 @@ class RentPaymentsInstallment {
       "id": id.value,
       "amount": amount?.value,
       "date": date?.value,
-      "notes": notes?.value,
+      "describe": description?.value,
       "updated_at": updatedAt?.value,
       "created_at": createdAt?.value,
       "deleted_at": deletedAt?.value,

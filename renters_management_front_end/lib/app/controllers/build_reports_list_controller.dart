@@ -44,7 +44,7 @@ class BuildReportsListController extends GetxController {
   void routeReportView(int month){
     Get.toNamed("/buildReports",arguments: {
       "buildId":buildId,
-      "year":selectedYear,
+      "year":selectedYear.value,
       "month":month,
 
     });

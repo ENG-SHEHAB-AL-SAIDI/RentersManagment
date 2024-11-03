@@ -85,25 +85,31 @@ class PhoneHomeView extends GetView<HomeController> {
                             ),
                             Expanded(
                                 child: SingleChildScrollView(
-                              physics: const AlwaysScrollableScrollPhysics(),
-                              controller: controller.scrollController,
-                              child: Column(
-                                children: [
-                                  for (int i = 0;
-                                      i < controller.builds.value.length;
-                                      i++) ...[
-                                    BuildCard(
-                                      buildInfo: controller.builds.value[i],
-                                      height: height * 0.16,
-                                      type: 1,
-                                    ),
-                                    SizedBox(
-                                      height: height * 0.03,
-                                    ),
-                                  ]
-                                ],
-                              ),
-                            ))
+                                    physics:
+                                        const AlwaysScrollableScrollPhysics(),
+                                    controller: controller.scrollController,
+                                    child: Padding(
+                                      padding: EdgeInsets.all(8),
+                                      child: Column(
+                                        children: [
+                                          for (int i = 0;
+                                              i <
+                                                  controller
+                                                      .builds.value.length;
+                                              i++) ...[
+                                            BuildCard(
+                                              buildInfo:
+                                                  controller.builds.value[i],
+                                              height: height * 0.16,
+                                              type: 1,
+                                            ),
+                                            SizedBox(
+                                              height: height * 0.03,
+                                            ),
+                                          ]
+                                        ],
+                                      ),
+                                    ))),
                           ],
                         ),
                       )

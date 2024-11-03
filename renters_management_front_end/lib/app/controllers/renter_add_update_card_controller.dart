@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 
@@ -83,6 +85,7 @@ class RenterAddUpdateCardController extends GetxController {
 
   void submit() {
     Map<String, dynamic> jsData = {};
+    rentController.text = double.parse(rentController.text).toStringAsFixed(2);
     if (formKey.currentState!.validate()) {
       (nameController.text.isNotEmpty && nameController.text != "Unknown".tr)
           ? jsData["name"] = nameController.text

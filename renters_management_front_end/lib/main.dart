@@ -5,7 +5,7 @@ import './app/routes.dart';
 import 'app/services/http_provider/http_provider.dart';
 
 void main() async{
-  await HttpProvider.init(baseUrl:"http://rentersmanagementapi.mooo.com/api/");
+  await HttpProvider.init(baseUrl:"http://rentersmanagement.helioho.st/api/");
   runApp(const MyApp());
 }
 

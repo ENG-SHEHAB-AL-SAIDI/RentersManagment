@@ -179,6 +179,7 @@ class InstallmentAddController extends GetxController {
   }
 
   void submit() {
+    amountController.text = double.parse(amountController.text).toStringAsFixed(2);
     Map<String, dynamic> jsData = {};
     if (formKey.currentState!.validate()) {
       (dateController.text.isNotEmpty && dateController.text != "Unknown".tr)

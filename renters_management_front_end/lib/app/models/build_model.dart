@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 import 'package:get/get_rx/get_rx.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:renters_management_front_end/app/models/renter_model.dart';
+import 'package:renters_management_front_end/app/models/statement_model.dart';
 
 class Build {
   RxInt id;
@@ -11,6 +12,7 @@ class Build {
   RxString? city;
   RxString? address;
   List<Renter>? renters;
+  Map<String,List<Statement>>? statements;
   RxString? deletedAt;
   RxString? createdAt;
   RxString? updatedAt;
@@ -22,6 +24,7 @@ class Build {
     this.city,
     this.address,
     this.renters,
+    this.statements,
     this.totalRent,
     this.deletedAt,
     this.createdAt,
@@ -31,18 +34,30 @@ class Build {
   factory Build.fromJson(Map<String, dynamic> json ) {
     List jsRenters = json['renters'];
     List<Renter> renters = [];
+    Map<String,List<Statement>> statements = {};
     if (jsRenters.isNotEmpty) {
       for (var renter in jsRenters) {
         renters.add(Renter.fromJson(renter));
       }
     }
+    if((json["grouped_statements"]??[]).isNotEmpty){
+      for (String key in json["grouped_statements"].keys) {
+        List<Statement> statementsList = [];
+        for(Map<String,dynamic> item in json["grouped_statements"][key]){
+          statementsList.add(Statement.fromJson(item));
+        }
+        statements[key] = statementsList;
+      }
+    }
+    print(statements);
     return Build(
       id: RxInt(json['id'] ?? 0),
       numRenters: RxInt(json['renters_count'] ?? 0),
-      totalRent: RxDouble( double.parse(json['total_rent'].toStringAsFixed(5))),
+      totalRent: RxDouble( double.tryParse(json['total_rent'].toString())??0),
       name: RxString(json['name'] ?? "Unknown"),
       city: RxString(json['city'] ?? "Unknown"),
       renters: renters,
+      statements: statements,
       address: RxString(json['address'] ?? "Unknown"),
       deletedAt: RxString(json['deleted_at'] ?? "Unknown"),
       createdAt: RxString(json['created_at'] ?? "Unknown"),

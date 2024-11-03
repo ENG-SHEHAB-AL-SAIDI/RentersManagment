@@ -254,9 +254,9 @@ class RentPaymentServices {
         RentPaymentsInstallment installment =
             RentPaymentsInstallment.fromJson(response?.data["installment"]);
         rentPayment.data?.remainAmount?.value =
-            response?.data["remain_amount"].toDouble();
+            double.tryParse(response?.data["remain_amount"])??0;
         rentPayment.data?.payedAmount?.value =
-            response?.data["payed_amount"].toDouble();
+            double.tryParse(response?.data["payed_amount"])??0;
         rentPayment.data?.state?.value = response?.data["state"];
         rentPayment.data?.rentPaymentsInstallment?.add(installment);
         return Result(
@@ -296,9 +296,9 @@ class RentPaymentServices {
           "user/rent_payments/$rentPaymentId/installments/$installmentId");
       if (response?.statusCode == 200) {
         rentPayment.data?.remainAmount?.value =
-            response?.data["remain_amount"].toDouble();
+            double.tryParse(response?.data["remain_amount"])??0;
         rentPayment.data?.payedAmount?.value =
-            response?.data["payed_amount"].toDouble();
+            double.tryParse(response?.data["payed_amount"])??0;
         rentPayment.data?.state?.value = response?.data["state"];
         rentPayment.data?.rentPaymentsInstallment
             ?.removeWhere((e) => e.id.value == installmentId);

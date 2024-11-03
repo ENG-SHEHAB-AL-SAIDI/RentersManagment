@@ -55,6 +55,7 @@ class BuildCard extends StatelessWidget {
               spreadRadius: 3,
               blurRadius: 5,
               offset: Offset(0, 5),
+              blurStyle: BlurStyle.outer
             )
           ],
           borderRadius: const BorderRadius.all(Radius.circular(20)),

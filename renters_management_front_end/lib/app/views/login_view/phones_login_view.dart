@@ -188,7 +188,7 @@ class PhoneLoginView extends GetView<LoginController> {
                                   if (val == true) {
                                     await HttpProvider.init(
                                         baseUrl:
-                                        "http://rentersmanagementapi.mooo.com/api/");
+                                        "http://rentersmanagement.helioho.st/api/");
                                     state.value = true;
                                   } else {
                                     await HttpProvider.init(

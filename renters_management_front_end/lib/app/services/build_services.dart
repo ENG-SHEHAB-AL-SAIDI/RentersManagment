@@ -1,5 +1,8 @@
+import 'dart:ffi';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
+import 'package:renters_management_front_end/app/models/rent_payments_model.dart';
 import 'package:renters_management_front_end/app/models/result.dart';
 import '../models/build_model.dart';
 import '../models/renter_model.dart';
@@ -89,7 +92,7 @@ class BuildServices {
       {required Map<String, dynamic> data, bool hardFetch = false}) async {
     Response? response;
     try {
-      response = await HttpProvider.post("user/builds/", data: data);
+      response = await HttpProvider.post("user/builds", data: data);
       if (response?.statusCode == 200) {
         Build build0 = Build.fromJson(response?.data["Build"]);
         _builds.add(build0);
@@ -112,7 +115,7 @@ class BuildServices {
     return Result(
         hasError: true,
         statusCode: response?.statusCode?? 700,
-        message: response?.data["message"]?? "some thing wrong",
+        message: response?.data.toString()?? "some thing wrong",
         data: null);
   }
 
@@ -192,6 +195,8 @@ class BuildServices {
     }
     return years;
   }
+
+
 
   static void setBuildRenters(int buildId, List<Renter> renters) {
     for (int i = 0; i < _builds.length; i++) {

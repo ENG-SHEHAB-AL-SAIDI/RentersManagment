@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('rent_payments_installments', function (Blueprint $table) {
             $table->id();
             $table->dateTime('date');
-            $table->float('amount');
+            $table->decimal('amount',16,2);
             $table->text('notes')->nullable();
             $table->softDeletes();
             $table->timestamps();

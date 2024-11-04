@@ -47,7 +47,7 @@ class Build extends Model
         return $this->hasMany(Renter::class);
     }
 
-    public function statment():HasMany
+    public function statements():HasMany
     {
         return $this->hasMany(Statement::class);
     }

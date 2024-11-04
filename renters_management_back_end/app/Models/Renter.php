@@ -39,9 +39,9 @@ class Renter extends Model
                 ]);
             }
 
-            if($model->build->statment()->where('year',$model->entery_year)->get()->isEmpty()){
+            if($model->build->statements()->where('year',$model->entery_year)->get()->isEmpty()){
                 for ($i = 0; $i < 12; $i++) {
-                    $model->build->statment()->create([
+                    $model->build->statements()->create([
                         'year'=>$model->entery_year,
                         'month'=>str($i+1),
                     ]);

@@ -16,8 +16,8 @@ class Income extends Model
     [
         'date',
         'amount',
-        'paymentType',
-        'paymentID',
+        'payment_type',
+        'payment_id',
         'describe',
     ];
 

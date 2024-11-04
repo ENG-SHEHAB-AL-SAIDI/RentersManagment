@@ -17,7 +17,7 @@ class StatementController extends Controller
         $statements = Statement::where('build_id', $buildId)->with(['incomes','expenses'])->get()->groupBy('year');
         return response()->json([
             'message' => 'successful',
-            'GropedStatements' => $statements,
+            'grouped_statements' => $statements,
         ], 200);
     }
 
@@ -27,7 +27,12 @@ class StatementController extends Controller
      */
     public function show($buildId,$statementId)
     {
-        $statement = Statement::where('build_id', $buildId)->find($statementId)->load(['incomes','expenses']);
+        $statement = Statement::where('build_id', $buildId)->with(['incomes','expenses'])->find($statementId);
+        if(!$statement){
+            return response()->json([
+                'message' => 'not found',
+            ], 404);
+        }
         return response()->json([
             'message' => 'successful',
             'Statement' => $statement,

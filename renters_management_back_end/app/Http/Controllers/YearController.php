@@ -36,9 +36,9 @@ class YearController extends Controller
             ]);
         }
 
-        if ($renter->build->statment()->where('year', $data['year'])->get()->isEmpty()) {
+        if ($renter->build->statements()->where('year', $data['year'])->get()->isEmpty()) {
             for ($i = 0; $i < 12; $i++) {
-                $renter->build->statment()->create([
+                $renter->build->statements()->create([
                     'year' => $renter->entery_year,
                     'month' => str($i + 1),
                 ]);
@@ -71,7 +71,7 @@ class YearController extends Controller
         }
 
         $renter->rentPayments()->where('year',$data['year'])->forceDelete();
-        $renter->build->statment()->where('year', $data['year'])->forceDelete();
+        $renter->build->statements()->where('year', $data['year'])->forceDelete();
 
         return response()->json([
             'message' => 'year deleted',

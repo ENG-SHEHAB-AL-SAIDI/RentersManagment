@@ -15,12 +15,15 @@ class BuildController extends Controller
         $builds = auth()->guard('api')->user()->builds()->with(['renters', 'renters.renterPhones'])->withCount('renters')->get();
 
         $builds->each(function ($build) {
+
             $build->renters->each(function ($renter) {
                 $groupedRentPayments = $renter->rentPayments()->with('rentPaymentsInstallments')->get()->groupBy('year');
                 $renter->unsetRelation('rentPayments');
                 $renter->grouped_rent_payments = $groupedRentPayments;
             });
+            $build->grouped_statements = $build->statements()->with(['incomes','expenses'])->get()->groupBy('year');
         });
+
 
         return response()->json([
             'Builds' => $builds
@@ -41,6 +44,7 @@ class BuildController extends Controller
             $renter->unsetRelation('rentPayments');
             $renter->grouped_rent_payments = $groupedRentPayments;
         });
+        $build->grouped_statements = $build->statements()->with(['incomes','expenses'])->get()->groupBy('year');
         return response()->json([
             'message' => 'store successful',
             'Build' => $build
@@ -53,7 +57,7 @@ class BuildController extends Controller
     public function show(BuildRequst $request, int $id)
     {
         $request->authorize();
-        $build = Build::withCount('renters')->find($id);
+        $build = Build::withCount('renters')->with('renters.renterPhones')->find($id);
 
         if(!$build){
             return response()->json([
@@ -67,6 +71,8 @@ class BuildController extends Controller
             $renter->unsetRelation('rentPayments');
             $renter->grouped_rent_payments = $groupedRentPayments;
         });
+        $build->grouped_statements = $build->statements()->with(['incomes','expenses'])->get()->groupBy('year');
+
         return response()->json([
             'Build' => $build,
         ], 200);

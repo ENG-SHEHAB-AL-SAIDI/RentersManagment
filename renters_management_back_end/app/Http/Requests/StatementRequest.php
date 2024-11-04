@@ -25,8 +25,8 @@ class StatementRequest extends FormRequest
             return [
                 'date'=>'required|date',
                 'amount'=>'required|numeric',
-                'paymentType'=>'required|in:cash,trans,part_from_trans',
-                'paymentID'=>'nullable|integer',
+                'payment_type'=>'required|in:cash,trans,part_from_trans',
+                'payment_id'=>'nullable|integer',
                 'describe'=>'nullable',
             ];
         }

@@ -6,7 +6,9 @@ use App\Http\Controllers\RenterController;
 use App\Http\Controllers\RentPaymentController;
 use App\Http\Controllers\StatementController;
 use App\Http\Controllers\YearController;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Support\Facades\Route;
+use App\Models\User;
 
 Route::middleware(['api'])->prefix('auth')->group(
     function ($router) {
@@ -40,3 +42,8 @@ Route::middleware(['api', 'auth:api'])->prefix('user')->group(
         Route::post('year/builds/{renterId}', [YearController::class, 'addYearToBuild'])->name('addYearToBuild');
     }
 );
+
+
+
+
+

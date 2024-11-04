@@ -9,6 +9,8 @@ use App\Models\User;
 use GuzzleHttp\Middleware;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
+use Illuminate\Auth\Events\Registered;
+use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Tymon\JWTAuth\Facades\JWTAuth;
@@ -37,6 +39,13 @@ class AuthController extends Controller
         $data['password'] = bcrypt($request->password);
         $user = User::create($data);
 
+        if(!$user){
+            return response()->json([
+                'message'=>'somthing go wrong',
+            ],500);
+        }
+        event(new Registered($user));
+
         $credentials = request(['email', 'password']);
         if (! $token = auth()->guard('api')->attempt($credentials)) {
             return response()->json(['error' => 'Unauthorized'], 401);
@@ -54,6 +63,10 @@ class AuthController extends Controller
     {
         $credentials = request(['email', 'password']);
 
+        if(!User::where('email',$credentials['email'])->first()){
+            return response()->json(['error' => 'not found'], 404);
+        }
+        
         if (! $accessToken = auth()->guard('api')->attempt($credentials)) {
             return response()->json(['error' => 'Unauthorized'], 401);
         }

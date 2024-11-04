@@ -107,7 +107,7 @@ class RentPaymentController extends Controller
             ], 404);
         }
 
-        // $statement = $rentPayment->renter->build->statment()->where('year', $rentPayment->year)->where('month', $rentPayment->month)->get()->first();
+        // $statement = $rentPayment->renter->build->statements()->where('year', $rentPayment->year)->where('month', $rentPayment->month)->get()->first();
         // $income = $statement->incomes()->create([
         //     'date' => $data['date'],
         //     'amount' => $data['amount'],
@@ -135,8 +135,8 @@ class RentPaymentController extends Controller
 
         return response()->json([
             'message' => 'Installment Add Successful',
-            'remain_amount' => $rentPayment->remain_amount,
-            'payed_amount' => $rentPayment->payed_amount,
+            'remain_amount' => number_format($rentPayment->remain_amount, 2,'.',''),
+            'payed_amount' =>  number_format($rentPayment->payed_amount, 2,'.',''),
             'state' => $rentPayment->state,
             'installment' => $installment
         ], 200);

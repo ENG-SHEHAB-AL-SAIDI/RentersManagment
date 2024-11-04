@@ -2,13 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:renters_management_front_end/app/components/buttons.dart';
 import 'package:renters_management_front_end/app/components/text_field.dart';
-
-import '../../controllers/installment_add_controller.dart';
+import 'package:renters_management_front_end/app/controllers/build_reports_controller.dart';
 import '../../globals.dart';
 import '../custom_text.dart';
 
-class PopUpAddInstallmentCard extends GetView<InstallmentAddController> {
-  const PopUpAddInstallmentCard({super.key});
+class PopUpAddExpensCard extends GetView<BuildReportsController> {
+  const PopUpAddExpensCard({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +36,7 @@ class PopUpAddInstallmentCard extends GetView<InstallmentAddController> {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          SecText("Add Installment",
+                          SecText("Add Expens",
                               fontWeight: FontWeight.bold, fontSize: 20),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -146,59 +145,35 @@ class PopUpAddInstallmentCard extends GetView<InstallmentAddController> {
                                     width: 10,
                                   ),
                                   SecText(
-                                    "Note",
+                                    "Description",
                                   ),
                                 ],
                               ),
                               CustomTextFormField(
                                 controller: controller.noteController,
-                                labelText: "Note",
+                                labelText: "Description",
                                 focusNode: controller.noteFocus,
                                 onFieldSubmitted: (e) {
                                   controller.noteFocus.unfocus();
-                                  controller.submit();
+                                  controller.expensSubmit();
                                 },
                                 width: (Get.width - 12) * 0.46,
                               ),
                             ],
                           ),
-                          // Row(
-                          //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          //   children: [
-                          //     Row(
-                          //       children: [
-                          //         Icon(
-                          //           Icons.account_balance_wallet,
-                          //           size: 40,
-                          //           color: AppColors.inverseIconColor,
-                          //         ),
-                          //         const SizedBox(
-                          //           width: 10,
-                          //         ),
-                          //         SecText(
-                          //           "Statement",
-                          //         ),
-                          //       ],
-                          //     ),
-                          //     CustomTextFormField(
-                          //       controller: controller.incomeController,
-                          //       labelText: " Statement ",
-                          //       readOnly: true,
-                          //       focusNode: controller.incomeFocus,
-                          //       onTap: controller.showBottomSheet,
-                          //       width: (Get.width - 12) * 0.46,
-                          //     ),
-                          //   ],
-                          // ),
+
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
                               CustomButton(
-                                onPress: controller.submit,
+                                onPress: controller.expensSubmit,
                                 text: "Add",
                               ),
                               CustomButton(
-                                onPress: () => Get.back(result: null),
+                                onPress: () {
+                                  Get.back(result: null);
+                                  controller.clear();
+                                  },
                                 text: "Close",
                               ),
                             ],

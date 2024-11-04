@@ -34,12 +34,12 @@ class Build {
   factory Build.fromJson(Map<String, dynamic> json ) {
     List jsRenters = json['renters'];
     List<Renter> renters = [];
-    Map<String,List<Statement>> statements = {};
     if (jsRenters.isNotEmpty) {
       for (var renter in jsRenters) {
         renters.add(Renter.fromJson(renter));
       }
     }
+    Map<String,List<Statement>> statements = {};
     if((json["grouped_statements"]??[]).isNotEmpty){
       for (String key in json["grouped_statements"].keys) {
         List<Statement> statementsList = [];

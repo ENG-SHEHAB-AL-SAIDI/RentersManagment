@@ -29,7 +29,7 @@ class Income {
       amount: RxDouble(double.tryParse(json['amount'].toString()) ?? 0.0),
       date: RxString(json["date"]),
       paymentType: RxString(json["payment_type"]),
-      paymentID: RxString(json["payment_id"].toString()),
+      paymentID: RxString((json["payment_id"]??"0").toString()),
       description: RxString(json["describe"] ?? ""),
       updatedAt: RxString(json['deleted_at'] ?? "Unknown"),
       createdAt: RxString(json['created_at'] ?? "Unknown"),

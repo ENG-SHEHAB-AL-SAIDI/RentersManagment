@@ -9,7 +9,6 @@ class InstallmentAddController extends GetxController {
   TextEditingController timeController = TextEditingController();
   TextEditingController amountController = TextEditingController();
   TextEditingController noteController = TextEditingController();
-  TextEditingController incomeController = TextEditingController();
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
   FocusNode dateFocus = FocusNode();
   FocusNode timeFocus = FocusNode();

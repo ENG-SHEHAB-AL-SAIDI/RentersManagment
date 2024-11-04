@@ -2,17 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:renters_management_front_end/app/components/buttons.dart';
 import 'package:renters_management_front_end/app/components/text_field.dart';
+import 'package:renters_management_front_end/app/controllers/build_reports_controller.dart';
 
-import '../../controllers/installment_add_controller.dart';
 import '../../globals.dart';
 import '../custom_text.dart';
 
-class PopUpAddInstallmentCard extends GetView<InstallmentAddController> {
-  const PopUpAddInstallmentCard({super.key});
+class PopUpAddIncomeCard extends GetView<BuildReportsController> {
+  const PopUpAddIncomeCard({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Center(
+    return Obx(()=>Center(
       child: Padding(
         padding: const EdgeInsets.all(32.0),
         child: Hero(
@@ -37,7 +37,7 @@ class PopUpAddInstallmentCard extends GetView<InstallmentAddController> {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          SecText("Add Installment",
+                          SecText("Add Income",
                               fontWeight: FontWeight.bold, fontSize: 20),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -138,6 +138,110 @@ class PopUpAddInstallmentCard extends GetView<InstallmentAddController> {
                               Row(
                                 children: [
                                   Icon(
+                                    Icons.monetization_on_rounded,
+                                    size: 40,
+                                    color: AppColors.inverseIconColor,
+                                  ),
+                                  const SizedBox(
+                                    width: 10,
+                                  ),
+                                  SecText("Payment Type"),
+                                ],
+                              ),
+                              Expanded(child: Container(
+                                padding: EdgeInsets.symmetric(horizontal: 16),
+                                decoration: BoxDecoration(
+                                    border: Border.all(),
+                                    borderRadius: BorderRadius.circular(24)
+                                ),
+                                child: Center(
+                                  child: DropdownButton<String>(
+                                    value: controller.paymentType.value,
+                                    icon: Icon(Icons.arrow_drop_down_sharp,
+                                        color: AppColors.inverseCardColor),
+                                    underline: const SizedBox(),
+                                    dropdownColor: AppColors.mainCardColor,
+                                    onChanged: (val) {
+                                      controller.paymentType.value = val ?? "cash";
+                                      if(controller.paymentType.value != "cash" ){
+                                        controller.paymentIbFocus.requestFocus();
+                                      }
+                                    },
+                                    items: [
+                                      DropdownMenuItem<String>(
+                                        value: "cash",
+                                        child:  Row(
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            SecText("cash",),
+                                            Icon(Icons.attach_money,
+                                                color: AppColors.inverseCardColor)
+                                          ],
+                                        ),
+                                      ),
+                                      DropdownMenuItem<String>(
+                                        value: "trans",
+                                        child: Expanded(child: Row(
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            SecText("trans"),
+                                            Icon(Icons.payment,
+                                                color: AppColors.inverseCardColor)
+                                          ],
+                                        ),),
+                                      ),
+                                      DropdownMenuItem<String>(
+                                          value: "part from trans",
+                                          child: Expanded(child: Row(
+                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              SecText("part from trans"),
+                                              Icon(Icons.payments,
+                                                  color: AppColors.inverseCardColor)
+                                            ],
+                                          ),)
+                                      )
+                                    ],
+                                  ),
+                                ),))
+                            ],
+                          ),
+                          if(controller.paymentType.value != "cash")...[
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Row(
+                                  children: [
+                                    Icon(
+                                      Icons.monetization_on_rounded,
+                                      size: 40,
+                                      color: AppColors.inverseIconColor,
+                                    ),
+                                    const SizedBox(
+                                      width: 10,
+                                    ),
+                                    SecText("Payment ID"),
+                                  ],
+                                ),
+                                CustomTextFormField(
+                                  controller: controller.paymentIdController,
+                                  keyboardType: TextInputType.number,
+                                  labelText: "Payment ID",
+                                  focusNode: controller.paymentIbFocus,
+                                  onFieldSubmitted: (e) {
+                                    controller.noteFocus.requestFocus();
+                                  },
+                                  width: (Get.width - 12) * 0.46,
+                                ),
+                              ],
+                            ),
+                          ],
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Row(
+                                children: [
+                                  Icon(
                                     Icons.note_alt_sharp,
                                     size: 40,
                                     color: AppColors.inverseIconColor,
@@ -146,59 +250,35 @@ class PopUpAddInstallmentCard extends GetView<InstallmentAddController> {
                                     width: 10,
                                   ),
                                   SecText(
-                                    "Note",
+                                    "Description",
                                   ),
                                 ],
                               ),
                               CustomTextFormField(
                                 controller: controller.noteController,
-                                labelText: "Note",
+                                labelText: "Description",
+                                keyboardType: TextInputType.text,
                                 focusNode: controller.noteFocus,
                                 onFieldSubmitted: (e) {
                                   controller.noteFocus.unfocus();
-                                  controller.submit();
+                                  controller.expensSubmit();
                                 },
                                 width: (Get.width - 12) * 0.46,
                               ),
                             ],
                           ),
-                          // Row(
-                          //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          //   children: [
-                          //     Row(
-                          //       children: [
-                          //         Icon(
-                          //           Icons.account_balance_wallet,
-                          //           size: 40,
-                          //           color: AppColors.inverseIconColor,
-                          //         ),
-                          //         const SizedBox(
-                          //           width: 10,
-                          //         ),
-                          //         SecText(
-                          //           "Statement",
-                          //         ),
-                          //       ],
-                          //     ),
-                          //     CustomTextFormField(
-                          //       controller: controller.incomeController,
-                          //       labelText: " Statement ",
-                          //       readOnly: true,
-                          //       focusNode: controller.incomeFocus,
-                          //       onTap: controller.showBottomSheet,
-                          //       width: (Get.width - 12) * 0.46,
-                          //     ),
-                          //   ],
-                          // ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
                               CustomButton(
-                                onPress: controller.submit,
+                                onPress: controller.incomeSubmit,
                                 text: "Add",
                               ),
                               CustomButton(
-                                onPress: () => Get.back(result: null),
+                                onPress: () {
+                                  Get.back(result: null);
+                                  controller.clear();
+                                },
                                 text: "Close",
                               ),
                             ],
@@ -209,6 +289,6 @@ class PopUpAddInstallmentCard extends GetView<InstallmentAddController> {
           ),
         ),
       ),
-    );
+    ));
   }
 }

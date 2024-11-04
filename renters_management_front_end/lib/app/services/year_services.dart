@@ -9,48 +9,6 @@ import '../models/renter_model.dart';
 import 'http_provider/http_provider.dart';
 
 class YearServices {
-  static Future<Result<List<Renter>>> fetchRenters(int buildId,
-      {bool hardFetch = false}) async {
-    Result<Build> res = await BuildServices.fetchBuild(id: buildId);
-    if (res.data != null && res.data?.renters != null && !hardFetch) {
-      return Result(
-          data: res.data!.renters,
-          statusCode: 200,
-          hasError: false,
-          message: "successful");
-    }
-    Response? response;
-    try {
-      response = await HttpProvider.get("user/builds/$buildId/renters");
-      if (response?.statusCode == 200) {
-        List result = response?.data["Renters"];
-        List<Renter> renters = [];
-        for (int i = 0; i < result.length; i++) {
-          renters.add(Renter.fromJson(result[i]));
-        }
-        BuildServices.setBuildRenters(buildId, renters);
-        return Result(
-            data: renters,
-            hasError: false,
-            statusCode: response?.statusCode,
-            message: "successful");
-      }
-    } catch (error) {
-      if (kDebugMode) {
-        print(error.toString());
-      }
-      return Result(
-          hasError: true,
-          statusCode: 621,
-          message: error.toString(),
-          data: null);
-    }
-    return Result(
-        hasError: true,
-        statusCode: response?.statusCode ?? 623,
-        message: response?.data["message"] ?? "some thing wrong",
-        data: null);
-  }
 
   static Future<Result<bool>> addYearToRenter(
       {required int buildId,
@@ -87,13 +45,13 @@ class YearServices {
       }
       return Result(
           hasError: true,
-          statusCode: 626,
+          statusCode: 651,
           message: error.toString(),
           data: null);
     }
     return Result(
         hasError: true,
-        statusCode: response?.statusCode ?? 623,
+        statusCode: response?.statusCode ?? 704,
         message: response?.data["message"] ?? "some thing wrong",
         data: null);
   }
@@ -122,13 +80,13 @@ class YearServices {
       }
       return Result(
           hasError: true,
-          statusCode: 627,
+          statusCode: 652,
           message: error.toString(),
           data: null);
     }
     return Result(
         hasError: true,
-        statusCode: response?.statusCode ?? 700,
+        statusCode: response?.statusCode ?? 704,
         message: response?.data["message"] ?? "some thing wrong",
         data: null);
   }

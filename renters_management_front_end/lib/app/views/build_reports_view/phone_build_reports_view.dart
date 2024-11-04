@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:renters_management_front_end/app/components/income_outcome_card.dart';
+import 'package:renters_management_front_end/app/components/expens_card.dart';
+import 'package:renters_management_front_end/app/components/income_card.dart';
 import 'package:renters_management_front_end/app/components/statement_card.dart';
 
 import '../../components/custom_text.dart';
@@ -25,6 +26,7 @@ class PhoneBuildReportsView extends GetView<BuildReportsController> {
     '12': 'December'
   };
   double expansionTileChildrenFontSize = 12;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -61,33 +63,47 @@ class PhoneBuildReportsView extends GetView<BuildReportsController> {
           )
         ],
       ),
-      body: Container(
-        color: AppColors.backColor,
-        height: Get.height,
-        padding: EdgeInsets.all(16),
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              MainText("Statement Col",textColor: AppColors.inverseSecTextColor,fontSize: 18,),
-              SizedBox(height: 5,),
-              Obx(() => StatementCard(
-                monthTotalRent: controller.monthTotalRent.value,
-                rentersCount: controller.rentersCount.value,
-                payedTotalRent: controller.payedTotalRent.value,
-                payedRentersCount: controller.payedRentersCount.value,
-                partiallyPayedTotalRent: controller.partiallyPayedTotalRent.value,
-                partiallyPayedRentersCount: controller.partiallyPayedRentersCount.value,
-                notPayedTotalRent: controller.notPayedTotalRent.value,
-                notPayedRentersCount: controller.notPayedRentersCount.value,
-              )),
-              SizedBox(height: 5,),
-              IncomeOutcomeCard(type: IncomeOutcomeCardType.income),
-              IncomeOutcomeCard(type: IncomeOutcomeCardType.outcome)
-            ],
-          ),
-        )
-      ),
+      body: Obx(() => (controller.isLoad.value)
+          ? Center(
+              child: CircularProgressIndicator(),
+            )
+          : Container(
+              color: AppColors.backColor,
+              height: Get.height,
+              padding: EdgeInsets.all(8),
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    MainText(
+                      "Statement Col",
+                      textColor: AppColors.inverseSecTextColor,
+                      fontSize: 18,
+                    ),
+                    SizedBox(
+                      height: 5,
+                    ),
+                    Obx(() => StatementCard(
+                          monthTotalRent: controller.monthTotalRent.value,
+                          rentersCount: controller.rentersCount.value,
+                          payedTotalRent: controller.payedTotalRent.value,
+                          payedRentersCount: controller.payedRentersCount.value,
+                          partiallyPayedTotalRent:
+                              controller.partiallyPayedTotalRent.value,
+                          partiallyPayedRentersCount:
+                              controller.partiallyPayedRentersCount.value,
+                          notPayedTotalRent: controller.notPayedTotalRent.value,
+                          notPayedRentersCount:
+                              controller.notPayedRentersCount.value,
+                        )),
+                    SizedBox(
+                      height: 5,
+                    ),
+                    IncomeCard(),
+                    ExpensCard(),
+                  ],
+                ),
+              ))),
     );
   }
 }

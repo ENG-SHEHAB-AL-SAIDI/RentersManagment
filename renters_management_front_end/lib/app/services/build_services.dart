@@ -1,9 +1,7 @@
-import 'dart:ffi';
-
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
-import 'package:renters_management_front_end/app/models/rent_payments_model.dart';
 import 'package:renters_management_front_end/app/models/result.dart';
+import 'package:renters_management_front_end/app/models/statement_model.dart';
 import '../models/build_model.dart';
 import '../models/renter_model.dart';
 import 'http_provider/http_provider.dart';
@@ -205,4 +203,13 @@ class BuildServices {
       }
     }
   }
+
+  static void setBuildStatements(int buildId, Map<String,List<Statement>> statements) {
+    for (int i = 0; i < _builds.length; i++) {
+      if (_builds[i].id.value == buildId) {
+        _builds[i].statements = statements;
+      }
+    }
+  }
+
 }

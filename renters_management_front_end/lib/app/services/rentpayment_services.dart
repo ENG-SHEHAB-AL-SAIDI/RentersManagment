@@ -54,7 +54,7 @@ class RentPaymentServices {
       }
       return Result(
           hasError: true,
-          statusCode: 621,
+          statusCode: 641,
           message: error.toString(),
           data: null);
     }
@@ -112,7 +112,7 @@ class RentPaymentServices {
       }
       Result(
           hasError: true,
-          statusCode: 622,
+          statusCode: 642,
           message: error.toString(),
           data: null);
     }
@@ -151,7 +151,7 @@ class RentPaymentServices {
       }
       Result(
           hasError: true,
-          statusCode: 623,
+          statusCode: 643,
           message: error.toString(),
           data: null);
     }
@@ -192,7 +192,7 @@ class RentPaymentServices {
       }
       return Result(
           hasError: true,
-          statusCode: 624,
+          statusCode: 644,
           message: error.toString(),
           data: null);
     }
@@ -226,7 +226,7 @@ class RentPaymentServices {
       }
       return Result(
           hasError: true,
-          statusCode: 625,
+          statusCode: 645,
           message: error.toString(),
           data: null);
     }
@@ -271,7 +271,7 @@ class RentPaymentServices {
       }
       return Result(
           hasError: true,
-          statusCode: 636,
+          statusCode: 646,
           message: error.toString(),
           data: null);
     }
@@ -314,7 +314,7 @@ class RentPaymentServices {
       }
       return Result(
           hasError: true,
-          statusCode: 636,
+          statusCode: 647,
           message: error.toString(),
           data: null);
     }

@@ -91,7 +91,7 @@ class CustomTextFormField extends StatelessWidget {
         focusNode: focusNode,
         enabled: enable,
         minLines: minLines,
-        maxLines: 1,
+        maxLines: minLines??1,
         onSaved: onSaved,
         onChanged: onChange,
         onFieldSubmitted: onFieldSubmitted,

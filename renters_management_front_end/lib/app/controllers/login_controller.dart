@@ -13,7 +13,7 @@ class LoginController extends GetxController {
   String logWith = "ID";
   RxBool logging = false.obs;
   RxBool loggingFiled = false.obs;
-  RxDouble heightScale = 0.6.obs;
+  RxDouble heightScale = 0.61.obs;
 
   @override
   void onClose() {

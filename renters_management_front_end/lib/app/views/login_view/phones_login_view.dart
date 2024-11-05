@@ -176,27 +176,17 @@ class PhoneLoginView extends GetView<LoginController> {
                         controller.filedMessage.value,
                         textColor: Colors.redAccent,
                       ),
+                      SizedBox(
+                        height: height * 0.01,
+                      ),
+                    ]else...[
+                      SizedBox(
+                        height: height * 0.6 * 0.05,
+                      ),
                     ],
-                    SizedBox(
-                      height: height * 0.6 * 0.05,
-                    ),
+
                     Obx(() => Column(
                           children: [
-                            Checkbox(
-                                value: state.value,
-                                onChanged: (val) async{
-                                  if (val == true) {
-                                    await HttpProvider.init(
-                                        baseUrl:
-                                        "http://rentersmanagement.helioho.st/api/");
-                                    state.value = true;
-                                  } else {
-                                    await HttpProvider.init(
-                                        baseUrl:
-                                        "http://192.168.0.31:8000/api/");
-                                    state.value = false;
-                                  }
-                                }),
                             (controller.logging.value)
                                 ? CustomButton(
                                     onPress: controller.onLogin,
@@ -225,7 +215,31 @@ class PhoneLoginView extends GetView<LoginController> {
                                                     AppColors.mainTextColor)),
                                     size: Size(width * 0.8, 50)),
                             SizedBox(
-                              height: height * 0.03,
+                              height: height * 0.01,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                SecText("Remember my",textColor: AppColors.linkTextColor),
+                                Checkbox(
+                                    value: state.value,
+                                    onChanged: (val) async{
+                                      if (val == true) {
+                                        await HttpProvider.init(
+                                            baseUrl:
+                                            "http://rentersmanagement.helioho.st/api/");
+                                        state.value = true;
+                                      } else {
+                                        await HttpProvider.init(
+                                            baseUrl:
+                                            "http://192.168.0.31:8000/api/");
+                                        state.value = false;
+                                      }
+                                    }),
+                              ],
+                            ),
+                            SizedBox(
+                              height: height * 0.01,
                             ),
                             Align(
                               alignment: AlignmentDirectional.center,

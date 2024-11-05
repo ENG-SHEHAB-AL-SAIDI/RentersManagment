@@ -5,7 +5,6 @@ import 'package:renters_management_front_end/app/models/result.dart';
 import 'package:renters_management_front_end/app/services/build_services.dart';
 
 import '../models/rent_payments_model.dart';
-import '../models/renter_model.dart';
 import 'http_provider/http_provider.dart';
 
 class YearServices {

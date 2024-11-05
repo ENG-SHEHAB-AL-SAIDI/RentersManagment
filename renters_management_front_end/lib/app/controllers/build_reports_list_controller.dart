@@ -37,7 +37,6 @@ class BuildReportsListController extends GetxController {
 
   void more(String val) {
     if (val == "print") {
-      print(val);
     }
   }
 

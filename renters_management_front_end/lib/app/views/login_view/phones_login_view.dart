@@ -7,7 +7,6 @@ import '../../components/custom_text.dart';
 import '../../components/text_field.dart';
 import '../../controllers/login_controller.dart';
 import '../../globals.dart';
-import '../../services/http_provider/http_provider.dart';
 
 
 class PhoneLoginView extends GetView<LoginController> {
@@ -220,22 +219,10 @@ class PhoneLoginView extends GetView<LoginController> {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
-                                SecText("Remember my",textColor: AppColors.linkTextColor),
+                                SecText("Remember me",textColor: AppColors.linkTextColor),
                                 Checkbox(
-                                    value: state.value,
-                                    onChanged: (val) async{
-                                      if (val == true) {
-                                        await HttpProvider.init(
-                                            baseUrl:
-                                            "http://rentersmanagement.helioho.st/api/");
-                                        state.value = true;
-                                      } else {
-                                        await HttpProvider.init(
-                                            baseUrl:
-                                            "http://192.168.0.31:8000/api/");
-                                        state.value = false;
-                                      }
-                                    }),
+                                    value: controller.rememberMe.value,
+                                    onChanged: controller.toggleRememberMe),
                               ],
                             ),
                             SizedBox(
@@ -244,7 +231,7 @@ class PhoneLoginView extends GetView<LoginController> {
                             Align(
                               alignment: AlignmentDirectional.center,
                               child: TextButton(
-                                onPressed: () => controller.forgotPassword,
+                                onPressed: controller.register,
                                 child: SecText(
                                   "register".tr,
                                   textColor: AppColors.linkTextColor,

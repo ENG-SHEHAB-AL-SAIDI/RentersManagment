@@ -27,7 +27,38 @@ class UserServices {
     }
 
     return Result(
-        hasError: true, statusCode: response?.statusCode??601, message: "error", data: false);
+        hasError: true,
+        statusCode: response?.statusCode ?? 601,
+        message: "error",
+        data: false);
+  }
+
+  static Future<Result<bool>> userRegister(String name, String email,
+      String password, String passwordConfirmation) async {
+    late Response? response;
+    try {
+      response = await HttpProvider.post("auth/register", data: {
+        "name": name,
+        "email": email,
+        "password": password,
+        "password_confirmation": passwordConfirmation
+      });
+      if (response?.statusCode == 200) {
+        _user = User.fromJson(response?.data["user"]);
+        HttpProvider.addAuthTokenInterceptor(
+            response?.data["token"]["original"]["access_token"]);
+        return Result(
+            hasError: false, statusCode: response?.statusCode, data: true);
+      }
+    } catch (error) {
+      return Result(hasError: true, statusCode: 601, message: error.toString());
+    }
+
+    return Result(
+        hasError: true,
+        statusCode: response?.statusCode ?? 601,
+        message: "error",
+        data: false);
   }
 
   static Future<Result?> userLogout() async {
@@ -36,9 +67,8 @@ class UserServices {
       response = await HttpProvider.post("auth/logout");
       if (response?.statusCode == 200) {
         get_x.Get.offAllNamed("/login");
-        return null ;
+        return null;
       }
-
     } catch (error) {
       if (kDebugMode) {
         print(error.toString());
@@ -49,7 +79,11 @@ class UserServices {
           message: error.toString(),
           data: null);
     }
-    return Result(hasError: true, statusCode: response?.statusCode??602, message: "some thing wrong", data: null);
+    return Result(
+        hasError: true,
+        statusCode: response?.statusCode ?? 602,
+        message: "some thing wrong",
+        data: null);
   }
 
   static Future<Result<User>> fetchUser({bool hardFetch = false}) async {
@@ -67,12 +101,11 @@ class UserServices {
           statusCode: response?.statusCode,
           message: "successful");
     } catch (error) {
-        return Result(
-            hasError: true,
-            statusCode: 603,
-            message: error.toString(),
-            data: null);
-      }
+      return Result(
+          hasError: true,
+          statusCode: 603,
+          message: error.toString(),
+          data: null);
     }
-
+  }
 }

@@ -116,6 +116,12 @@ class ExpensCard extends GetView<BuildReportsController> {
                         borderRadius: BorderRadius.circular(24)),
                     childrenPadding: const EdgeInsets.all(8),
                     children: [
+                      Divider(
+                        color: AppColors.secTextColor,
+                      ),
+                      const SizedBox(
+                        height: 16,
+                      ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -160,7 +166,14 @@ class ExpensCard extends GetView<BuildReportsController> {
                           )
                         ],
                       ),
+                      const SizedBox(
+                        height: 16,
+                      ),
+                      Divider(
+                        color: AppColors.secTextColor,
+                      ),
                       if (controller.statement?.expenses?.isEmpty ?? true) ...[
+
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
@@ -268,10 +281,11 @@ class ExpensCard extends GetView<BuildReportsController> {
                                 )
                               ],
                             ),
-                            const Divider(),
+                            Divider(
+                            color: AppColors.secTextColor,
+                            ),
                           ],
                         ],
-                      const Divider(),
                       const SizedBox(
                         height: 16,
                       ),

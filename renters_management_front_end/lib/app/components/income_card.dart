@@ -120,6 +120,14 @@ class IncomeCard extends GetView<BuildReportsController> {
                     scrollDirection: Axis.horizontal,
                     child: Column(
                       children: [
+                        Container(
+                          height: 1,
+                          width: ((Get.width - 45) * (1 / 4))*8,
+                          color: AppColors.secTextColor,
+                        ),
+                        const SizedBox(
+                          height: 16,
+                        ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
@@ -128,6 +136,7 @@ class IncomeCard extends GetView<BuildReportsController> {
                                 child: SecText(
                                   "Date",
                                   textColor: color1,
+                                  fontWeight: FontWeight.bold,
                                   fontSize: Utils.fontSizeScale(
                                       expansionTileChildrenFontSize),
                                 )),
@@ -136,6 +145,7 @@ class IncomeCard extends GetView<BuildReportsController> {
                                 child: SecText(
                                   "time",
                                   textColor: color1,
+                                  fontWeight: FontWeight.bold,
                                   fontSize: Utils.fontSizeScale(
                                       expansionTileChildrenFontSize),
                                 )),
@@ -144,6 +154,7 @@ class IncomeCard extends GetView<BuildReportsController> {
                                 child: SecText(
                                   "Amount",
                                   textColor: color1,
+                                  fontWeight: FontWeight.bold,
                                   fontSize: Utils.fontSizeScale(
                                       expansionTileChildrenFontSize),
                                 )),
@@ -152,6 +163,7 @@ class IncomeCard extends GetView<BuildReportsController> {
                                 child: SecText(
                                   "PaymentType",
                                   textColor: color1,
+                                  fontWeight: FontWeight.bold,
                                   fontSize: Utils.fontSizeScale(
                                       expansionTileChildrenFontSize),
                                 )),
@@ -160,6 +172,7 @@ class IncomeCard extends GetView<BuildReportsController> {
                                 child: SecText(
                                   "PaymentID",
                                   textColor: color1,
+                                  fontWeight: FontWeight.bold,
                                   fontSize: Utils.fontSizeScale(
                                       expansionTileChildrenFontSize),
                                 )),
@@ -168,6 +181,7 @@ class IncomeCard extends GetView<BuildReportsController> {
                                 child: SecText(
                                   "Description",
                                   textColor: color1,
+                                  fontWeight: FontWeight.bold,
                                   fontSize: Utils.fontSizeScale(
                                       expansionTileChildrenFontSize),
                                 )),
@@ -187,6 +201,14 @@ class IncomeCard extends GetView<BuildReportsController> {
                             ],
                           ),
                         ] else ...[
+                          const SizedBox(
+                            height: 16,
+                          ),
+                          Container(
+                            height: 1,
+                            width: ((Get.width - 45) * (1 / 4))*8,
+                            color: AppColors.secTextColor,
+                          ),
                           for (int i = 0;
                           i < (controller.statement?.incomes?.length ?? 0);
                           i++) ...[

@@ -165,9 +165,6 @@ class BuildReportsController extends GetxController {
   }
 
   void more(String val) {
-    if (val == "print") {
-      print(val);
-    }
   }
 
   void calcBuildStatement() async {

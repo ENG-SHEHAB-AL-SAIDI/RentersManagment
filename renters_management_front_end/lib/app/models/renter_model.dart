@@ -52,7 +52,7 @@ class Renter {
     return Renter(
       id: RxInt(json['id'] ?? 0),
       name: RxString(json['name'] ?? "Unknown"),
-      rent: RxDouble(double.parse(json['rent'].toString()) ?? 0.0),
+      rent: RxDouble(double.parse(json['rent'].toString())),
       jobDomain: RxString(json['job_domain'] ?? "Unknown"),
       enterDate: RxString(json['enter_date'] ?? "Unknown"),
       phones: List<RxString>.generate(

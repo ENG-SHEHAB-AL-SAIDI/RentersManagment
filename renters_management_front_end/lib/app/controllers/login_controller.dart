@@ -1,7 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+import 'package:renters_management_front_end/app/bindings/register_binding.dart';
 import 'package:renters_management_front_end/app/models/result.dart';
 import 'package:renters_management_front_end/app/services/user_services.dart';
+
+import '../views/login_view/register_view.dart';
 
 class LoginController extends GetxController {
   TextEditingController id = TextEditingController();
@@ -13,6 +16,7 @@ class LoginController extends GetxController {
   String logWith = "ID";
   RxBool logging = false.obs;
   RxBool loggingFiled = false.obs;
+  RxBool rememberMe = false.obs;
   RxDouble heightScale = 0.61.obs;
 
   @override
@@ -58,8 +62,12 @@ class LoginController extends GetxController {
     Get.toNamed("/forgotPassword");
   }
 
+  void toggleRememberMe(bool? val) {
+    rememberMe.value = val ?? false;
+  }
+
   Future<void> onLogin() async {
-      logging.value = true;
+    logging.value = true;
     if (formKey.currentState!.validate()) {
       Result res = await UserServices.userLogin(id.text, password.text);
       if (res.statusCode == 200) {
@@ -71,13 +79,21 @@ class LoginController extends GetxController {
       } else if (res.statusCode == 401) {
         filedMessage.value = "password or id is wrong";
         loggingFiled.value = true;
-      } else {
+      } else if (res.statusCode == 404) {
+        filedMessage.value = "no such user exist";
+        loggingFiled.value = true;
+      }
+      else {
         filedMessage.value =
             "something get wrong \n please check your connection ";
         loggingFiled.value = true;
       }
     }
     logging.value = false;
+  }
+
+  void register() {
+    Get.to(() => PhoneRegisterView(), binding: RegisterViewBinding());
   }
 
   void changeLang(String lang) {

@@ -3,7 +3,6 @@ import 'package:get/get_rx/get_rx.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:renters_management_front_end/app/models/expens_model.dart';
 import 'package:renters_management_front_end/app/models/income_model.dart';
-import 'package:renters_management_front_end/app/models/rent_payments_installment_model.dart';
 
 class Statement {
   RxInt id;

@@ -181,25 +181,25 @@ class PopUpAddIncomeCard extends GetView<BuildReportsController> {
                                       ),
                                       DropdownMenuItem<String>(
                                         value: "trans",
-                                        child: Expanded(child: Row(
+                                        child: Row(
                                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                           children: [
                                             SecText("trans"),
                                             Icon(Icons.payment,
                                                 color: AppColors.inverseCardColor)
                                           ],
-                                        ),),
+                                        ),
                                       ),
                                       DropdownMenuItem<String>(
                                           value: "part from trans",
-                                          child: Expanded(child: Row(
+                                          child: Row(
                                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                             children: [
                                               SecText("part from trans"),
                                               Icon(Icons.payments,
                                                   color: AppColors.inverseCardColor)
                                             ],
-                                          ),)
+                                          )
                                       )
                                     ],
                                   ),

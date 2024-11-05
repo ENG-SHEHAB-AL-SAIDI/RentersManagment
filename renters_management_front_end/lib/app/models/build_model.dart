@@ -49,7 +49,6 @@ class Build {
         statements[key] = statementsList;
       }
     }
-    print(statements);
     return Build(
       id: RxInt(json['id'] ?? 0),
       numRenters: RxInt(json['renters_count'] ?? 0),

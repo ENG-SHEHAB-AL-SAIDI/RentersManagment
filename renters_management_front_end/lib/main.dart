@@ -17,7 +17,7 @@ class MyApp extends StatelessWidget {
     return GetPlatform.isIOS
         //IOS UI
         ? GetCupertinoApp(
-            title: "StudentServices",
+            title: "Renters Management",
             initialRoute: "/login",
             translations: Languages(),
             locale: Get.deviceLocale,
@@ -27,7 +27,7 @@ class MyApp extends StatelessWidget {
           )
         // Android and web UI
         : GetMaterialApp(
-            title: "StudentServices",
+            title: "Renters Management",
             initialRoute: "/login",
             translations: Languages(),
             locale: Get.deviceLocale,

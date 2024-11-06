@@ -21,7 +21,7 @@ class BuildServices {
     Response? response;
     try {
       _builds = [];
-      response = await HttpProvider.get("user/builds/");
+      response = await HttpProvider.get("user/builds");
       List result = response?.data["Builds"];
       for (int i = 0; i < result.length; i++) {
         _builds.add(Build.fromJson(result[i]));

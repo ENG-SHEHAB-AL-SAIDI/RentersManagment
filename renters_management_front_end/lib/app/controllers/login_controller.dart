@@ -27,13 +27,6 @@ class LoginController extends GetxController {
     passwordFocus.dispose();
   }
 
-  @override
-  void onInit() {
-    id.text = "shehab8@gmail.com";
-    password.text = "12345678";
-    super.onInit();
-  }
-
   String? validateID(String? id) {
     bool valid = false;
     if (id == "" || id == null) {

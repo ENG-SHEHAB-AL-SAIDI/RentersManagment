@@ -92,8 +92,20 @@ class RentPaymentCard extends StatelessWidget {
           SecText('Not Payed', textColor: color2),
         ],
       ),
+      "excluded":Row(
+        children: [
+          const Icon(
+            Icons.not_interested,
+            color: Colors.grey,
+          ),
+          const SizedBox(
+            width: 6,
+          ),
+          SecText('Excluded', textColor: color2),
+        ],
+      ),
     };
-    return Container(
+    return Obx(()=>Container(
         margin: const EdgeInsets.all(4),
         decoration: BoxDecoration(
           color: color1,
@@ -145,9 +157,9 @@ class RentPaymentCard extends StatelessWidget {
                         color: AppColors.inverseCardColor,
                         itemBuilder: (ctx) => [
                           PopupMenuItem(
-                            value: "clear",
+                            value: (rentPayment?.state?.value != "excluded")?"exclude":"include",
                             child: SecText(
-                              "Clear",
+                              (rentPayment?.state?.value != "excluded")?"Exclude":"Include",
                               textColor:
                               AppColors.mainTextColor,
                             ),
@@ -244,7 +256,8 @@ class RentPaymentCard extends StatelessWidget {
               child: ExpansionTile(
                 iconColor: color1,
                 collapsedIconColor: color1,
-                initiallyExpanded: initiallyExpanded,
+                enabled: ((rentPayment?.state?.value??"") == "exclude"),
+                initiallyExpanded: ((rentPayment?.state?.value??"") == "exclude") && initiallyExpanded,
                 title: SecText(
                   "Rent Payments Installment",
                   textColor: color1,
@@ -260,39 +273,39 @@ class RentPaymentCard extends StatelessWidget {
                       SizedBox(
                           width: ((Get.width-45) * (1 / 5)),
                           child: SecText(
-                        "Date",
-                        textColor: color1,
-                        fontSize:
+                            "Date",
+                            textColor: color1,
+                            fontSize:
                             Utils.fontSizeScale(expansionTileChildrenFontSize),
                             textAlign: TextAlign.start,
-                      )),
+                          )),
                       SizedBox(
                           width: ((Get.width-45) * (1 / 5)),
                           child: SecText(
-                        "time",
-                        textColor: color1,
-                        fontSize:
+                            "time",
+                            textColor: color1,
+                            fontSize:
                             Utils.fontSizeScale(expansionTileChildrenFontSize),
                             textAlign: TextAlign.start,
-                      )),
+                          )),
                       SizedBox(
                           width: ((Get.width-45) * (1 / 5)),
                           child: SecText(
-                        "Amount",
-                        textColor: color1,
-                        fontSize:
+                            "Amount",
+                            textColor: color1,
+                            fontSize:
                             Utils.fontSizeScale(expansionTileChildrenFontSize),
                             textAlign: TextAlign.start,
-                      )),
+                          )),
                       SizedBox(
                           width: ((Get.width-45) * (1 / 5)),
                           child:  SecText(
-                        "Note",
-                        textColor: color1,
-                        fontSize:
+                            "Note",
+                            textColor: color1,
+                            fontSize:
                             Utils.fontSizeScale(expansionTileChildrenFontSize),
                             // textAlign: TextAlign.start,
-                      )),
+                          )),
                       SizedBox(
                         width: ((Get.width-45) * (1 / 5)),
                       )
@@ -312,47 +325,47 @@ class RentPaymentCard extends StatelessWidget {
                     ),
                   ] else ...[
                     for (int i = 0;
-                        i < (rentPayment?.rentPaymentsInstallment?.length ?? 0);
-                        i++) ...[
+                    i < (rentPayment?.rentPaymentsInstallment?.length ?? 0);
+                    i++) ...[
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           SizedBox(
                               width: ((Get.width-45) * (1 / 5)),
                               child:SecText(
-                            (rentPayment?.rentPaymentsInstallment?[i].date
-                                        ?.value !=
+                                (rentPayment?.rentPaymentsInstallment?[i].date
+                                    ?.value !=
                                     null)
-                                ? controller.dateFormat
+                                    ? controller.dateFormat
                                     .format(DateTime.parse(rentPayment!
-                                        .rentPaymentsInstallment![i]
-                                        .date!
-                                        .value))
+                                    .rentPaymentsInstallment![i]
+                                    .date!
+                                    .value))
                                     .toString()
-                                : "Unknown",
-                            textColor: color1,
-                            fontSize: Utils.fontSizeScale(
-                                expansionTileChildrenFontSize),
+                                    : "Unknown",
+                                textColor: color1,
+                                fontSize: Utils.fontSizeScale(
+                                    expansionTileChildrenFontSize),
                                 textAlign: TextAlign.start,
-                          )),
+                              )),
                           SizedBox(
                               width: ((Get.width-45) * (1 / 5)),
                               child:SecText(
-                            (rentPayment?.rentPaymentsInstallment?[i].date
-                                        ?.value !=
+                                (rentPayment?.rentPaymentsInstallment?[i].date
+                                    ?.value !=
                                     null)
-                                ? controller.timeFormat
+                                    ? controller.timeFormat
                                     .format(DateTime.parse(rentPayment!
-                                        .rentPaymentsInstallment![i]
-                                        .date!
-                                        .value))
+                                    .rentPaymentsInstallment![i]
+                                    .date!
+                                    .value))
                                     .toString()
-                                : "Unknown",
-                            textColor: color1,
-                            fontSize: Utils.fontSizeScale(
-                                expansionTileChildrenFontSize),
+                                    : "Unknown",
+                                textColor: color1,
+                                fontSize: Utils.fontSizeScale(
+                                    expansionTileChildrenFontSize),
                                 textAlign: TextAlign.start,
-                          )),
+                              )),
                           SizedBox(
                               width: ((Get.width-45) * (1 / 5)),
                               child: SecText(
@@ -408,6 +421,6 @@ class RentPaymentCard extends StatelessWidget {
               ),
             )
           ],
-        ));
+        )),);
   }
 }

@@ -22,7 +22,7 @@ class PhoneRentersListView extends GetView<RenterListController> {
               Icons.arrow_back_outlined,
               color: AppColors.mainIconColor,
             )),
-        title: MainText("Renters List"),
+        title: MainText(controller.title),
         actions: [
           IconButton(
               onPressed: () {},

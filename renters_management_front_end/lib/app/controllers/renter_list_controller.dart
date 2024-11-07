@@ -13,7 +13,9 @@ import '../models/renter_model.dart';
 class RenterListController extends GetxController {
   TextEditingController searchField = TextEditingController();
   int buildId = -1;
+  List<int>? rentersIds;
   Rx<List<Renter>> renters = Rx([]);
+  String title = "Renters List";
 
   @override
   void onClose() {
@@ -25,12 +27,20 @@ class RenterListController extends GetxController {
   @override
   void onInit() async {
     buildId = Get.arguments['buildId'];
-    Result<List<Renter>> res = await RenterServices.fetchRenters(buildId);
-    if (res.statusCode == 200 && res.data != null) {
-      renters.value = res.data!;
+    rentersIds = Get.arguments['rentersIds'];
+    title = Get.arguments['title']??"Renters List";
+    if (rentersIds != null) {
+      List<Renter> res =
+          await RenterServices.getRentersGroup(buildId, rentersIds!);
+      renters.value = res;
     } else {
-      Get.dialog(PopUpAlertCard(
-          "fetch Renters field please check your connection", Icons.warning));
+      Result<List<Renter>> res = await RenterServices.fetchRenters(buildId);
+      if (res.statusCode == 200 && res.data != null) {
+        renters.value = res.data!;
+      } else {
+        Get.dialog(PopUpAlertCard(
+            "fetch Renters field please check your connection", Icons.warning));
+      }
     }
     super.onInit();
   }
@@ -43,11 +53,10 @@ class RenterListController extends GetxController {
       renters.value = res.data!;
     } else {
       Get.dialog(PopUpAlertCard(
-          "fetch Renters field please check your connection \n error code:${res.statusCode}", Icons.warning));
-
+          "fetch Renters field please check your connection \n error code:${res.statusCode}",
+          Icons.warning));
     }
   }
-
 
   void searching(String? text) async {
     if (text == null || text == '') {
@@ -69,7 +78,7 @@ class RenterListController extends GetxController {
     }
   }
 
-  void rentersDetailsRoute(int index) async{
+  void rentersDetailsRoute(int index) async {
     await Get.toNamed("/rentersDetails", arguments: {
       'buildId': buildId,
       'renterId': renters.value[index].id.value
@@ -87,16 +96,17 @@ class RenterListController extends GetxController {
         renters.refresh();
       } else {
         Get.dialog(PopUpAlertCard(
-            "${res.message ??""}\n error code:${res.statusCode}", Icons.warning));
+            "${res.message ?? ""}\n error code:${res.statusCode}",
+            Icons.warning));
       }
     }
   }
 
   void add() async {
     Map<String, dynamic>? result =
-        await Get.dialog(const PopUpIAddAndUpdateRenterCard(),arguments: {
-          'mode': "Add",
-        });
+        await Get.dialog(const PopUpIAddAndUpdateRenterCard(), arguments: {
+      'mode': "Add",
+    });
     if (result != null) {
       Result res =
           await RenterServices.storeRenter(buildId: buildId, data: result);
@@ -106,16 +116,16 @@ class RenterListController extends GetxController {
         }
       } else {
         Get.dialog(PopUpAlertCard(
-            "${res.message ??""}\n error code:${res.statusCode}", Icons.warning));
+            "${res.message ?? ""}\n error code:${res.statusCode}",
+            Icons.warning));
       }
     }
   }
 
   void more(String val) {
     if (val == "print") {
-      Get.dialog(PopUpRenterPrintSettingCard(),arguments: {
-        "renters":renters.value
-      });
+      Get.dialog(PopUpRenterPrintSettingCard(),
+          arguments: {"renters": renters.value});
     }
   }
 }

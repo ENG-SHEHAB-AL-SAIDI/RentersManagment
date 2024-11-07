@@ -31,14 +31,14 @@ class PhoneLoginView extends GetView<LoginController> {
         Column(
           children: [
             SizedBox(
-              height: (height * 0.5),
+              height: (height * 0.4),
               width: width,
               child: Image.asset(
                   "assets/images/renters_management_background.jpeg",
                   fit: BoxFit.fill),
             ),
             SizedBox(
-              height: (height * 0.5),
+              height: (height * 0.4),
               width: width,
             ),
           ],
@@ -50,7 +50,7 @@ class PhoneLoginView extends GetView<LoginController> {
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               SizedBox(
-                height: (height * 0.34),
+                height: (height * 0.31),
               ),
               Container(
                 width: double.maxFinite,
@@ -131,7 +131,7 @@ class PhoneLoginView extends GetView<LoginController> {
                       },
                       onTapOutside: (e) {
                         controller.idFocus.unfocus();
-                        controller.heightScale.value = 0.6;
+                        controller.heightScale.value = 0.65;
                       },
                     ),
                     SizedBox(
@@ -149,10 +149,10 @@ class PhoneLoginView extends GetView<LoginController> {
                       },
                       onTapOutside: (e) {
                         controller.passwordFocus.unfocus();
-                        controller.heightScale.value = 0.6;
+                        controller.heightScale.value = 0.65;
                       },
                       onFieldSubmitted: (str) {
-                        controller.heightScale.value = 0.6;
+                        controller.heightScale.value = 0.65;
                         controller.onLogin();
                       },
                     ),

@@ -100,6 +100,18 @@ class RenterServices {
 
   }
 
+  static Future<List<Renter>> getRentersGroup(int buildId, List<int> ids,
+      {bool hardFetch = false}) async {
+    Result<Build> res = await BuildServices.fetchBuild(id: buildId);
+    List<Renter> rentersGroup = [];
+    res.data!.renters?.forEach((element){
+      if(ids.contains(element.id.value)){
+        rentersGroup.add(element);
+      }
+    });
+    return rentersGroup;
+  }
+
   static Future<Result<Renter>> storeRenter(
       {required int buildId,
       required Map<String, dynamic> data,

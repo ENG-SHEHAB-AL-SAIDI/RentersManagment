@@ -17,7 +17,7 @@ class LoginController extends GetxController {
   RxBool logging = false.obs;
   RxBool loggingFiled = false.obs;
   RxBool rememberMe = false.obs;
-  RxDouble heightScale = 0.61.obs;
+  RxDouble heightScale = 0.65.obs;
 
   @override
   void onClose() {

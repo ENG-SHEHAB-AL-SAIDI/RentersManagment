@@ -160,6 +160,7 @@ class RenterDetailsController extends GetxController {
   }
 
   void addPhone() async {
+    Get.back();
     if (formKey.currentState?.validate() ?? false) {
       Result res = await RenterServices.renterAddPhone(
           buildId: buildId,
@@ -167,7 +168,6 @@ class RenterDetailsController extends GetxController {
           renterId: renterId);
       if (res.statusCode == 200) {
         if (res.data) {
-          Get.back();
           getPhonesDropItemList();
           selectedPhone.value = phoneController.text;
           phoneController.clear();
@@ -182,23 +182,28 @@ class RenterDetailsController extends GetxController {
 
   void deletePhone() async {
     if (selectedPhone.value != "") {
-      Result res = await RenterServices.renterDeletePhone(
-          buildId: buildId,
-          data: {'phone': selectedPhone.value},
-          renterId: renterId);
-      if (res.statusCode == 200) {
-        if (res.data) {
-          getPhonesDropItemList();
+      bool conf = await Get.dialog(
+          PopUpMessageCard("did you sure want delete this phone number "));
+      if (conf) {
+        Result res = await RenterServices.renterDeletePhone(
+            buildId: buildId,
+            data: {'phone': selectedPhone.value},
+            renterId: renterId);
+        if (res.statusCode == 200) {
+          if (res.data) {
+            getPhonesDropItemList();
+          }
+        } else {
+          Get.dialog(PopUpAlertCard(
+              "${res.message ?? ""}\n error code:${res.statusCode}",
+              Icons.warning));
         }
-      } else {
-        Get.dialog(PopUpAlertCard(
-            "${res.message ?? ""}\n error code:${res.statusCode}",
-            Icons.warning));
       }
     }
   }
 
   void addYear() async {
+    Get.back();
     if (formKey.currentState?.validate() ?? false) {
       Result res = await YearServices.addYearToRenter(
         buildId: buildId,
@@ -208,7 +213,6 @@ class RenterDetailsController extends GetxController {
 
       if (res.statusCode == 200) {
         if (res.data) {
-          Get.back();
           getYearsDropItemList();
           selectedYear.value = yearController.text;
           yearController.clear();
@@ -223,18 +227,22 @@ class RenterDetailsController extends GetxController {
 
   void deleteYear() async {
     if (selectedYear.value != "") {
-      Result res = await YearServices.deleteYearFromRenter(
-          buildId: buildId,
-          data: {"year": selectedYear.value},
-          renterId: renterId);
-      if (res.statusCode == 200) {
-        if (res.data) {
-          getYearsDropItemList();
+      bool conf = await Get.dialog(
+          PopUpMessageCard("did you sure want delete this year.\n this will delete all payments in this year "));
+      if (conf) {
+        Result res = await YearServices.deleteYearFromRenter(
+            buildId: buildId,
+            data: {"year": selectedYear.value},
+            renterId: renterId);
+        if (res.statusCode == 200) {
+          if (res.data) {
+            getYearsDropItemList();
+          }
+        } else {
+          Get.dialog(PopUpAlertCard(
+              "${res.message ?? ""}\n error code:${res.statusCode}",
+              Icons.warning));
         }
-      } else {
-        Get.dialog(PopUpAlertCard(
-            "${res.message ?? ""}\n error code:${res.statusCode}",
-            Icons.warning));
       }
     }
   }
@@ -346,10 +354,55 @@ class RenterDetailsController extends GetxController {
     }
   }
 
-  void paymentMore(String val, RentPayment rentPayment) {
-    if (val == "clear") {
-      if (kDebugMode) {
-        print("clear");
+  void paymentMore(String val, RentPayment rentPayment) async {
+    if (val == "exclude") {
+      Result res = await RentPaymentServices.updateRentPayment(
+          renterId: renterId,
+          rentPaymentId: rentPayment.id.value,
+          data: {
+            "state": "excluded",
+          });
+      if (res.statusCode == 200) {
+        int? index = renter?.rentPayments?[rentPayment.year?.value]
+            ?.indexWhere((element) => element.id.value == rentPayment.id.value);
+        if (index != null) {
+          renter?.rentPayments?[rentPayment.year?.value]?[index] =
+              res.data ?? rentPayment;
+          renter?.rentPayments?.refresh();
+        }
+      } else {
+        Get.dialog(PopUpAlertCard(
+            "${res.message ?? ""}\n error code:${res.statusCode}",
+            Icons.warning));
+      }
+    } else if (val == "include") {
+      String state;
+
+      if ((rentPayment.remainAmount?.value ?? 0) == 0) {
+        state = "payed";
+      } else if ((rentPayment.payedAmount?.value ?? 0) == 0) {
+        state = "not_payed";
+      } else {
+        state = "partially_payed";
+      }
+      Result<RentPayment> res = await RentPaymentServices.updateRentPayment(
+          renterId: renterId,
+          rentPaymentId: rentPayment.id.value,
+          data: {
+            "state": state,
+          });
+      if (res.statusCode == 200) {
+        int? index = renter?.rentPayments?[rentPayment.year?.value]
+            ?.indexWhere((element) => element.id.value == rentPayment.id.value);
+        if (index != null) {
+          renter?.rentPayments?[rentPayment.year?.value]?[index] =
+              res.data ?? rentPayment;
+          renter?.rentPayments?.refresh();
+        }
+      } else {
+        Get.dialog(PopUpAlertCard(
+            "${res.message ?? ""}\n error code:${res.statusCode}",
+            Icons.warning));
       }
     } else if (val == "print") {
       AppPrinting.printSingleRentPaymentPrintLayout(
@@ -358,14 +411,14 @@ class RenterDetailsController extends GetxController {
   }
 
   void callRenter() async {
-    if(selectedPhone.value == "")return;
+    if (selectedPhone.value == "") return;
 
     final phoneUri = Uri(scheme: 'tel', path: selectedPhone.value);
     await launchUrl(phoneUri);
   }
 
   void sendSMS() async {
-    if(selectedPhone.value == "")return;
+    if (selectedPhone.value == "") return;
 
     final smsUri = Uri(scheme: 'sms', path: selectedPhone.value);
     await launchUrl(smsUri);

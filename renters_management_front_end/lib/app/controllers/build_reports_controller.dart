@@ -47,12 +47,15 @@ class BuildReportsController extends GetxController {
 
   RxDouble payedTotalRent = 0.0.obs;
   RxInt payedRentersCount = 0.obs;
+  List<int> payedRentersIds = [];
 
   RxDouble partiallyPayedTotalRent = 0.0.obs;
   RxInt partiallyPayedRentersCount = 0.obs;
+  List<int> partiallyPayedRentersIds = [];
 
   RxDouble notPayedTotalRent = 0.0.obs;
   RxInt notPayedRentersCount = 0.obs;
+  List<int> notPayedRentersIds = [];
 
   @override
   void onInit() async {
@@ -80,7 +83,14 @@ class BuildReportsController extends GetxController {
     super.onClose();
   }
 
-  String formatTimeOfDay(TimeOfDay time) {
+  @override
+  void refresh() {
+    isLoad.value = true;
+    calcBuildStatement();
+    isLoad.value = false;
+  }
+
+  formatTimeOfDay(TimeOfDay time) {
     final hours =
         time.hourOfPeriod.toString().padLeft(2, '0'); // 12-hour format
     final minutes = time.minute.toString().padLeft(2, '0');
@@ -172,19 +182,22 @@ class BuildReportsController extends GetxController {
         await BuildServices.fetchBuild(id: buildId).then((res) => res.data);
     for (Renter renter in (build?.renters ?? [])) {
       for (RentPayment rentPayment in renter.rentPayments?[year] ?? []) {
-        if (rentPayment.month?.value == month.toString()) {
+        if (rentPayment.month?.value == month.toString() && rentPayment.state?.value != "excluded") {
           monthTotalRent.value += renter.rent?.value ?? 0;
           rentersCount.value += 1;
           if (rentPayment.state?.value == "payed") {
             payedTotalRent.value += renter.rent?.value ?? 0;
             payedRentersCount.value += 1;
+            payedRentersIds.add(renter.id.value);
           } else if (rentPayment.state?.value == "partially_payed") {
             partiallyPayedTotalRent.value +=
                 rentPayment.payedAmount?.value ?? 0;
             partiallyPayedRentersCount.value++;
+            partiallyPayedRentersIds.add(renter.id.value);
           } else if (rentPayment.state?.value == "not_payed") {
             notPayedTotalRent.value += rentPayment.remainAmount?.value ?? 0;
             notPayedRentersCount.value++;
+            notPayedRentersIds.add(renter.id.value);
           }
         }
       }
@@ -348,5 +361,26 @@ class BuildReportsController extends GetxController {
             Icons.warning));
       }
     }
+  }
+
+  void routeToRenterList(String listType){
+    List<int>? rentersIds;
+    switch(listType) {
+      case "Fully Payed":
+        rentersIds = payedRentersIds;
+        break;
+      case "Partially Payed":
+        rentersIds = partiallyPayedRentersIds;
+        break;
+      case "Not Payed":
+        rentersIds = notPayedRentersIds;
+        break;
+    }
+
+    Get.toNamed("/rentersList",arguments: {
+      'buildId': buildId,
+      "rentersIds": rentersIds,
+      "title": "$listType Renters"
+    });
   }
 }

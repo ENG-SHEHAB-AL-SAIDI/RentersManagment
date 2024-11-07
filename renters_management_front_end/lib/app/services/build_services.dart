@@ -188,7 +188,9 @@ class BuildServices {
     Build? build = await fetchBuild(id: buildId).then((res)=>res.data);
     for (Renter renter in (build?.renters??[])) {
       for (String year in (renter.rentPayments?.keys??[])) {
-        years.add(year);
+        if(!years.contains(year)){
+          years.add(year);
+        }
       }
     }
     return years;

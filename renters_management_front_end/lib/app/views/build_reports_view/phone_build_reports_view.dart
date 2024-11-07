@@ -75,27 +75,10 @@ class PhoneBuildReportsView extends GetView<BuildReportsController> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    MainText(
-                      "Statement Col",
-                      textColor: AppColors.inverseSecTextColor,
-                      fontSize: 18,
-                    ),
                     SizedBox(
-                      height: 5,
+                      height: 15,
                     ),
-                    Obx(() => StatementCard(
-                          monthTotalRent: controller.monthTotalRent.value,
-                          rentersCount: controller.rentersCount.value,
-                          payedTotalRent: controller.payedTotalRent.value,
-                          payedRentersCount: controller.payedRentersCount.value,
-                          partiallyPayedTotalRent:
-                              controller.partiallyPayedTotalRent.value,
-                          partiallyPayedRentersCount:
-                              controller.partiallyPayedRentersCount.value,
-                          notPayedTotalRent: controller.notPayedTotalRent.value,
-                          notPayedRentersCount:
-                              controller.notPayedRentersCount.value,
-                        )),
+                    StatementCard(),
                     SizedBox(
                       height: 5,
                     ),

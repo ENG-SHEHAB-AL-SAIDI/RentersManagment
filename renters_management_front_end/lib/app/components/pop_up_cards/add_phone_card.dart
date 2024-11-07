@@ -65,6 +65,7 @@ class PopUpAddPhoneCard extends GetView<RenterDetailsController> {
                                 validator: controller.validatePhone,
                                 labelText: "Phone",
                                 onFieldSubmitted: (e) {
+                                  Get.back();
                                   controller.addPhone();
                                 },
                                 width: (Get.width-12)*0.46,

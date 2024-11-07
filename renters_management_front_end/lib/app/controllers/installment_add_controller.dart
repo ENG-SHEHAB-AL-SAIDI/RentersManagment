@@ -24,6 +24,7 @@ class InstallmentAddController extends GetxController {
   void onInit() {
     super.onInit();
     remainAmount = Get.arguments['amount'];
+    amountController.text = remainAmount.toString();
     dateController.text = DateTime.now().toString().split(" ")[0];
     timeController.text = formatTimeOfDay(TimeOfDay.now());
 

@@ -63,7 +63,7 @@ class StatementCard extends GetView<BuildReportsController> {
                 fontSize: 16,
               ),
               SizedBox(
-                height: 5,
+                height: 3,
               ),
               Row(
                 children: [
@@ -78,8 +78,8 @@ class StatementCard extends GetView<BuildReportsController> {
                           "Total Amount:  ",
                           fontSize: 16,
                         ),
-                        SecText("${controller.monthTotalRent.value}",
-                            textColor: AppColors.mainTextColor)
+                        Flexible(child: SecText(controller.monthTotalRent.value.toStringAsFixed(2),
+                            textColor: AppColors.mainTextColor))
                       ],
                     ),
                   ),
@@ -90,8 +90,8 @@ class StatementCard extends GetView<BuildReportsController> {
                           "No.Renters:  ",
                           fontSize: 16,
                         ),
-                        SecText("${controller.rentersCount.value}",
-                            textColor: AppColors.mainTextColor)
+                        Flexible(child: SecText(controller.rentersCount.value.toString(),
+                            textColor: AppColors.mainTextColor))
                       ],
                     ),
                   ),
@@ -106,7 +106,7 @@ class StatementCard extends GetView<BuildReportsController> {
                 fontSize: 16,
               ),
               SizedBox(
-                height: 5,
+                height: 3,
               ),
               Row(
                 children: [
@@ -121,8 +121,8 @@ class StatementCard extends GetView<BuildReportsController> {
                           "Total Amount:  ",
                           fontSize: 16,
                         ),
-                        SecText("${controller.payedTotalRent.value}",
-                            textColor: AppColors.mainTextColor)
+                        Flexible(child: SecText(controller.payedTotalRent.value.toStringAsFixed(2),
+                            textColor: AppColors.mainTextColor))
                       ],
                     ),
                   ),
@@ -133,13 +133,14 @@ class StatementCard extends GetView<BuildReportsController> {
                           "No.Renters:  ",
                           fontSize: 16,
                         ),
-                        SecText("${controller.payedRentersCount.value}",
-                            textColor: AppColors.mainTextColor)
+                        Flexible(child: SecText(controller.payedRentersCount.value.toString(),
+                            textColor: AppColors.mainTextColor))
                       ],
                     ),
                   ),
                   IconButton(
-                    onPressed: () => controller.routeToRenterList("Fully Payed"),
+                    onPressed: () =>
+                        controller.routeToRenterList("Fully Payed"),
                     icon: Icon(
                       Icons.arrow_forward_ios,
                       color: AppColors.mainTextColor,
@@ -153,7 +154,7 @@ class StatementCard extends GetView<BuildReportsController> {
                 fontSize: 16,
               ),
               SizedBox(
-                height: 5,
+                height: 3,
               ),
               Row(
                 children: [
@@ -168,8 +169,8 @@ class StatementCard extends GetView<BuildReportsController> {
                           "Total Amount:  ",
                           fontSize: 16,
                         ),
-                        SecText("${controller.partiallyPayedTotalRent.value}",
-                            textColor: AppColors.mainTextColor)
+                        Flexible(child: SecText(controller.partiallyPayedTotalRent.value.toStringAsFixed(2),
+                            textColor: AppColors.mainTextColor))
                       ],
                     ),
                   ),
@@ -180,14 +181,15 @@ class StatementCard extends GetView<BuildReportsController> {
                           "No.Renters:  ",
                           fontSize: 16,
                         ),
-                        SecText(
-                            "${controller.partiallyPayedRentersCount.value}",
-                            textColor: AppColors.mainTextColor)
+                        Flexible(child: SecText(
+                            controller.partiallyPayedRentersCount.value.toString(),
+                            textColor: AppColors.mainTextColor))
                       ],
                     ),
                   ),
                   IconButton(
-                    onPressed: () => controller.routeToRenterList("Partially Payed"),
+                    onPressed: () =>
+                        controller.routeToRenterList("Partially Payed"),
                     icon: Icon(
                       Icons.arrow_forward_ios,
                       color: AppColors.mainTextColor,
@@ -201,7 +203,7 @@ class StatementCard extends GetView<BuildReportsController> {
                 fontSize: 16,
               ),
               SizedBox(
-                height: 5,
+                height: 3,
               ),
               Row(
                 children: [
@@ -216,8 +218,8 @@ class StatementCard extends GetView<BuildReportsController> {
                           "Total Amount:  ",
                           fontSize: 16,
                         ),
-                        SecText("${controller.notPayedTotalRent.value}",
-                            textColor: AppColors.mainTextColor)
+                        Flexible(child: SecText(controller.notPayedTotalRent.value.toStringAsFixed(2),
+                            textColor: AppColors.mainTextColor))
                       ],
                     ),
                   ),
@@ -228,8 +230,8 @@ class StatementCard extends GetView<BuildReportsController> {
                           "No.Renters:  ",
                           fontSize: 16,
                         ),
-                        SecText("${controller.notPayedRentersCount.value}",
-                            textColor: AppColors.mainTextColor)
+                        Flexible(child: SecText(controller.notPayedRentersCount.value.toString(),
+                            textColor: AppColors.mainTextColor))
                       ],
                     ),
                   ),
@@ -244,7 +246,7 @@ class StatementCard extends GetView<BuildReportsController> {
               ),
               Divider(),
               SizedBox(
-                height: 5,
+                height: 3,
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -253,16 +255,31 @@ class StatementCard extends GetView<BuildReportsController> {
                     "Total Payed Amount:  ",
                     fontSize: 16,
                   ),
-                  SecText(
+                  Flexible(child: SecText(
                       (controller.payedTotalRent.value +
-                              controller.partiallyPayedTotalRent.value)
+                          controller.partiallyPayedTotalRent.value)
                           .toStringAsFixed(2),
-                      textColor: AppColors.mainTextColor)
+                      textColor: AppColors.mainTextColor))
                 ],
               ),
               SizedBox(
-                height: 3,
+                height: 2,
               ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  MainText(
+                    "Payed + Expenses:  ",
+                    fontSize: 12,
+                  ),
+                  Flexible(child: SecText(
+                      (controller.payedTotalRent.value +
+                          controller.partiallyPayedTotalRent.value + (controller.statement?.totalExpenses?.value??0))
+                          .toStringAsFixed(2),
+                      textColor: AppColors.mainTextColor))
+                ],
+              ),
+              Divider(),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -272,8 +289,26 @@ class StatementCard extends GetView<BuildReportsController> {
                   ),
                   SecText(
                       (controller.monthTotalRent.value -
+                          (controller.payedTotalRent.value +
+                              controller.partiallyPayedTotalRent.value))
+                          .toStringAsFixed(2),
+                      textColor: AppColors.mainTextColor)
+                ],
+              ),
+              SizedBox(
+                height: 2,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  MainText(
+                    "Remain - Expenses:  ",
+                    fontSize: 12,
+                  ),
+                  SecText(
+                      (controller.monthTotalRent.value -
                               (controller.payedTotalRent.value +
-                                  controller.partiallyPayedTotalRent.value))
+                                  controller.partiallyPayedTotalRent.value)- (controller.statement?.totalExpenses?.value??0))
                           .toStringAsFixed(2),
                       textColor: AppColors.mainTextColor)
                 ],

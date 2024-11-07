@@ -116,7 +116,7 @@ class PhoneLoginView extends GetView<LoginController> {
                       height: height * 0.6 * 0.1,
                     ),
                     CustomTextFormField(
-                      controller: controller.id,
+                      controller: controller.email,
                       validator: controller.validateID,
                       labelText: 'id'.tr,
                       icon: Icons.account_circle_outlined,

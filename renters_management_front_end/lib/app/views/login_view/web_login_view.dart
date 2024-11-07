@@ -86,7 +86,7 @@ class WebLoginView extends GetView<LoginController> {
                           height: height * 0.6 * 0.1,
                         ),
                         CustomTextFormField(
-                          controller: controller.id,
+                          controller: controller.email,
                           validator: (id) => controller.validateID(id),
                           labelText: 'id'.tr,
                           icon: Icons.account_circle_outlined,

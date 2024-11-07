@@ -76,11 +76,11 @@ class PhoneBuildReportsView extends GetView<BuildReportsController> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     SizedBox(
-                      height: 15,
+                      height: 8,
                     ),
                     StatementCard(),
                     SizedBox(
-                      height: 5,
+                      height: 2,
                     ),
                     IncomeCard(),
                     ExpensCard(),

@@ -7,7 +7,7 @@ import 'package:renters_management_front_end/app/services/user_services.dart';
 import '../views/login_view/register_view.dart';
 
 class LoginController extends GetxController {
-  TextEditingController id = TextEditingController();
+  TextEditingController email = TextEditingController();
   TextEditingController password = TextEditingController();
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
   FocusNode idFocus = FocusNode();
@@ -20,8 +20,14 @@ class LoginController extends GetxController {
   RxDouble heightScale = 0.65.obs;
 
   @override
+  void onInit() {
+    email.text = "test@gmail.com";
+    password.text = "12345678";
+    super.onInit();
+  }
+  @override
   void onClose() {
-    id.dispose();
+    email.dispose();
     password.dispose();
     idFocus.dispose();
     passwordFocus.dispose();
@@ -62,7 +68,7 @@ class LoginController extends GetxController {
   Future<void> onLogin() async {
     logging.value = true;
     if (formKey.currentState!.validate()) {
-      Result res = await UserServices.userLogin(id.text, password.text);
+      Result res = await UserServices.userLogin(email.text, password.text);
       if (res.statusCode == 200) {
         Get.offNamed("/home");
       } else if (res.statusCode == 900) {

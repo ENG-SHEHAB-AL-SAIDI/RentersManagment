@@ -256,8 +256,8 @@ class RentPaymentCard extends StatelessWidget {
               child: ExpansionTile(
                 iconColor: color1,
                 collapsedIconColor: color1,
-                enabled: ((rentPayment?.state?.value??"") == "exclude"),
-                initiallyExpanded: ((rentPayment?.state?.value??"") == "exclude") && initiallyExpanded,
+                enabled: !((rentPayment?.state?.value??"") == "excluded"),
+                initiallyExpanded: ((rentPayment?.state?.value??"") == "excluded") && initiallyExpanded,
                 title: SecText(
                   "Rent Payments Installment",
                   textColor: color1,

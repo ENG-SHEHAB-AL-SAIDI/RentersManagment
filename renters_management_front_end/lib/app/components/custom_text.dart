@@ -51,4 +51,5 @@ class SecText extends MainText {
   }) : super(
           textColor: textColor ?? AppColors.secTextColor,
         );
+
 }

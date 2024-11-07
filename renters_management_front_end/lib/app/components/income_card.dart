@@ -39,7 +39,7 @@ class IncomeCard extends GetView<BuildReportsController> {
     //   textColor = AppColors.mainTextColor;
     // }
     return Obx(() => Container(
-        margin: const EdgeInsets.symmetric(horizontal: 4, vertical: 16),
+        margin: const EdgeInsets.only(right: 4,left: 4, top: 16,bottom: 0),
         decoration: BoxDecoration(
           color: color1,
           border: Border(

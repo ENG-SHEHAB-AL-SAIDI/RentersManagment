@@ -1,6 +1,7 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
+import 'package:get/get.dart' as getX;
 
 class HttpProvider {
   static final Dio _dio = Dio();
@@ -15,6 +16,7 @@ class HttpProvider {
         List<ConnectivityResult> connectivityResult =
             await (Connectivity().checkConnectivity());
         if (kDebugMode) {
+          print(error.requestOptions.path);
           print("HttpProviderError ------------------ ");
           print("error: ${error.message}");
           print("status code: ${error.response?.statusCode}");
@@ -29,6 +31,7 @@ class HttpProvider {
             error.requestOptions.path != "auth/refresh") {
           try {
             Response? response = await _refreshAndRetry(error.requestOptions);
+            print("here ${response?.data}");
             if (response != null) {
               return handler.resolve(response);
             }
@@ -36,6 +39,7 @@ class HttpProvider {
             if (kDebugMode) {
               print(e);
             }
+            getX.Get.offNamed("/login");
           }
         } else if (((error.response?.statusCode) ?? 0) == 422) {
           return handler.resolve(error.response!);

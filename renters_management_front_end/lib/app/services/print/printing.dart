@@ -1,6 +1,9 @@
 import 'package:pdf/widgets.dart';
-import 'package:renters_management_front_end/app/services/print/printing_components/renter_details_print_layout.dart';
-import 'package:renters_management_front_end/app/services/print/printing_components/renter_rent_payment_print_layout.dart';
+import 'package:renters_management_front_end/app/models/statement_model.dart';
+import 'package:renters_management_front_end/app/services/print/renter_details_print_layout.dart';
+import 'package:renters_management_front_end/app/services/print/renter_rent_payment_print_layout.dart';
+import 'package:renters_management_front_end/app/services/print/printing_components/statement_layout.dart';
+import 'package:renters_management_front_end/app/services/print/statement_print_layout.dart';
 import '../../models/rent_payments_model.dart';
 import 'package:printing/printing.dart';
 
@@ -19,6 +22,13 @@ class AppPrinting{
 
   static printSingleRentPaymentPrintLayout(RentPayment? rentPayment,String renterName,double rent) async {
     Document pdf = await SingleRentPaymentPrintLayout.generate(rentPayment,renterName,rent);
+    Printing.layoutPdf(
+      onLayout: (format) => pdf.save(),
+    );
+  }
+
+  static printSingleStatementPrintLayout(Statement? statement,String buildName) async {
+    Document pdf = await SingleStatementPrintLayout.generate(statement,buildName);
     Printing.layoutPdf(
       onLayout: (format) => pdf.save(),
     );

@@ -4,6 +4,8 @@ import 'package:intl/intl.dart';
 import 'package:renters_management_front_end/app/components/pop_up_cards/add_expens.dart';
 import 'package:renters_management_front_end/app/models/statement_model.dart';
 import 'package:renters_management_front_end/app/services/build_services.dart';
+import 'package:renters_management_front_end/app/services/http_provider/http_provider.dart';
+import 'package:renters_management_front_end/app/services/print/printing.dart';
 import 'package:renters_management_front_end/app/services/statement_services.dart';
 
 import '../components/pop_up_cards/add_income.dart';
@@ -113,8 +115,8 @@ class BuildReportsController extends GetxController {
   }
 
   String? validateAmount(String? amount) {
-    if (amount == "" || amount == null) {
-      return "required Rent";
+    if (amount == "" || amount == null ) {
+      return "required Amount";
     } else if (!GetUtils.isNum(amount)) {
       return "amount most be number";
     }
@@ -174,7 +176,13 @@ class BuildReportsController extends GetxController {
     noteController.clear();
   }
 
-  void more(String val) {
+  void more(String val) async {
+    if (val == "print") {
+      await AppPrinting.printSingleStatementPrintLayout(
+          statement,
+          await BuildServices.fetchBuild(id: buildId)
+              .then((e) => e.data?.name?.value ?? ""));
+    }
   }
 
   void calcBuildStatement() async {
@@ -182,7 +190,8 @@ class BuildReportsController extends GetxController {
         await BuildServices.fetchBuild(id: buildId).then((res) => res.data);
     for (Renter renter in (build?.renters ?? [])) {
       for (RentPayment rentPayment in renter.rentPayments?[year] ?? []) {
-        if (rentPayment.month?.value == month.toString() && rentPayment.state?.value != "excluded") {
+        if (rentPayment.month?.value == month.toString() &&
+            rentPayment.state?.value != "excluded") {
           monthTotalRent.value += renter.rent?.value ?? 0;
           rentersCount.value += 1;
           if (rentPayment.state?.value == "payed") {
@@ -205,18 +214,22 @@ class BuildReportsController extends GetxController {
   }
 
   void incomeSubmit() {
-    amountController.text =
-        double.parse(amountController.text).toStringAsFixed(2);
     Map<String, dynamic> jsData = {};
     if (formKey.currentState!.validate()) {
+      amountController.text =
+          double.parse(amountController.text).toStringAsFixed(2);
+
       (dateController.text.isNotEmpty && dateController.text != "Unknown".tr)
           ? jsData["date"] = dateController.text
           : null;
       (timeController.text.isNotEmpty && timeController.text != "Unknown".tr)
           ? jsData["time"] = timeController.text
           : null;
-          jsData["payment_type"] = (paymentType.value == "part from trans")?"part_from_trans":paymentType.value;
-      (paymentIdController.text.isNotEmpty && paymentIdController.text != "Unknown".tr)
+      jsData["payment_type"] = (paymentType.value == "part from trans")
+          ? "part_from_trans"
+          : paymentType.value;
+      (paymentIdController.text.isNotEmpty &&
+              paymentIdController.text != "Unknown".tr)
           ? jsData["payment_id"] = paymentIdController.text
           : null;
       (amountController.text.isNotEmpty &&
@@ -226,12 +239,12 @@ class BuildReportsController extends GetxController {
       (noteController.text.isNotEmpty && noteController.text != "Unknown".tr)
           ? jsData["describe"] = noteController.text
           : null;
-
+      clear();
       Get.back(result: jsData);
     }
   }
 
-  void addIncome() async{
+  void addIncome() async {
     dateController.text = DateTime.now().toString().split(" ")[0];
     timeController.text = formatTimeOfDay(TimeOfDay.now());
     if (statement == null) {
@@ -251,8 +264,8 @@ class BuildReportsController extends GetxController {
           data: {
             "date": dateTimeFormat.format(dateTime),
             "amount": double.parse(result["amount"]),
-            "payment_type":result["payment_type"],
-            "payment_id":result["payment_id"],
+            "payment_type": result["payment_type"],
+            "payment_id": result["payment_id"],
             "describe": result["note"],
           });
       if (res.statusCode == 200) {
@@ -288,10 +301,12 @@ class BuildReportsController extends GetxController {
   }
 
   void expensSubmit() {
-    amountController.text =
-        double.parse(amountController.text).toStringAsFixed(2);
+
     Map<String, dynamic> jsData = {};
     if (formKey.currentState!.validate()) {
+      amountController.text =
+          double.parse(amountController.text).toStringAsFixed(2);
+
       (dateController.text.isNotEmpty && dateController.text != "Unknown".tr)
           ? jsData["date"] = dateController.text
           : null;
@@ -363,9 +378,9 @@ class BuildReportsController extends GetxController {
     }
   }
 
-  void routeToRenterList(String listType){
+  void routeToRenterList(String listType) {
     List<int>? rentersIds;
-    switch(listType) {
+    switch (listType) {
       case "Fully Payed":
         rentersIds = payedRentersIds;
         break;
@@ -377,7 +392,7 @@ class BuildReportsController extends GetxController {
         break;
     }
 
-    Get.toNamed("/rentersList",arguments: {
+    Get.toNamed("/rentersList", arguments: {
       'buildId': buildId,
       "rentersIds": rentersIds,
       "title": "$listType Renters"

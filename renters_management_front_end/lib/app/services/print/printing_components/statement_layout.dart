@@ -40,13 +40,13 @@ Future<Widget> statementPrintLayout(
       SizedBox(height: 0.3 * PdfPageFormat.cm),
       Row(mainAxisAlignment: MainAxisAlignment.center, children: [
         SizedBox(
-          width: (PdfPageFormat.a4.width - 128) / 4,
+          width: (PdfPageFormat.a4.width - 128) / 3,
           child: Text(
             "Year:  ${statement?.year}",
           ),
         ),
         SizedBox(
-          width: (PdfPageFormat.a4.width - 128) / 4,
+          width: (PdfPageFormat.a4.width - 128) / 3,
           child: Text(
             "Month:  ${months[statement?.month?.value]} (${statement?.month?.value})",
           ),
@@ -342,6 +342,9 @@ Future<Widget> statementPrintLayout(
                 ],
               ]
           ])),
+      SizedBox(height: 16),
+      Container(height: 1, color: PdfColors.black),
+      Container(height: 1, color: PdfColors.black),
     ],
   ));
 }

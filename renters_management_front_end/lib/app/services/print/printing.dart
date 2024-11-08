@@ -28,7 +28,14 @@ class AppPrinting{
   }
 
   static printSingleStatementPrintLayout(Statement? statement,String buildName) async {
-    Document pdf = await SingleStatementPrintLayout.generate(statement,buildName);
+    Document pdf = await StatementPrintLayout.generateSingleStatement(statement,buildName);
+    Printing.layoutPdf(
+      onLayout: (format) => pdf.save(),
+    );
+  }
+
+  static printStatementsPrintLayout(List<Statement>? statements,String buildName) async {
+    Document pdf = await StatementPrintLayout.generateMultiStatement(statements,buildName);
     Printing.layoutPdf(
       onLayout: (format) => pdf.save(),
     );

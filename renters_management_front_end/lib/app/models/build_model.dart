@@ -69,7 +69,16 @@ class Build {
     for(Renter renter in renters??[]){
       jsRenters.add(renter.toJson());
     }
-     renters?.forEach((element) => element.toJson,);
+
+    Map<String,List<Map<String,dynamic>>> jsGroupedStatements = {};
+      for (String key in (statements??{}).keys) {
+        List<Map<String,dynamic>> statementsList = [];
+        if (statements?[key] == null) continue;
+        for(Statement item in statements![key]!){
+          statementsList.add(item.toJson());
+        }
+        jsGroupedStatements[key] = statementsList;
+      }
     return {
       'id': id.value,
       'renters_count': numRenters?.value,
@@ -78,6 +87,7 @@ class Build {
       'city': city?.value,
       'address': address?.value,
       'renters':jsRenters,
+      'grouped_statements':jsGroupedStatements,
       'deleted_at': deletedAt?.value,
       'created_at': createdAt?.value,
       'updated_at': updatedAt?.value,

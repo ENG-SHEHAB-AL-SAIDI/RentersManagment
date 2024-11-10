@@ -38,6 +38,7 @@ class Renter {
       }
     }
     }
+
     Map<String,List<RentPayment>> rentPayments = {};
     if((json["grouped_rent_payments"]??[]).isNotEmpty){
     for (var key in json["grouped_rent_payments"].keys) {
@@ -65,11 +66,22 @@ class Renter {
   }
 
   Map<String, dynamic> toJson() {
+
+    Map<String,List<dynamic>> jsRentPayments = {};
+      for (String key in (rentPayments??{}).keys) {
+        List<dynamic> rentPaymentsItems = [];
+        for(RentPayment item in (rentPayments??{})[key]){
+          rentPaymentsItems.add(item.toJson());
+        }
+        jsRentPayments[key] = rentPaymentsItems;
+      }
     return {
       'id': id.value,
       'name': name?.value,
       'rent': rent?.value,
       'job_domain': jobDomain?.value,
+      'renter_phones':phones,
+      'grouped_rent_payments':jsRentPayments,
       'enter_date': enterDate?.value,
       'deleted_at': deletedAt?.value,
       'created_at': createdAt?.value,
@@ -78,41 +90,4 @@ class Renter {
   }
 }
 
-//
-// {
-// "message": "update successful",
-// "renter": {
-// "id": 1,
-// "name": "renter2",
-// "rent": 100000,
-// "job_bomain": null,
-// "enter_date": "2000-10-1",
-// "deleted_at": null,
-// "created_at": "2024-09-21T01:15:00.000000Z",
-// "updated_at": "2024-09-21T02:20:42.000000Z",
-// "build_id": 1,
-// "renter_phones": [
-// {
-// "phone": 123456787,
-// "deleted_at": null,
-// "created_at": "2024-09-21T02:18:19.000000Z",
-// "updated_at": "2024-09-21T02:18:19.000000Z",
-// "renter_id": 1
-// },
-// {
-// "phone": 987654321,
-// "deleted_at": null,
-// "created_at": "2024-09-21T02:18:19.000000Z",
-// "updated_at": "2024-09-21T02:18:19.000000Z",
-// "renter_id": 1
-// },
-// {
-// "phone": 987654391,
-// "deleted_at": null,
-// "created_at": "2024-09-21T02:20:42.000000Z",
-// "updated_at": "2024-09-21T02:20:42.000000Z",
-// "renter_id": 1
-// }
-// ]
-// }
-// }
+

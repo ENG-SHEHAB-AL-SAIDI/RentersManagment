@@ -42,6 +42,8 @@ class Income {
       "id": id.value,
       "amount": amount?.value,
       "date": date?.value,
+      "payment_type":paymentType?.value,
+      "payment_id":paymentID?.value,
       "describe": description?.value,
       "updated_at": updatedAt?.value,
       "created_at": createdAt?.value,

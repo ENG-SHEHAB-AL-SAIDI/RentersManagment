@@ -51,6 +51,10 @@ class RentPayment {
   }
 
   Map<String, dynamic> toJson() {
+    List jsRentPaymentsInstallment = [];
+    rentPaymentsInstallment?.forEach((element){
+      jsRentPaymentsInstallment.add(element.toJson());
+    });
     return {
       "id": id.value,
       "year": year?.value,
@@ -58,6 +62,7 @@ class RentPayment {
       "state": state?.value,
       "PayedAmount": payedAmount?.value,
       "remainAmount": remainAmount?.value,
+      "rent_payments_installments":jsRentPaymentsInstallment,
       "deleted_at": deletedAt?.value,
       "created_at": createdAt?.value,
       "updated_at": updatedAt?.value,

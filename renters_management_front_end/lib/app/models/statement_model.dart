@@ -57,12 +57,22 @@ class Statement {
   }
 
   Map<String, dynamic> toJson() {
+    List jsIncomes = [];
+    List jsExpenses = [];
+    for(Income item in incomes??[]){
+      jsIncomes.add(item.toJson());
+    }
+    for(Expens item in expenses??[]){
+      jsExpenses.add(item.toJson());
+    }
     return {
       "id": id.value,
       "year": year?.value,
       "month": month?.value,
       "TotalIncomes": totalIncomes?.value,
       "TotalExpenses": totalExpenses?.value,
+      "incomes":jsIncomes,
+      "expenses":jsExpenses,
       "deleted_at": deletedAt?.value,
       "created_at": createdAt?.value,
       "updated_at": updatedAt?.value,

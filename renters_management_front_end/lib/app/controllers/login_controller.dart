@@ -3,10 +3,13 @@ import 'package:get/get.dart';
 import 'package:renters_management_front_end/app/bindings/register_binding.dart';
 import 'package:renters_management_front_end/app/models/result.dart';
 import 'package:renters_management_front_end/app/services/user_services.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../views/login_view/register_view.dart';
 
 class LoginController extends GetxController {
+
+
   TextEditingController email = TextEditingController();
   TextEditingController password = TextEditingController();
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
@@ -20,17 +23,23 @@ class LoginController extends GetxController {
   RxDouble heightScale = 0.65.obs;
 
   @override
-  void onInit() {
-    email.text = "test@gmail.com";
-    password.text = "12345678";
-    super.onInit();
-  }
-  @override
   void onClose() {
     email.dispose();
     password.dispose();
     idFocus.dispose();
     passwordFocus.dispose();
+  }
+
+  @override
+  void onInit() async {
+
+    List<String>? credentials = await UserServices.fetchCachedCredentials();
+    if (credentials != null) {
+      email.text = credentials[0];
+      password.text = credentials[1];
+      onLogin();
+    }
+    super.onInit();
   }
 
   String? validateID(String? id) {
@@ -65,10 +74,11 @@ class LoginController extends GetxController {
     rememberMe.value = val ?? false;
   }
 
+
   Future<void> onLogin() async {
     logging.value = true;
     if (formKey.currentState!.validate()) {
-      Result res = await UserServices.userLogin(email.text, password.text);
+      Result res = await UserServices.userLogin(email.text, password.text,rememberMe: rememberMe.value);
       if (res.statusCode == 200) {
         Get.offNamed("/home");
       } else if (res.statusCode == 900) {
@@ -81,8 +91,7 @@ class LoginController extends GetxController {
       } else if (res.statusCode == 404) {
         filedMessage.value = "no such user exist";
         loggingFiled.value = true;
-      }
-      else {
+      } else {
         filedMessage.value =
             "something get wrong \n please check your connection ";
         loggingFiled.value = true;
@@ -91,7 +100,7 @@ class LoginController extends GetxController {
     logging.value = false;
   }
 
-  void register() {
+  void registerRoute() {
     Get.to(() => PhoneRegisterView(), binding: RegisterViewBinding());
   }
 

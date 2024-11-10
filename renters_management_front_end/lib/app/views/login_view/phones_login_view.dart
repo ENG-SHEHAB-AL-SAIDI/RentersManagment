@@ -231,7 +231,7 @@ class PhoneLoginView extends GetView<LoginController> {
                             Align(
                               alignment: AlignmentDirectional.center,
                               child: TextButton(
-                                onPressed: controller.register,
+                                onPressed: controller.registerRoute,
                                 child: SecText(
                                   "register".tr,
                                   textColor: AppColors.linkTextColor,

@@ -2,14 +2,17 @@ import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart' as get_x;
 import 'package:renters_management_front_end/app/models/result.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../models/user_model.dart';
 import 'http_provider/http_provider.dart';
 
 class UserServices {
+  static SharedPreferences? _prefs;
   static User? _user;
 
-  static Future<Result<bool>> userLogin(String email, String password) async {
+  static Future<Result<bool>> userLogin(String email, String password,
+      {bool rememberMe = false}) async {
     late Response? response;
     try {
       response = await HttpProvider.post("auth/login",
@@ -18,6 +21,11 @@ class UserServices {
         _user = User.fromJson(response?.data["user"]);
         HttpProvider.addAuthTokenInterceptor(
             response?.data["token"]["original"]["access_token"]);
+        if (rememberMe) {
+          _prefs ??= await SharedPreferences.getInstance();
+          await _prefs?.setStringList(
+              "credentials", <String>[email, password]);
+        }
 
         return Result(
             hasError: false, statusCode: response?.statusCode, data: true);
@@ -66,6 +74,8 @@ class UserServices {
     try {
       response = await HttpProvider.post("auth/logout");
       if (response?.statusCode == 200) {
+        _prefs ??= await SharedPreferences.getInstance();
+        await _prefs?.remove("credentials");
         get_x.Get.offAllNamed("/login");
         return null;
       }
@@ -107,5 +117,11 @@ class UserServices {
           message: error.toString(),
           data: null);
     }
+  }
+
+  static Future<List<String>?> fetchCachedCredentials() async {
+    _prefs = await SharedPreferences.getInstance();
+    List<String>? credentials = _prefs?.getStringList("credentials");
+    return credentials;
   }
 }

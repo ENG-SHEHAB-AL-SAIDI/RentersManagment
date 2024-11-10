@@ -9,9 +9,9 @@ import '../custom_text.dart';
 
 class PopUpShowNotesCard extends GetView<ShowNotesController> {
   const PopUpShowNotesCard({super.key});
-
   @override
   Widget build(BuildContext context) {
+    Get.put<ShowNotesController>(ShowNotesController());
     return Center(
       child: Padding(
         padding: const EdgeInsets.all(8.0),

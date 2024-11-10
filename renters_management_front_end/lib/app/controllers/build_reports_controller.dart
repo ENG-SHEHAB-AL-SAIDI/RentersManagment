@@ -6,6 +6,7 @@ import 'package:renters_management_front_end/app/models/statement_model.dart';
 import 'package:renters_management_front_end/app/services/build_services.dart';
 import 'package:renters_management_front_end/app/services/print/printing.dart';
 import 'package:renters_management_front_end/app/services/statement_services.dart';
+
 import '../components/pop_up_cards/add_income.dart';
 import '../components/pop_up_cards/alert_message_card.dart';
 import '../components/pop_up_cards/delete_confirmation_message_card.dart';
@@ -113,7 +114,7 @@ class BuildReportsController extends GetxController {
   }
 
   String? validateAmount(String? amount) {
-    if (amount == "" || amount == null ) {
+    if (amount == "" || amount == null) {
       return "required Amount";
     } else if (!GetUtils.isNum(amount)) {
       return "amount most be number";
@@ -235,10 +236,10 @@ class BuildReportsController extends GetxController {
           ? jsData["amount"] = amountController.text
           : null;
       (noteController.text.isNotEmpty && noteController.text != "Unknown".tr)
-          ? jsData["describe"] = noteController.text
+          ? jsData["note"] = noteController.text
           : null;
+       Get.back(result: jsData);
       clear();
-      Get.back(result: jsData);
     }
   }
 
@@ -298,8 +299,24 @@ class BuildReportsController extends GetxController {
     }
   }
 
-  void expensSubmit() {
+  void updateIncome(int incomeId, Map<String, dynamic> data) async {
+    Result res = await StatementServices.statementUpdateIncome(
+        buildId: buildId,
+        statementId: statement!.id.value,
+        incomeId: incomeId,
+        data: data);
+    if (res.statusCode == 200) {
+      if (res.data != null) {
+        statement?.totalIncomes?.refresh();
+      }
+    } else {
+      Get.dialog(PopUpAlertCard(
+          "${res.message ?? ""}\n error code:${res.statusCode}",
+          Icons.warning));
+    }
+  }
 
+  void expensSubmit() {
     Map<String, dynamic> jsData = {};
     if (formKey.currentState!.validate()) {
       amountController.text =
@@ -308,17 +325,24 @@ class BuildReportsController extends GetxController {
       (dateController.text.isNotEmpty && dateController.text != "Unknown".tr)
           ? jsData["date"] = dateController.text
           : null;
+
+
       (timeController.text.isNotEmpty && timeController.text != "Unknown".tr)
           ? jsData["time"] = timeController.text
           : null;
+
+
       (amountController.text.isNotEmpty &&
               amountController.text != "Unknown".tr)
           ? jsData["amount"] = amountController.text
           : null;
+
+
       (noteController.text.isNotEmpty && noteController.text != "Unknown".tr)
           ? jsData["note"] = noteController.text
           : null;
       Get.back(result: jsData);
+      clear();
     }
   }
 
@@ -373,6 +397,23 @@ class BuildReportsController extends GetxController {
             "${res.message ?? ""}\n error code:${res.statusCode}",
             Icons.warning));
       }
+    }
+  }
+
+  void updateExpens(int expensId, Map<String, dynamic> data) async {
+    Result res = await StatementServices.statementUpdateExpens(
+        buildId: buildId,
+        statementId: statement!.id.value,
+        expensId: expensId,
+        data: data);
+    if (res.statusCode == 200) {
+      if (res.data != null) {
+        statement?.totalExpenses?.refresh();
+      }
+    } else {
+      Get.dialog(PopUpAlertCard(
+          "${res.message ?? ""}\n error code:${res.statusCode}",
+          Icons.warning));
     }
   }
 

@@ -261,7 +261,7 @@ class PopUpAddIncomeCard extends GetView<BuildReportsController> {
                                 focusNode: controller.noteFocus,
                                 onFieldSubmitted: (e) {
                                   controller.noteFocus.unfocus();
-                                  controller.expensSubmit();
+                                  controller.incomeSubmit();
                                 },
                                 width: (Get.width - 12) * 0.46,
                               ),

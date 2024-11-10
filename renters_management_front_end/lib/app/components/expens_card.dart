@@ -239,16 +239,25 @@ class ExpensCard extends GetView<BuildReportsController> {
                             width: ((Get.width - 45) * (1 / 5)),
                             child: TextButton(
                               onPressed: () async {
-                                await Get.dialog(const PopUpShowNotesCard(),
+                                String changed = await Get.dialog(const PopUpShowNotesCard(),
                                     arguments: {
-                                      "description": controller
+                                      "notes": controller
                                               .statement
                                               ?.expenses?[i]
                                               .description
                                               ?.value ??
-                                          "help",
-                                      'other': "done",
+                                          "",
                                     });
+
+                                if(changed != ""){
+                                  controller.updateExpens(
+                                      controller
+                                          .statement!.expenses![i].id.value,
+                                      {
+                                        "describe":changed
+                                      });
+                                }
+
                               },
                               child: SecText(
                                 "show",

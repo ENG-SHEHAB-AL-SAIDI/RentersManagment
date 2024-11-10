@@ -5,7 +5,6 @@ import 'package:get/get.dart';
 import 'package:renters_management_front_end/app/components/pop_up_cards/show_notes.dart';
 
 import '../controllers/build_reports_controller.dart';
-import '../controllers/show_notes_controller.dart';
 import '../globals.dart';
 import 'buttons.dart';
 import 'custom_text.dart';
@@ -39,7 +38,7 @@ class IncomeCard extends GetView<BuildReportsController> {
     //   textColor = AppColors.mainTextColor;
     // }
     return Obx(() => Container(
-        margin: const EdgeInsets.only(right: 4,left: 4, top: 16,bottom: 0),
+        margin: const EdgeInsets.only(right: 4, left: 4, top: 16, bottom: 0),
         decoration: BoxDecoration(
           color: color1,
           border: Border(
@@ -122,7 +121,7 @@ class IncomeCard extends GetView<BuildReportsController> {
                       children: [
                         Container(
                           height: 1,
-                          width: ((Get.width - 45) * (1 / 4))*8,
+                          width: ((Get.width - 45) * (1 / 4)) * 8,
                           color: AppColors.secTextColor,
                         ),
                         const SizedBox(
@@ -141,7 +140,7 @@ class IncomeCard extends GetView<BuildReportsController> {
                                       expansionTileChildrenFontSize),
                                 )),
                             SizedBox(
-                                width: ((Get.width ) * (1 / 4)),
+                                width: ((Get.width) * (1 / 4)),
                                 child: SecText(
                                   "time",
                                   textColor: color1,
@@ -150,7 +149,7 @@ class IncomeCard extends GetView<BuildReportsController> {
                                       expansionTileChildrenFontSize),
                                 )),
                             SizedBox(
-                                width: ((Get.width ) * (1 / 4)),
+                                width: ((Get.width) * (1 / 4)),
                                 child: SecText(
                                   "Amount",
                                   textColor: color1,
@@ -159,7 +158,7 @@ class IncomeCard extends GetView<BuildReportsController> {
                                       expansionTileChildrenFontSize),
                                 )),
                             SizedBox(
-                                width: ((Get.width ) * (1 / 4)),
+                                width: ((Get.width) * (1 / 4)),
                                 child: SecText(
                                   "PaymentType",
                                   textColor: color1,
@@ -168,7 +167,7 @@ class IncomeCard extends GetView<BuildReportsController> {
                                       expansionTileChildrenFontSize),
                                 )),
                             SizedBox(
-                                width: ((Get.width ) * (1 / 4)),
+                                width: ((Get.width) * (1 / 4)),
                                 child: SecText(
                                   "PaymentID",
                                   textColor: color1,
@@ -177,7 +176,7 @@ class IncomeCard extends GetView<BuildReportsController> {
                                       expansionTileChildrenFontSize),
                                 )),
                             SizedBox(
-                                width: ((Get.width ) * (1 / 4)),
+                                width: ((Get.width) * (1 / 4)),
                                 child: SecText(
                                   "Description",
                                   textColor: color1,
@@ -206,12 +205,12 @@ class IncomeCard extends GetView<BuildReportsController> {
                           ),
                           Container(
                             height: 1,
-                            width: ((Get.width - 45) * (1 / 4))*8,
+                            width: ((Get.width - 45) * (1 / 4)) * 8,
                             color: AppColors.secTextColor,
                           ),
                           for (int i = 0;
-                          i < (controller.statement?.incomes?.length ?? 0);
-                          i++) ...[
+                              i < (controller.statement?.incomes?.length ?? 0);
+                              i++) ...[
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
@@ -219,15 +218,15 @@ class IncomeCard extends GetView<BuildReportsController> {
                                     width: ((Get.width) * (1 / 4)),
                                     child: SecText(
                                       (controller.statement?.incomes?[i].date
-                                          ?.value !=
-                                          null)
+                                                  ?.value !=
+                                              null)
                                           ? controller.dateFormat
-                                          .format(DateTime.parse(controller
-                                          .statement!
-                                          .incomes![i]
-                                          .date!
-                                          .value))
-                                          .toString()
+                                              .format(DateTime.parse(controller
+                                                  .statement!
+                                                  .incomes![i]
+                                                  .date!
+                                                  .value))
+                                              .toString()
                                           : "Unknown",
                                       textColor: color1,
                                       fontSize: Utils.fontSizeScale(
@@ -237,22 +236,22 @@ class IncomeCard extends GetView<BuildReportsController> {
                                     width: ((Get.width) * (1 / 4)),
                                     child: SecText(
                                       (controller.statement?.incomes?[i].date
-                                          ?.value !=
-                                          null)
+                                                  ?.value !=
+                                              null)
                                           ? controller.timeFormat
-                                          .format(DateTime.parse(controller
-                                          .statement!
-                                          .incomes![i]
-                                          .date!
-                                          .value))
-                                          .toString()
+                                              .format(DateTime.parse(controller
+                                                  .statement!
+                                                  .incomes![i]
+                                                  .date!
+                                                  .value))
+                                              .toString()
                                           : "Unknown",
                                       textColor: color1,
                                       fontSize: Utils.fontSizeScale(
                                           expansionTileChildrenFontSize),
                                     )),
                                 SizedBox(
-                                    width: ((Get.width ) * (1 / 4)),
+                                    width: ((Get.width) * (1 / 4)),
                                     child: SecText(
                                       "${controller.statement?.incomes?[i].amount?.value ?? "Unknown"}",
                                       textColor: color1,
@@ -260,36 +259,47 @@ class IncomeCard extends GetView<BuildReportsController> {
                                           expansionTileChildrenFontSize),
                                     )),
                                 SizedBox(
-                                    width: ((Get.width ) * (1 / 4)),
+                                    width: ((Get.width) * (1 / 4)),
                                     child: SecText(
-                                      controller.statement?.incomes?[i].paymentType?.value ?? "Unknown",
+                                      controller.statement?.incomes?[i]
+                                              .paymentType?.value ??
+                                          "Unknown",
                                       textColor: color1,
                                       fontSize: Utils.fontSizeScale(
                                           expansionTileChildrenFontSize),
                                     )),
                                 SizedBox(
-                                    width: ((Get.width ) * (1 / 4)),
+                                    width: ((Get.width) * (1 / 4)),
                                     child: SecText(
-                                      controller.statement?.incomes?[i].paymentID?.value ?? "Unknown",
+                                      controller.statement?.incomes?[i]
+                                              .paymentID?.value ??
+                                          "Unknown",
                                       textColor: color1,
                                       fontSize: Utils.fontSizeScale(
                                           expansionTileChildrenFontSize),
                                     )),
                                 SizedBox(
-                                  width: ((Get.width ) * (1 / 4)),
+                                  width: ((Get.width) * (1 / 4)),
                                   child: TextButton(
                                     onPressed: () async {
-                                      Get.put(ShowNotesController());
-                                      await Get.dialog(const PopUpShowNotesCard(),
+                                      String changed = await Get.dialog(
+                                          const PopUpShowNotesCard(),
                                           arguments: {
                                             "notes": controller
-                                                .statement
-                                                ?.incomes?[i]
-                                                .description
-                                                ?.value ??
+                                                    .statement
+                                                    ?.incomes?[i]
+                                                    .description
+                                                    ?.value ??
                                                 "help",
-                                            'other': "done",
                                           });
+                                      if(changed != ""){
+                                        controller.updateIncome(
+                                            controller
+                                                .statement!.incomes![i].id.value,
+                                            {
+                                              "describe":changed
+                                            });
+                                      }
                                     },
                                     child: SecText(
                                       "show",
@@ -300,11 +310,11 @@ class IncomeCard extends GetView<BuildReportsController> {
                                   ),
                                 ),
                                 SizedBox(
-                                  width: ((Get.width ) * (1 / 4)),
+                                  width: ((Get.width) * (1 / 4)),
                                   child: IconButton(
                                       onPressed: () {
-                                        if (controller
-                                            .statement?.incomes![i].id.value ==
+                                        if (controller.statement?.incomes![i].id
+                                                .value ==
                                             null) return;
                                         controller.deleteIncome((controller
                                             .statement!.incomes![i].id.value));
@@ -318,7 +328,7 @@ class IncomeCard extends GetView<BuildReportsController> {
                             ),
                             Container(
                               height: 1,
-                              width: ((Get.width - 45) * (1 / 4))*8,
+                              width: ((Get.width - 45) * (1 / 4)) * 8,
                               color: AppColors.secTextColor,
                             )
                           ],

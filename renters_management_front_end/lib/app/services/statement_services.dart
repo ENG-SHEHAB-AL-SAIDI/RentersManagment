@@ -382,4 +382,83 @@ class StatementServices {
         message: response?.data["message"] ?? "some thing wrong",
         data: null);
   }
+
+  static Future<Result<bool>> statementUpdateIncome(
+      {required int buildId,
+        required int statementId,
+        required int incomeId,
+        Map<String, dynamic> data = const {},
+        bool hardFetch = false}) async {
+    Result<Statement> res = await fetchStatement(buildId,statementId);
+    Response? response;
+    try {
+      response = await HttpProvider.patch(
+          "/user/statements/$statementId/incomes/$incomeId",
+          data: data);
+      if (response?.statusCode == 200) {
+        int? index = res.data?.incomes?.indexWhere((element)=>element.id.value == incomeId);
+        if(index!=null){
+          res.data?.incomes?[index] =  Income.fromJson(response?.data["income"]);
+        }
+        return Result(
+            hasError: true,
+            statusCode: response?.statusCode,
+            data: true);
+      }
+    } catch (error) {
+      if (kDebugMode) {
+        print(error.toString());
+      }
+      return Result(
+          hasError: true,
+          statusCode: 626,
+          message: error.toString(),
+          data: null);
+    }
+    return Result(
+        hasError: true,
+        statusCode: response?.statusCode ?? 623,
+        message: response?.data["message"] ?? "some thing wrong",
+        data: null);
+  }
+
+
+  static Future<Result<bool>> statementUpdateExpens(
+      {required int buildId,
+        required int statementId,
+        required int expensId,
+        Map<String, dynamic> data = const {},
+        bool hardFetch = false}) async {
+    Result<Statement> res = await fetchStatement(buildId,statementId);
+    Response? response;
+    try {
+      response = await HttpProvider.patch(
+          "/user/statements/$statementId/expenses/$expensId",
+          data: data);
+      if (response?.statusCode == 200) {
+        int? index = res.data?.expenses?.indexWhere((element)=>element.id.value == expensId);
+        if(index!=null){
+          res.data?.expenses?[index] =  Expens.fromJson(response?.data["expens"]);
+        }
+        return Result(
+            hasError: true,
+            statusCode: response?.statusCode,
+            data: true);
+      }
+    } catch (error) {
+      if (kDebugMode) {
+        print(error.toString());
+      }
+      return Result(
+          hasError: true,
+          statusCode: 626,
+          message: error.toString(),
+          data: null);
+    }
+    return Result(
+        hasError: true,
+        statusCode: response?.statusCode ?? 623,
+        message: response?.data["message"] ?? "some thing wrong",
+        data: null);
+  }
 }

@@ -27,7 +27,6 @@ class RenterDetailsController extends GetxController {
   TextEditingController searchField = TextEditingController();
   TextEditingController phoneController = TextEditingController();
   TextEditingController yearController = TextEditingController();
-  TextEditingController notesController = TextEditingController();
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
   int renterId = -1;
   int buildId = -1;
@@ -278,6 +277,26 @@ class RenterDetailsController extends GetxController {
             Icons.warning));
       }
     }
+  }
+  void updateInstallment(int? paymentId,int? installmentId, Map<String,dynamic> data) async {
+    if (paymentId == null || installmentId == null) {
+      return;
+    }
+      Result res = await RentPaymentServices.rentPaymentUpdateInstallment(
+          buildId: buildId,
+          renterId: renterId,
+          rentPaymentId: paymentId,
+          installmentId: installmentId,
+          data: data,);
+      if (res.statusCode == 200) {
+        if (res.data != null) {
+          renter?.rentPayments?.refresh();
+        }
+      } else {
+        Get.dialog(PopUpAlertCard(
+            "${res.message ?? ""}\n error code:${res.statusCode}",
+            Icons.warning));
+      }
   }
 
   void deleteInstallment(int? paymentId, int? installmentId) async {

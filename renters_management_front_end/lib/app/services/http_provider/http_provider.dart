@@ -1,7 +1,9 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
-import 'package:get/get.dart' as getX;
+import 'package:get/get.dart' as get_x;
+import 'package:renters_management_front_end/app/services/user_services.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class HttpProvider {
   static final Dio _dio = Dio();
@@ -31,7 +33,6 @@ class HttpProvider {
             error.requestOptions.path != "auth/refresh") {
           try {
             Response? response = await _refreshAndRetry(error.requestOptions);
-            print("here ${response?.data}");
             if (response != null) {
               return handler.resolve(response);
             }
@@ -39,7 +40,7 @@ class HttpProvider {
             if (kDebugMode) {
               print(e);
             }
-            getX.Get.offNamed("/login");
+            get_x.Get.offNamed("/login");
           }
         } else if (((error.response?.statusCode) ?? 0) == 422) {
           return handler.resolve(error.response!);
@@ -131,6 +132,15 @@ class HttpProvider {
             options: Options(
               method: requestOptions.method,
             ));
+      }
+      else if (response.statusCode == 401){
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+         List<String>? credentials =  prefs.getStringList("credentials");
+        if(credentials != null){
+          UserServices.userLogin(credentials[0], credentials[1]);
+        }else {
+          get_x.Get.offAllNamed("/login");
+        }
       }
     } on DioException catch (error) {
       return error.response;

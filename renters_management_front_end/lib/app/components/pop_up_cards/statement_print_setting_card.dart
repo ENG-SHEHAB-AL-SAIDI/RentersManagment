@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:renters_management_front_end/app/components/buttons.dart';
-
 import '../../controllers/build_reports_list_controller.dart';
-import '../../controllers/renter_printing_controller.dart';
 import '../../globals.dart';
 import '../custom_text.dart';
 

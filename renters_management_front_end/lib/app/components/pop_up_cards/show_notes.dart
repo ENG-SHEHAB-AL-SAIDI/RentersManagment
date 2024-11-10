@@ -74,7 +74,7 @@ class PopUpShowNotesCard extends GetView<ShowNotesController> {
                             children: [
                               CustomButton(
                                 onPress: () {
-                                  Get.back(result: null);
+                                  Get.back(result: controller.changed);
                                 },
                                 text: "Close",
                               ),

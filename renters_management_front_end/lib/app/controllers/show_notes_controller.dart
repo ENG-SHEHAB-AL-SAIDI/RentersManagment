@@ -7,21 +7,27 @@ class ShowNotesController extends GetxController {
   FocusNode noteFocus = FocusNode();
   RxBool enable = false.obs;
   IconData editIcon = Icons.edit;
+  String oldText = "";
+  String changed = "";
 
   void toggleEditState() async {
     if (enable.value == true) {
       enable.value = false;
       editIcon = Icons.edit;
+      if (noteController.text != oldText) {
+        oldText = noteController.text;
+        changed = noteController.text;
+      }
     } else if (enable.value == false) {
       enable.value = true;
-      editIcon = Icons.edit_off;
+      editIcon = Icons.save;
     }
   }
 
-
   @override
   void onInit() {
-    noteController.text =Get.arguments['notes']??"";
+    noteController.text = Get.arguments['notes'] ?? "";
+    oldText = Get.arguments['notes'] ?? "";
     super.onInit();
   }
 

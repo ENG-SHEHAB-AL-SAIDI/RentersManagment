@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:renters_management_front_end/app/bindings/register_binding.dart';
 import 'package:renters_management_front_end/app/models/result.dart';
 import 'package:renters_management_front_end/app/services/user_services.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../views/login_view/register_view.dart';
 

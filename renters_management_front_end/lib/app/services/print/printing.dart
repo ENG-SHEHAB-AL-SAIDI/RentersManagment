@@ -2,7 +2,6 @@ import 'package:pdf/widgets.dart';
 import 'package:renters_management_front_end/app/models/statement_model.dart';
 import 'package:renters_management_front_end/app/services/print/renter_details_print_layout.dart';
 import 'package:renters_management_front_end/app/services/print/renter_rent_payment_print_layout.dart';
-import 'package:renters_management_front_end/app/services/print/printing_components/statement_layout.dart';
 import 'package:renters_management_front_end/app/services/print/statement_print_layout.dart';
 import '../../models/rent_payments_model.dart';
 import 'package:printing/printing.dart';

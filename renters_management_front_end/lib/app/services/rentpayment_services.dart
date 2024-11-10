@@ -239,6 +239,55 @@ class RentPaymentServices {
         data: null);
   }
 
+  static Future<Result<bool>> rentPaymentUpdateInstallment(
+      {required int buildId,
+        required int renterId,
+        required int rentPaymentId,
+        required int installmentId,
+        required Map<String, dynamic> data,
+        bool hardFetch = false}) async {
+    Result<RentPayment> rentPayment = await fetchRentPayment(
+        buildId: buildId, renterId: renterId, rentPaymentID: rentPaymentId);
+    Response? response;
+    try {
+      response = await HttpProvider.patch(
+          "user/rent_payments/$rentPaymentId/installments/$installmentId",
+          data: data);
+      if (response?.statusCode == 200) {
+        RentPaymentsInstallment installment =
+        RentPaymentsInstallment.fromJson(response?.data["installment"]);
+        rentPayment.data?.remainAmount?.value =
+            double.tryParse(response?.data["remain_amount"])??0;
+        rentPayment.data?.payedAmount?.value =
+            double.tryParse(response?.data["payed_amount"])??0;
+        rentPayment.data?.state?.value = response?.data["state"];
+        int? index = rentPayment.data?.rentPaymentsInstallment?.indexWhere((e)=>e.id.value == installmentId);
+        if(index != null){
+          rentPayment.data!.rentPaymentsInstallment?[index] = installment;
+        }
+        return Result(
+            hasError: false,
+            statusCode: response?.statusCode,
+            message: response?.statusMessage,
+            data: true);
+      }
+    } catch (error) {
+      if (kDebugMode) {
+        print(error.toString());
+      }
+      return Result(
+          hasError: true,
+          statusCode: 646,
+          message: error.toString(),
+          data: null);
+    }
+    return Result(
+        hasError: true,
+        statusCode: response?.statusCode?? 700,
+        message: response?.data["message"]?? "some thing wrong",
+        data: null);
+  }
+
   static Future<Result<bool>> rentPaymentDeleteInstallment(
       {required int buildId,
       required int renterId,

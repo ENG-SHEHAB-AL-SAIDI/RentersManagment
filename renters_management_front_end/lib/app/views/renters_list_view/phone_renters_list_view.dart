@@ -98,17 +98,53 @@ class PhoneRentersListView extends GetView<RenterListController> {
                                   ),
                                 ),
                                 title: MainText(
-                                  controller
-                                          .renters.value[(i ~/ 2)].name?.value ??
+                                  controller.renters.value[(i ~/ 2)].name
+                                          ?.value ??
                                       "Unknown",
-                                  textColor: AppColors.inverseMainTextColor,
+                                  textColor: AppColors.secTextColor,
                                   textAlign: TextAlign.start,
                                 ),
                                 subtitle: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment: MainAxisAlignment.start,
                                   children: [
-                                    SecText(" last payment date: 2024-4-5")
+                                    SecText(" Current month state: ",fontWeight: FontWeight.w600,),
+                                    if ((controller
+                                            .getCurrentMonthState((i ~/ 2)) ==
+                                        "partially_payed")) ...[
+                                      SecText(
+                                        "Partially Payed",
+                                        fontWeight: FontWeight.bold,
+                                        textColor: Colors.grey,
+                                      )
+                                    ] else if ((controller
+                                            .getCurrentMonthState((i ~/ 2)) ==
+                                        "payed")) ...[
+                                      SecText(
+                                        "Payed",
+                                        fontWeight: FontWeight.bold,
+                                        textColor: Colors.greenAccent,
+                                      )
+                                    ] else if ((controller
+                                            .getCurrentMonthState((i ~/ 2)) ==
+                                        "not_payed")) ...[
+                                      SecText(
+                                        "Not Payed",
+                                        fontWeight: FontWeight.bold,
+                                        textColor: Colors.redAccent,
+                                      )
+                                    ] else if ((controller
+                                            .getCurrentMonthState((i ~/ 2)) ==
+                                        "not_exist")) ...[
+                                      SecText(
+                                        "Not Exist",
+                                        fontWeight: FontWeight.bold,
+                                      )
+                                    ] else ...[
+                                      SecText(
+                                        "Unknown",
+                                        fontWeight: FontWeight.bold,
+                                      )
+                                    ]
                                   ],
                                 ),
                                 trailing: IconButton(

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:renters_management_front_end/app/components/pop_up_cards/add_and_update_renter_card.dart';
 import 'package:renters_management_front_end/app/controllers/renter_add_update_card_controller.dart';
+import 'package:renters_management_front_end/app/models/rent_payments_model.dart';
 import 'package:renters_management_front_end/app/models/result.dart';
 import 'package:renters_management_front_end/app/services/renter_services.dart';
 
@@ -28,7 +29,7 @@ class RenterListController extends GetxController {
   void onInit() async {
     buildId = Get.arguments['buildId'];
     rentersIds = Get.arguments['rentersIds'];
-    title = Get.arguments['title']??"Renters List";
+    title = Get.arguments['title'] ?? "Renters List";
     if (rentersIds != null) {
       List<Renter> res =
           await RenterServices.getRentersGroup(buildId, rentersIds!);
@@ -56,6 +57,16 @@ class RenterListController extends GetxController {
           "fetch Renters field please check your connection \n error code:${res.statusCode}",
           Icons.warning));
     }
+  }
+
+  String getCurrentMonthState(int renterIndex) {
+    RentPayment? payment = renters
+        .value[renterIndex].rentPayments?[DateTime.now().year.toString()]
+        ?.firstWhere((e) => e.month?.value == DateTime.now().month.toString());
+    if(payment == null){
+      return "not_exist";
+    }
+    return (payment.state?.value ?? "Unknown");
   }
 
   void searching(String? text) async {

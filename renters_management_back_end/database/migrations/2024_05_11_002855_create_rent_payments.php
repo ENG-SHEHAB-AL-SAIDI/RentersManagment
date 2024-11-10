@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('year')->nullable(false);
             $table->enum('month',['1','2','3','4','5','6','7','8','9','10','11','12'])->nullable(false);
-            $table->enum('state',['payed','partially_payed','not_payed'])->nullable(false);
+            $table->enum('state',['payed','partially_payed','not_payed','excluded'])->nullable(false);
             $table->decimal('payed_amount',16,2)->default(0);
             $table->decimal('remain_amount',16,2);
             $table->softDeletes();

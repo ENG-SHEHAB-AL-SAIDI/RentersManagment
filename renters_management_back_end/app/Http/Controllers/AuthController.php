@@ -1,19 +1,11 @@
 <?php
 
 namespace App\Http\Controllers;
-
-use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\RegisterRequest;
 use App\Models\User;
-use GuzzleHttp\Middleware;
-use GuzzleHttp\Psr7\Request;
-use GuzzleHttp\Psr7\Response;
 use Illuminate\Auth\Events\Registered;
-use Illuminate\Auth\Notifications\VerifyEmail;
-use Illuminate\Routing\Controllers\HasMiddleware;
 use Tymon\JWTAuth\Exceptions\JWTException;
-use Tymon\JWTAuth\Facades\JWTAuth;
 
 class AuthController extends Controller
 {
@@ -66,7 +58,7 @@ class AuthController extends Controller
         if(!User::where('email',$credentials['email'])->first()){
             return response()->json(['error' => 'not found'], 404);
         }
-        
+
         if (! $accessToken = auth()->guard('api')->attempt($credentials)) {
             return response()->json(['error' => 'Unauthorized'], 401);
         }

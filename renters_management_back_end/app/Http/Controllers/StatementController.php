@@ -82,7 +82,25 @@ class StatementController extends Controller
         ], 200);
     }
 
+    public function updateIncome(StatementRequest $request, int $statementId,$incomeId)
+    {
+        $data = $request->validated();
 
+        $statement = Statement::find($statementId);
+        if (!$statement) {
+            return response()->json([
+                'message' => 'statement not found',
+            ], 404);
+        }
+
+        $income = $statement->incomes()->find($incomeId);
+        $income->update($data);
+
+        return response()->json([
+            'message' => 'income updated',
+            'income'=> $income
+        ], 200);
+    }
     public function destroyIncome(StatementRequest $request, int $statementId,$incomeId)
     {
         $statement = Statement::find($statementId);
@@ -121,7 +139,25 @@ class StatementController extends Controller
         ], 200);
     }
 
+    public function updateExpens(StatementRequest $request, int $statementId,$expensId)
+    {
+        $data = $request->validated();
 
+        $statement = Statement::find($statementId);
+        if (!$statement) {
+            return response()->json([
+                'message' => 'statement not found',
+            ], 404);
+        }
+
+        $expens = $statement->expenses()->find($expensId);
+        $expens->update($data);
+
+        return response()->json([
+            'message' => 'expens updated',
+            'expens'=> $expens
+        ], 200);
+    }
     public function destroyExpens(StatementRequest $request, int $statementId,$expensId)
     {
         $statement = Statement::find($statementId);

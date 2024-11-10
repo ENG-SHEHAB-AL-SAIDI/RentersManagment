@@ -59,10 +59,10 @@ class RentPaymentController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(RentPaymentRequest $request, int $rentPaymentId)
+    public function update(RentPaymentRequest $request,$renterId, $rentPaymentId)
     {
         $data = $request->validated();
-        $rentPayment = RentPayment::with('rentPaymentsInstallments')->find($rentPaymentId);
+        $rentPayment = RentPayment::find($rentPaymentId);
         if (!$rentPayment) {
             return response()->json([
                 'message' => 'not found',
@@ -177,6 +177,64 @@ class RentPaymentController extends Controller
             'remain_amount' => $rentPayment->remain_amount,
             'payed_amount' => $rentPayment->payed_amount,
             'state' => $rentPayment->state
+        ], 200);
+    }
+
+    public function updateInstallment(RentPaymentRequest $request, int $rentPaymentId,int $installmentId)
+    {
+        $data = $request->validated();
+        if($data == []){
+            return response()->json([
+                'message' => 'requird at least one modification',
+            ], 422);
+        }
+        $rentPayment = RentPayment::find($rentPaymentId);
+        if (!$rentPayment) {
+            return response()->json([
+                'message' => 'payment not found',
+                'rent_payment' => $rentPayment,
+            ], 404);
+        }
+
+        $installment = $rentPayment->rentPaymentsInstallments()->find($installmentId);
+
+        if (!$installment) {
+            return response()->json([
+                'message' => 'installment not found',
+
+            ], 404);
+        }
+        if(isset($data['amount'])){
+            $rentPayment->remain_amount -= $data['amount']-$installment->amount;
+            $rentPayment->payed_amount += $data['amount']-$installment->amount;
+            $installment->amount = $data['amount'];
+            if ($rentPayment->payed_amount == 0) {
+            $rentPayment->state = 'not_payed';
+            } elseif ($rentPayment->remain_amount == 0) {
+            $rentPayment->state = 'payed';
+            } else {
+            $rentPayment->state = 'partially_payed';
+            }
+            $rentPayment->save();
+        }
+
+        if(isset($data['date'])){
+            $installment->date = $data['date'];
+        }
+
+        if(isset($data['notes'])){
+            $installment->notes = $data['notes'];
+        }
+
+        $installment->save();
+
+
+        return response()->json([
+            'message' => 'Installment Update Successful',
+            'remain_amount' => number_format($rentPayment->remain_amount, 2,'.',''),
+            'payed_amount' =>  number_format($rentPayment->payed_amount, 2,'.',''),
+            'state' => $rentPayment->state,
+            'installment' => $installment
         ], 200);
     }
 }

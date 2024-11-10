@@ -31,14 +31,37 @@ class RentPaymentRequest extends FormRequest
                 'notes'=>'nullable|string',
             ];
         }
+
+        if ($this->method('PATCH') && $this->routeIs('rent_payments.updateInstallment')){
+            $remain_amount = RentPayment::find($this->route('id'))->remain_amount;
+            return [
+                'date'=> 'sometimes|date',
+                'notes'=>'sometimes|nullable|string',
+            ];
+        }
+
         $rent = Renter::find($this->route('renter'))->rent;
         if (!$rent) {
             $rent = INF;
         }
+
+
+        if ($this->method('PATCH')){
+            return [
+                'year' => 'date_format:Y',
+                'month' => 'in:1,2,3,4,5,6,7,8,9,10,11,12',
+                'state' => 'in:payed,partially_payed,not_payed,excluded',
+                'payed_amount' => ['numeric', "between:0,$rent"],
+                "remain_amount" => ['numeric', "between:0,$rent"],
+            ];
+        }
+
+
+
         return [
             'year' => 'required|date_format:Y',
             'month' => 'required|in:1,2,3,4,5,6,7,8,9,10,11,12',
-            'state' => 'required|in:payed,partially_payed,not_payed',
+            'state' => 'required|in:payed,partially_payed,not_payed,excluded',
             'payed_amount' => ['numeric', "between:0,$rent"],
             "remain_amount" => ['numeric', "between:0,$rent"],
         ];

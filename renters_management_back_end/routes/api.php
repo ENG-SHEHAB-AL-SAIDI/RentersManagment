@@ -30,12 +30,15 @@ Route::middleware(['api', 'auth:api'])->prefix('user')->group(
         Route::apiResource('renters.rent_payments', RentPaymentController::class);
         Route::post('rent_payments/{id}/installments', [RentPaymentController::class, 'addInstallment'])->name('rent_payments.addInstallment');
         Route::delete('rent_payments/{id}/installments/{installmentId}', [RentPaymentController::class, 'deleteInstallment'])->name('rent_payments.deleteInstallment');
+        Route::patch('rent_payments/{id}/installments/{installmentId}', [RentPaymentController::class, 'updateInstallment'])->name('rent_payments.updateInstallment');
 
         Route::apiResource('builds.statements', StatementController::class);
         Route::post('statements/{id}/incomes', [StatementController::class, 'addIncome'])->name('statements.addIncome');
         Route::delete('statements/{id}/incomes/{incomeId}', [StatementController::class, 'destroyIncome'])->name('statements.destroyIncome');
+        Route::patch('statements/{id}/incomes/{incomeId}', [StatementController::class, 'updateIncome'])->name('statements.udateIncome');
         Route::post('statements/{id}/expenses', [StatementController::class, 'addExpens'])->name('statements.addExpens');
         Route::delete('statements/{id}/expenses/{expensesId}', [StatementController::class, 'destroyExpens'])->name('statements.destroyExpens');
+        Route::patch('statements/{id}/expenses/{expensesId}', [StatementController::class, 'updateExpens'])->name('statements.updateExpens');
 
         Route::post('year/renters/{renterId}',[YearController::class,'addYearToRenter'])->name('addYearToRenter');
         Route::delete('year/renters/{renterId}',[YearController::class,'deleteYearToRenter'])->name('deleteYearToRenter');

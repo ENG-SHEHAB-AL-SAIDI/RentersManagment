@@ -37,6 +37,20 @@ class StatementRequest extends FormRequest
                 'describe'=>'nullable',
             ];
         }
+
+        if ($this->method('PATCH') && $this->routeIs('statements.udateIncome')){
+            return [
+                'date'=> 'sometimes|date',
+                'describe'=>'sometimes|nullable|string',
+            ];
+        }
+
+        if ($this->method('PATCH') && $this->routeIs('statements.updateExpens')){
+            return [
+                'date'=> 'sometimes|date',
+                'describe'=>'sometimes|nullable|string',
+            ];
+        }
         return [];
 
 

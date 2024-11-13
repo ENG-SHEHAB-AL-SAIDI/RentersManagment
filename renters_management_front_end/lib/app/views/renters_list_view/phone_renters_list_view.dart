@@ -24,12 +24,12 @@ class PhoneRentersListView extends GetView<RenterListController> {
             )),
         title: MainText(controller.title),
         actions: [
-          IconButton(
-              onPressed: () {},
-              icon: Icon(
-                Icons.sort_outlined,
-                color: AppColors.mainIconColor,
-              )),
+          // IconButton(
+          //     onPressed: () {},
+          //     icon: Icon(
+          //       Icons.sort_outlined,
+          //       color: AppColors.mainIconColor,
+          //     )),
           PopupMenuButton<String>(
             onSelected: controller.more,
             color: AppColors.inverseCardColor,

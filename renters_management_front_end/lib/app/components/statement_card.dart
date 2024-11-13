@@ -78,8 +78,11 @@ class StatementCard extends GetView<BuildReportsController> {
                           "Total Amount:  ",
                           fontSize: 16,
                         ),
-                        Flexible(child: SecText(controller.monthTotalRent.value.toStringAsFixed(2),
-                            textColor: AppColors.mainTextColor))
+                        Flexible(
+                            child: SecText(
+                                controller.monthTotalRent.value
+                                    .toStringAsFixed(2),
+                                textColor: AppColors.mainTextColor))
                       ],
                     ),
                   ),
@@ -90,8 +93,10 @@ class StatementCard extends GetView<BuildReportsController> {
                           "No.Renters:  ",
                           fontSize: 16,
                         ),
-                        Flexible(child: SecText(controller.rentersCount.value.toString(),
-                            textColor: AppColors.mainTextColor))
+                        Flexible(
+                            child: SecText(
+                                controller.rentersCount.value.toString(),
+                                textColor: AppColors.mainTextColor))
                       ],
                     ),
                   ),
@@ -121,8 +126,11 @@ class StatementCard extends GetView<BuildReportsController> {
                           "Total Amount:  ",
                           fontSize: 16,
                         ),
-                        Flexible(child: SecText(controller.payedTotalRent.value.toStringAsFixed(2),
-                            textColor: AppColors.mainTextColor))
+                        Flexible(
+                            child: SecText(
+                                controller.payedTotalRent.value
+                                    .toStringAsFixed(2),
+                                textColor: AppColors.mainTextColor))
                       ],
                     ),
                   ),
@@ -133,8 +141,10 @@ class StatementCard extends GetView<BuildReportsController> {
                           "No.Renters:  ",
                           fontSize: 16,
                         ),
-                        Flexible(child: SecText(controller.payedRentersCount.value.toString(),
-                            textColor: AppColors.mainTextColor))
+                        Flexible(
+                            child: SecText(
+                                controller.payedRentersCount.value.toString(),
+                                textColor: AppColors.mainTextColor))
                       ],
                     ),
                   ),
@@ -169,8 +179,11 @@ class StatementCard extends GetView<BuildReportsController> {
                           "Total Amount:  ",
                           fontSize: 16,
                         ),
-                        Flexible(child: SecText(controller.partiallyPayedTotalRent.value.toStringAsFixed(2),
-                            textColor: AppColors.mainTextColor))
+                        Flexible(
+                            child: SecText(
+                                controller.partiallyPayedTotalRent.value
+                                    .toStringAsFixed(2),
+                                textColor: AppColors.mainTextColor))
                       ],
                     ),
                   ),
@@ -181,9 +194,11 @@ class StatementCard extends GetView<BuildReportsController> {
                           "No.Renters:  ",
                           fontSize: 16,
                         ),
-                        Flexible(child: SecText(
-                            controller.partiallyPayedRentersCount.value.toString(),
-                            textColor: AppColors.mainTextColor))
+                        Flexible(
+                            child: SecText(
+                                controller.partiallyPayedRentersCount.value
+                                    .toString(),
+                                textColor: AppColors.mainTextColor))
                       ],
                     ),
                   ),
@@ -218,8 +233,11 @@ class StatementCard extends GetView<BuildReportsController> {
                           "Total Amount:  ",
                           fontSize: 16,
                         ),
-                        Flexible(child: SecText(controller.notPayedTotalRent.value.toStringAsFixed(2),
-                            textColor: AppColors.mainTextColor))
+                        Flexible(
+                            child: SecText(
+                                controller.notPayedTotalRent.value
+                                    .toStringAsFixed(2),
+                                textColor: AppColors.mainTextColor))
                       ],
                     ),
                   ),
@@ -230,8 +248,11 @@ class StatementCard extends GetView<BuildReportsController> {
                           "No.Renters:  ",
                           fontSize: 16,
                         ),
-                        Flexible(child: SecText(controller.notPayedRentersCount.value.toString(),
-                            textColor: AppColors.mainTextColor))
+                        Flexible(
+                            child: SecText(
+                                controller.notPayedRentersCount.value
+                                    .toString(),
+                                textColor: AppColors.mainTextColor))
                       ],
                     ),
                   ),
@@ -255,31 +276,17 @@ class StatementCard extends GetView<BuildReportsController> {
                     "Total Payed Amount:  ",
                     fontSize: 16,
                   ),
-                  Flexible(child: SecText(
-                      (controller.payedTotalRent.value +
-                          controller.partiallyPayedTotalRent.value)
-                          .toStringAsFixed(2),
-                      textColor: AppColors.mainTextColor))
+                  Flexible(
+                      child: SecText(
+                          (controller.payedTotalRent.value +
+                                  controller.partiallyPayedTotalRent.value)
+                              .toStringAsFixed(2),
+                          textColor: AppColors.mainTextColor))
                 ],
               ),
               SizedBox(
                 height: 2,
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  MainText(
-                    "Payed + Expenses:  ",
-                    fontSize: 12,
-                  ),
-                  Flexible(child: SecText(
-                      (controller.payedTotalRent.value +
-                          controller.partiallyPayedTotalRent.value + (controller.statement?.totalExpenses?.value??0))
-                          .toStringAsFixed(2),
-                      textColor: AppColors.mainTextColor))
-                ],
-              ),
-              Divider(),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -289,12 +296,13 @@ class StatementCard extends GetView<BuildReportsController> {
                   ),
                   SecText(
                       (controller.monthTotalRent.value -
-                          (controller.payedTotalRent.value +
-                              controller.partiallyPayedTotalRent.value))
+                              (controller.payedTotalRent.value +
+                                  controller.partiallyPayedTotalRent.value))
                           .toStringAsFixed(2),
                       textColor: AppColors.mainTextColor)
                 ],
               ),
+              Divider(),
               SizedBox(
                 height: 2,
               ),
@@ -302,13 +310,12 @@ class StatementCard extends GetView<BuildReportsController> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   MainText(
-                    "Remain - Expenses:  ",
+                    "Incomes + Expenses:  ",
                     fontSize: 12,
                   ),
                   SecText(
-                      (controller.monthTotalRent.value -
-                              (controller.payedTotalRent.value +
-                                  controller.partiallyPayedTotalRent.value)- (controller.statement?.totalExpenses?.value??0))
+                      ((controller.statement?.totalIncomes?.value ?? 0) +
+                              (controller.statement?.totalExpenses?.value ?? 0))
                           .toStringAsFixed(2),
                       textColor: AppColors.mainTextColor)
                 ],

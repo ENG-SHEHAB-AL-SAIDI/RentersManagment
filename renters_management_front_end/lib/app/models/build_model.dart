@@ -17,6 +17,7 @@ class Build {
   RxString? createdAt;
   RxString? updatedAt;
 
+
   Build({
     required this.id,
     this.numRenters,

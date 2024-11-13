@@ -9,6 +9,7 @@ import '../models/renter_model.dart';
 import 'http_provider/http_provider.dart';
 
 class RenterServices {
+
   static Future<Result<List<Renter>>> fetchRenters(int buildId,
       {bool hardFetch = false}) async {
     Result<Build> res = await BuildServices.fetchBuild(id: buildId);

@@ -132,13 +132,12 @@ class HttpProvider {
             options: Options(
               method: requestOptions.method,
             ));
-      }
-      else if (response.statusCode == 401){
+      } else if (response.statusCode == 401) {
         SharedPreferences prefs = await SharedPreferences.getInstance();
-         List<String>? credentials =  prefs.getStringList("credentials");
-        if(credentials != null){
+        List<String>? credentials = prefs.getStringList("credentials");
+        if (credentials != null) {
           UserServices.userLogin(credentials[0], credentials[1]);
-        }else {
+        } else {
           get_x.Get.offAllNamed("/login");
         }
       }

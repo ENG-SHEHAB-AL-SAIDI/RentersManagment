@@ -23,22 +23,22 @@ class UserServices {
             response?.data["token"]["original"]["access_token"]);
         if (rememberMe) {
           _prefs ??= await SharedPreferences.getInstance();
-          await _prefs?.setStringList(
-              "credentials", <String>[email, password]);
+          await _prefs?.setStringList("credentials", <String>[email, password]);
         }
-
         return Result(
             hasError: false, statusCode: response?.statusCode, data: true);
+      }else{
+        return Result(
+            hasError: true,
+            statusCode: response?.statusCode ?? 601,
+            message: "error",
+            data: false);
       }
+
+
     } catch (error) {
       return Result(hasError: true, statusCode: 601, message: error.toString());
     }
-
-    return Result(
-        hasError: true,
-        statusCode: response?.statusCode ?? 601,
-        message: "error",
-        data: false);
   }
 
   static Future<Result<bool>> userRegister(String name, String email,

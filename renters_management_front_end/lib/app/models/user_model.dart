@@ -10,6 +10,7 @@ class User {
   RxString? createdAt;
   RxString? updatedAt;
 
+
   User({
     required this.id,
     this.name,

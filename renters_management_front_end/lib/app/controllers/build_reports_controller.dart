@@ -7,6 +7,7 @@ import 'package:renters_management_front_end/app/services/build_services.dart';
 import 'package:renters_management_front_end/app/services/print/printing.dart';
 import 'package:renters_management_front_end/app/services/statement_services.dart';
 
+import '../components/calculator.dart';
 import '../components/pop_up_cards/add_income.dart';
 import '../components/pop_up_cards/alert_message_card.dart';
 import '../components/pop_up_cards/delete_confirmation_message_card.dart';
@@ -181,6 +182,8 @@ class BuildReportsController extends GetxController {
           statement,
           await BuildServices.fetchBuild(id: buildId)
               .then((e) => e.data?.name?.value ?? ""));
+    } else if (val == "Calculator") {
+      Get.bottomSheet(Calculator());
     }
   }
 
@@ -238,7 +241,7 @@ class BuildReportsController extends GetxController {
       (noteController.text.isNotEmpty && noteController.text != "Unknown".tr)
           ? jsData["note"] = noteController.text
           : null;
-       Get.back(result: jsData);
+      Get.back(result: jsData);
       clear();
     }
   }
@@ -326,17 +329,14 @@ class BuildReportsController extends GetxController {
           ? jsData["date"] = dateController.text
           : null;
 
-
       (timeController.text.isNotEmpty && timeController.text != "Unknown".tr)
           ? jsData["time"] = timeController.text
           : null;
-
 
       (amountController.text.isNotEmpty &&
               amountController.text != "Unknown".tr)
           ? jsData["amount"] = amountController.text
           : null;
-
 
       (noteController.text.isNotEmpty && noteController.text != "Unknown".tr)
           ? jsData["note"] = noteController.text

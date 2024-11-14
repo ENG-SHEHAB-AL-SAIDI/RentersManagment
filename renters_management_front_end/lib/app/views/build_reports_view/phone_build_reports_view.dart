@@ -54,6 +54,12 @@ class PhoneBuildReportsView extends GetView<BuildReportsController> {
                     "Print",
                     textColor: AppColors.mainTextColor,
                   )),
+              PopupMenuItem(
+                  value: "Calculator",
+                  child: SecText(
+                    "Calculator",
+                    textColor: AppColors.mainTextColor,
+                  )),
             ],
             child:
                 Icon(Icons.more_vert_outlined, color: AppColors.mainTextColor),

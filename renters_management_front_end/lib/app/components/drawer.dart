@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_simple_calculator/flutter_simple_calculator.dart';
 import 'package:get/get.dart';
+import 'package:renters_management_front_end/app/components/calculator.dart';
 import 'package:renters_management_front_end/app/controllers/home_controller.dart';
 import 'package:renters_management_front_end/app/globals.dart';
 import 'package:renters_management_front_end/app/services/user_services.dart';
@@ -69,18 +70,8 @@ class CustomDrawer extends GetView<HomeController> {
           ListTile(
             title: SecText("Calculator"),
             onTap: () {
-              CalculatorController calculatorController = Get.find<CalculatorController>();
               Get.bottomSheet(
-                  SimpleCalculator(
-                    value: calculatorController.value,
-                    onChanged: calculatorController.onChange,
-                    theme:  CalculatorThemeData(
-                      displayColor: AppColors.mainCardColor,
-                      commandColor: AppColors.inverseCardColor,
-                      expressionColor: AppColors.mainCardColor,
-                      operatorColor: AppColors.inverseCardColor,
-                    ),
-                  ),
+                  Calculator()
               );
             },
           ),

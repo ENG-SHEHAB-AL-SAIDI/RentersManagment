@@ -7,7 +7,7 @@ class HomeViewBinding implements Bindings{
   @override
   void dependencies() {
     Get.put<HomeController>(HomeController());
-    Get.lazyPut<CalculatorController>(()=>CalculatorController());
+    Get.put<CalculatorController>(CalculatorController(),permanent: true);
   }
 
 

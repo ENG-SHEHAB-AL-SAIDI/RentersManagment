@@ -45,6 +45,8 @@ dependencies:
   printing: ^5.13.4
   url_launcher: ^6.3.1
   shared_preferences: ^2.3.3
+  flutter_simple_calculator: ^2.3.0
+
 #  flutter_dotenv: ^5.1.0
 
 dev_dependencies:

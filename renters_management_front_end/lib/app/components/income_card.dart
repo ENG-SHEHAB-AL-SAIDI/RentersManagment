@@ -116,235 +116,242 @@ class IncomeCard extends GetView<BuildReportsController> {
                             borderRadius: BorderRadius.circular(24)),
                         childrenPadding: const EdgeInsets.all(8),
                         children: [
-                          SingleChildScrollView(
-                            scrollDirection: Axis.horizontal,
-                            child: Column(
-                              children: [
-                                Container(
-                                  height: 1,
-                                  width: ((Get.width - 45) * (1 / 4)) * 8,
-                                  color: AppColors.secTextColor,
-                                ),
-                                const SizedBox(
-                                  height: 16,
-                                ),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    SizedBox(
-                                        width: ((Get.width) * (1 / 4)),
-                                        child: SecText(
-                                          "Date",
-                                          textColor: color1,
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: Utils.fontSizeScale(
-                                              expansionTileChildrenFontSize),
-                                        )),
-                                    SizedBox(
-                                        width: ((Get.width) * (1 / 4)),
-                                        child: SecText(
-                                          "time",
-                                          textColor: color1,
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: Utils.fontSizeScale(
-                                              expansionTileChildrenFontSize),
-                                        )),
-                                    SizedBox(
-                                        width: ((Get.width) * (1 / 4)),
-                                        child: SecText(
-                                          "Amount",
-                                          textColor: color1,
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: Utils.fontSizeScale(
-                                              expansionTileChildrenFontSize),
-                                        )),
-                                    SizedBox(
-                                        width: ((Get.width) * (1 / 4)),
-                                        child: SecText(
-                                          "PaymentType",
-                                          textColor: color1,
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: Utils.fontSizeScale(
-                                              expansionTileChildrenFontSize),
-                                        )),
-                                    SizedBox(
-                                        width: ((Get.width) * (1 / 4)),
-                                        child: SecText(
-                                          "PaymentID",
-                                          textColor: color1,
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: Utils.fontSizeScale(
-                                              expansionTileChildrenFontSize),
-                                        )),
-                                    SizedBox(
-                                        width: ((Get.width) * (1 / 4)),
-                                        child: SecText(
-                                          "Description",
-                                          textColor: color1,
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: Utils.fontSizeScale(
-                                              expansionTileChildrenFontSize),
-                                        )),
-                                    SizedBox(
-                                      width: ((Get.width) * (1 / 4)),
-                                    )
-                                  ],
-                                ),
-                                if (controller.statement?.incomes?.isEmpty ??
-                                    true) ...[
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      SecText(
-                                        "Empty",
-                                        textColor:
-                                            AppColors.inverseSecTextColor,
-                                      ),
-                                    ],
-                                  ),
-                                ] else ...[
-                                  const SizedBox(
-                                    height: 16,
-                                  ),
+                          Scrollbar(
+                            thumbVisibility: true,
+                            thickness: 6,
+                            trackVisibility: true,
+                            radius: Radius.circular(28),
+                            child: SingleChildScrollView(
+                              scrollDirection: Axis.horizontal,
+                              padding: EdgeInsets.symmetric(vertical:12),
+                              child: Column(
+                                children: [
                                   Container(
                                     height: 1,
                                     width: ((Get.width - 45) * (1 / 4)) * 8,
                                     color: AppColors.secTextColor,
                                   ),
-                                  for (int i = 0;
-                                      i <
-                                          (controller
-                                                  .statement?.incomes?.length ??
-                                              0);
-                                      i++) ...[
+                                  const SizedBox(
+                                    height: 16,
+                                  ),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      SizedBox(
+                                          width: ((Get.width) * (1 / 4)),
+                                          child: SecText(
+                                            "Date",
+                                            textColor: color1,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: Utils.fontSizeScale(
+                                                expansionTileChildrenFontSize),
+                                          )),
+                                      SizedBox(
+                                          width: ((Get.width) * (1 / 4)),
+                                          child: SecText(
+                                            "time",
+                                            textColor: color1,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: Utils.fontSizeScale(
+                                                expansionTileChildrenFontSize),
+                                          )),
+                                      SizedBox(
+                                          width: ((Get.width) * (1 / 4)),
+                                          child: SecText(
+                                            "Amount",
+                                            textColor: color1,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: Utils.fontSizeScale(
+                                                expansionTileChildrenFontSize),
+                                          )),
+                                      SizedBox(
+                                          width: ((Get.width) * (1 / 4)),
+                                          child: SecText(
+                                            "PaymentType",
+                                            textColor: color1,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: Utils.fontSizeScale(
+                                                expansionTileChildrenFontSize),
+                                          )),
+                                      SizedBox(
+                                          width: ((Get.width) * (1 / 4)),
+                                          child: SecText(
+                                            "PaymentID",
+                                            textColor: color1,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: Utils.fontSizeScale(
+                                                expansionTileChildrenFontSize),
+                                          )),
+                                      SizedBox(
+                                          width: ((Get.width) * (1 / 4)),
+                                          child: SecText(
+                                            "Description",
+                                            textColor: color1,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: Utils.fontSizeScale(
+                                                expansionTileChildrenFontSize),
+                                          )),
+                                      SizedBox(
+                                        width: ((Get.width) * (1 / 4)),
+                                      )
+                                    ],
+                                  ),
+                                  if (controller.statement?.incomes?.isEmpty ??
+                                      true) ...[
                                     Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
+                                      mainAxisAlignment: MainAxisAlignment.center,
                                       children: [
-                                        SizedBox(
-                                            width: ((Get.width) * (1 / 4)),
-                                            child: SecText(
-                                              (controller.statement?.incomes?[i]
-                                                          .date?.value !=
-                                                      null)
-                                                  ? controller.dateFormat
-                                                      .format(DateTime.parse(
-                                                          controller
-                                                              .statement!
-                                                              .incomes![i]
-                                                              .date!
-                                                              .value))
-                                                      .toString()
-                                                  : "Unknown",
-                                              textColor: color1,
-                                              fontSize: Utils.fontSizeScale(
-                                                  expansionTileChildrenFontSize),
-                                            )),
-                                        SizedBox(
-                                            width: ((Get.width) * (1 / 4)),
-                                            child: SecText(
-                                              (controller.statement?.incomes?[i]
-                                                          .date?.value !=
-                                                      null)
-                                                  ? controller.timeFormat
-                                                      .format(DateTime.parse(
-                                                          controller
-                                                              .statement!
-                                                              .incomes![i]
-                                                              .date!
-                                                              .value))
-                                                      .toString()
-                                                  : "Unknown",
-                                              textColor: color1,
-                                              fontSize: Utils.fontSizeScale(
-                                                  expansionTileChildrenFontSize),
-                                            )),
-                                        SizedBox(
-                                            width: ((Get.width) * (1 / 4)),
-                                            child: SecText(
-                                              "${controller.statement?.incomes?[i].amount?.value ?? "Unknown"}",
-                                              textColor: color1,
-                                              fontSize: Utils.fontSizeScale(
-                                                  expansionTileChildrenFontSize),
-                                            )),
-                                        SizedBox(
-                                            width: ((Get.width) * (1 / 4)),
-                                            child: SecText(
-                                              controller.statement?.incomes?[i]
-                                                      .paymentType?.value ??
-                                                  "Unknown",
-                                              textColor: color1,
-                                              fontSize: Utils.fontSizeScale(
-                                                  expansionTileChildrenFontSize),
-                                            )),
-                                        SizedBox(
-                                            width: ((Get.width) * (1 / 4)),
-                                            child: SecText(
-                                              controller.statement?.incomes?[i]
-                                                      .paymentID?.value ??
-                                                  "Unknown",
-                                              textColor: color1,
-                                              fontSize: Utils.fontSizeScale(
-                                                  expansionTileChildrenFontSize),
-                                            )),
-                                        SizedBox(
-                                          width: ((Get.width) * (1 / 4)),
-                                          child: TextButton(
-                                            onPressed: () async {
-                                              String changed = await Get.dialog(
-                                                  const PopUpShowNotesCard(),
-                                                  arguments: {
-                                                    "notes": controller
-                                                            .statement
-                                                            ?.incomes?[i]
-                                                            .description
-                                                            ?.value ??
-                                                        "help",
-                                                  });
-                                              if (changed != "") {
-                                                controller.updateIncome(
-                                                    controller.statement!
-                                                        .incomes![i].id.value,
-                                                    {"describe": changed});
-                                              }
-                                            },
-                                            child: SecText(
-                                              "show",
-                                              textColor: color1,
-                                              fontSize: Utils.fontSizeScale(
-                                                  expansionTileChildrenFontSize),
-                                            ),
-                                          ),
+                                        SecText(
+                                          "Empty",
+                                          textColor:
+                                              AppColors.inverseSecTextColor,
                                         ),
-                                        SizedBox(
-                                          width: ((Get.width) * (1 / 4)),
-                                          child: IconButton(
-                                              onPressed: () {
-                                                if (controller
-                                                        .statement
-                                                        ?.incomes![i]
-                                                        .id
-                                                        .value ==
-                                                    null) return;
-                                                controller.deleteIncome(
-                                                    (controller.statement!
-                                                        .incomes![i].id.value));
-                                              },
-                                              icon: Icon(
-                                                Icons.delete,
-                                                color: color1,
-                                              )),
-                                        )
                                       ],
+                                    ),
+                                  ] else ...[
+                                    const SizedBox(
+                                      height: 16,
                                     ),
                                     Container(
                                       height: 1,
                                       width: ((Get.width - 45) * (1 / 4)) * 8,
                                       color: AppColors.secTextColor,
-                                    )
+                                    ),
+                                    for (int i = 0;
+                                        i <
+                                            (controller
+                                                    .statement?.incomes?.length ??
+                                                0);
+                                        i++) ...[
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          SizedBox(
+                                              width: ((Get.width) * (1 / 4)),
+                                              child: SecText(
+                                                (controller.statement?.incomes?[i]
+                                                            .date?.value !=
+                                                        null)
+                                                    ? controller.dateFormat
+                                                        .format(DateTime.parse(
+                                                            controller
+                                                                .statement!
+                                                                .incomes![i]
+                                                                .date!
+                                                                .value))
+                                                        .toString()
+                                                    : "Unknown",
+                                                textColor: color1,
+                                                fontSize: Utils.fontSizeScale(
+                                                    expansionTileChildrenFontSize),
+                                              )),
+                                          SizedBox(
+                                              width: ((Get.width) * (1 / 4)),
+                                              child: SecText(
+                                                (controller.statement?.incomes?[i]
+                                                            .date?.value !=
+                                                        null)
+                                                    ? controller.timeFormat
+                                                        .format(DateTime.parse(
+                                                            controller
+                                                                .statement!
+                                                                .incomes![i]
+                                                                .date!
+                                                                .value))
+                                                        .toString()
+                                                    : "Unknown",
+                                                textColor: color1,
+                                                fontSize: Utils.fontSizeScale(
+                                                    expansionTileChildrenFontSize),
+                                              )),
+                                          SizedBox(
+                                              width: ((Get.width) * (1 / 4)),
+                                              child: SecText(
+                                                "${controller.statement?.incomes?[i].amount?.value ?? "Unknown"}",
+                                                textColor: color1,
+                                                fontSize: Utils.fontSizeScale(
+                                                    expansionTileChildrenFontSize),
+                                              )),
+                                          SizedBox(
+                                              width: ((Get.width) * (1 / 4)),
+                                              child: SecText(
+                                                controller.statement?.incomes?[i]
+                                                        .paymentType?.value ??
+                                                    "Unknown",
+                                                textColor: color1,
+                                                fontSize: Utils.fontSizeScale(
+                                                    expansionTileChildrenFontSize),
+                                              )),
+                                          SizedBox(
+                                              width: ((Get.width) * (1 / 4)),
+                                              child: SecText(
+                                                controller.statement?.incomes?[i]
+                                                        .paymentID?.value ??
+                                                    "Unknown",
+                                                textColor: color1,
+                                                fontSize: Utils.fontSizeScale(
+                                                    expansionTileChildrenFontSize),
+                                              )),
+                                          SizedBox(
+                                            width: ((Get.width) * (1 / 4)),
+                                            child: TextButton(
+                                              onPressed: () async {
+                                                String changed = await Get.dialog(
+                                                    const PopUpShowNotesCard(),
+                                                    arguments: {
+                                                      "notes": controller
+                                                              .statement
+                                                              ?.incomes?[i]
+                                                              .description
+                                                              ?.value ??
+                                                          "help",
+                                                    });
+                                                if (changed != "") {
+                                                  controller.updateIncome(
+                                                      controller.statement!
+                                                          .incomes![i].id.value,
+                                                      {"describe": changed});
+                                                }
+                                              },
+                                              child: SecText(
+                                                "show",
+                                                textColor: color1,
+                                                fontSize: Utils.fontSizeScale(
+                                                    expansionTileChildrenFontSize),
+                                              ),
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            width: ((Get.width) * (1 / 4)),
+                                            child: IconButton(
+                                                onPressed: () {
+                                                  if (controller
+                                                          .statement
+                                                          ?.incomes![i]
+                                                          .id
+                                                          .value ==
+                                                      null) return;
+                                                  controller.deleteIncome(
+                                                      (controller.statement!
+                                                          .incomes![i].id.value));
+                                                },
+                                                icon: Icon(
+                                                  Icons.delete,
+                                                  color: color1,
+                                                )),
+                                          )
+                                        ],
+                                      ),
+                                      Container(
+                                        height: 1,
+                                        width: ((Get.width - 45) * (1 / 4)) * 8,
+                                        color: AppColors.secTextColor,
+                                      )
+                                    ],
                                   ],
                                 ],
-                              ],
+                              ),
                             ),
                           ),
                           const SizedBox(

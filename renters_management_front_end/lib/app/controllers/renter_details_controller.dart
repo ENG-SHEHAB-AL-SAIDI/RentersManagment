@@ -36,7 +36,7 @@ class RenterDetailsController extends GetxController {
   RxString selectedYear = ''.obs;
   Rx<List<DropdownMenuItem<String>>> phones = Rx([]);
   Rx<List<DropdownMenuItem<String>>> years = Rx([]);
-  DateFormat dateFormat = DateFormat("yyyy-dd-MM");
+  DateFormat dateFormat = DateFormat("yyyy-MM-dd");
   DateFormat timeFormat = DateFormat("hh:mm a");
   DateFormat dateTimeFormat = DateFormat("yyyy-MM-dd HH:mm:ss");
 
@@ -258,6 +258,7 @@ class RenterDetailsController extends GetxController {
       DateTime date = dateFormat.parse(result["date"]);
       DateTime dateTime = DateTime(
           date.year, date.month, date.day, time.hour, time.minute, time.second);
+
       Result res = await RentPaymentServices.rentPaymentAddInstallment(
           buildId: buildId,
           renterId: renterId,
@@ -278,6 +279,7 @@ class RenterDetailsController extends GetxController {
       }
     }
   }
+
   void updateInstallment(int? paymentId,int? installmentId, Map<String,dynamic> data) async {
     if (paymentId == null || installmentId == null) {
       return;

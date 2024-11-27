@@ -302,9 +302,9 @@ class RentPaymentServices {
           "user/rent_payments/$rentPaymentId/installments/$installmentId");
       if (response?.statusCode == 200) {
         rentPayment.data?.remainAmount?.value =
-            double.tryParse(response?.data["remain_amount"])??0;
+            double.tryParse(response?.data["remain_amount"].toString()??"0")??0;
         rentPayment.data?.payedAmount?.value =
-            double.tryParse(response?.data["payed_amount"])??0;
+            double.tryParse(response?.data["payed_amount"].toString()??"0")??0;
         rentPayment.data?.state?.value = response?.data["state"];
         rentPayment.data?.rentPaymentsInstallment
             ?.removeWhere((e) => e.id.value == installmentId);

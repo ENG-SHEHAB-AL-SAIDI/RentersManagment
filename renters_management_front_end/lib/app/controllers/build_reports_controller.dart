@@ -24,9 +24,8 @@ class BuildReportsController extends GetxController {
   String year = "";
   int month = -1;
   Statement? statement;
-
   RxBool isLoad = true.obs;
-  DateFormat dateFormat = DateFormat("yyyy-dd-MM");
+  DateFormat dateFormat = DateFormat("yyyy-MM-dd");
   DateFormat timeFormat = DateFormat("hh:mm a");
   DateFormat dateTimeFormat = DateFormat("yyyy-MM-dd HH:mm:ss");
 

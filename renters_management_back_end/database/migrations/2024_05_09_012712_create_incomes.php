@@ -14,10 +14,10 @@ return new class extends Migration
     {
         Schema::create('incomes', function (Blueprint $table) {
             $table->id();
-            $table->date('date');
-            $table->float('amount');
-            $table->enum('paymentType',['cash','trans']);
-            $table->bigInteger('paymentID')->nullable();
+            $table->dateTime('date');
+            $table->decimal('amount',16,2);
+            $table->enum('payment_type',['cash','trans','part_from_trans']);
+            $table->bigInteger('payment_id')->nullable();
             $table->text('describe')->nullable();
             $table->softDeletes();
             $table->timestamps();

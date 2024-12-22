@@ -15,19 +15,19 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        $users = User::factory(2)->create();
-        $users->push(User::create([
-            'name'=>"shehab8",
-            'email'=>"shehab8@gmail.com",
+        // $users = User::factory(2)->create();
+        $users = User::create([
+            'name'=>"test",
+            'email'=>"test@gmail.com",
             'password'=>12345678,
-        ]));
+        ])->get();
         foreach ($users as $user) {
 
-            $buildSeeder = new BuildSeeder(5, $user);
+            $buildSeeder = new BuildSeeder(3, $user);
             $builds = $buildSeeder->run();
 
             foreach ($builds as $build) {
-                $renterSeeder = new RenterSeeder(3, $build);
+                $renterSeeder = new RenterSeeder(5, $build);
                 $renters = $renterSeeder->run();
 
                 foreach ($renters as $renter) {

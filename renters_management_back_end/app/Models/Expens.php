@@ -17,19 +17,21 @@ class Expens extends Model
         'amount',
         'describe',
     ];
-
+    protected $table = 'expenses';
     protected static function boot()
     {
         parent::boot();
 
         static::created(function($model){
 
-            $model->statement()->TotalExpenses += $model->amount;
+            $model->statement->TotalExpenses += $model->amount;
+            $model->statement->save();
         });
 
         static::deleted(function($model){
 
-            $model->statement()->TotalExpenses -= $model->amount;
+            $model->statement->TotalExpenses -= $model->amount;
+            $model->statement->save();
         });
     }
 

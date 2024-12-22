@@ -28,15 +28,8 @@ class RentPaymentsInstallmentSeeder extends Seeder
         for ($i = 0; $i < $this->count; $i++) {
             $amount = fake()->randomFloat(null, 0, $this->rentPayment->remain_amount);
             $date = fake()->date();
-            $statement = $this->rentPayment->renter->build->statment()->where('year',$this->rentPayment->year)->where('month',$this->rentPayment->month)->get()->first();
-            $income = $statement->incomes()->create([
-            'date'=>$date,
-            'amount'=>$amount,
-            'paymentType'=>'cash',
-        ]);
-            $installment = RentPaymentsInstallment::factory()->for($this->rentPayment)->for($income)->create(
+            $installment = RentPaymentsInstallment::factory()->for($this->rentPayment)->create(
                 [
-                    'date'=>$date,
                     'amount' => $amount,
                 ]
             );

@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('renters', function (Blueprint $table) {
             $table->id();
             $table->string('name',50);
-            $table->float('rent');
+            $table->decimal('rent',16,2);
             $table->string('job_domain',100)->nullable();
             $table->string('entery_year')->nullable(false);
             $table->softDeletes();

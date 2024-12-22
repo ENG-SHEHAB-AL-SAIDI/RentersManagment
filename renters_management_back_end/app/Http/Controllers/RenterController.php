@@ -43,9 +43,9 @@ class RenterController extends Controller
         }
 
         $build = Build::find($buildId);
-        if($build->statment()->where('year',$data['entery_year'])->get() == []){
+        if($build->statements()->where('year',$data['entery_year'])->get() == []){
             for ($i = 0; $i < 12; $i++) {
-                $build->statment->create([
+                $build->statements->create([
                     'year'=>$data['entery_year'],
                     'month'=>str($i+1),
                 ]);

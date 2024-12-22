@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('year');
             $table->enum('month',['1','2','3','4','5','6','7','8','9','10','11','12']);
-            $table->float('TotalExpenses')->default(0);
-            $table->float('TotalIncomes')->default(0);
+            $table->decimal('TotalExpenses',16,2)->default(0);
+            $table->decimal('TotalIncomes',16,2)->default(0);
             $table->softDeletes();
             $table->timestamps();
 

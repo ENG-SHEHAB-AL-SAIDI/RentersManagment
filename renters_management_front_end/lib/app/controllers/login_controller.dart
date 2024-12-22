@@ -1,38 +1,44 @@
-
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
-import '../models/user_model.dart';
+import 'package:renters_management_front_end/app/bindings/register_binding.dart';
+import 'package:renters_management_front_end/app/models/result.dart';
+import 'package:renters_management_front_end/app/services/user_services.dart';
+
+import '../views/login_view/register_view.dart';
 
 class LoginController extends GetxController {
-  TextEditingController id = TextEditingController();
+
+
+  TextEditingController email = TextEditingController();
   TextEditingController password = TextEditingController();
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
   FocusNode idFocus = FocusNode();
   FocusNode passwordFocus = FocusNode();
+  RxString filedMessage = "password or id is wrong".obs;
   String logWith = "ID";
   RxBool logging = false.obs;
   RxBool loggingFiled = false.obs;
-  RxDouble heightScale = 0.6.obs;
-
+  RxBool rememberMe = false.obs;
+  RxDouble heightScale = 0.65.obs;
 
   @override
   void onClose() {
-    id.dispose();
+    email.dispose();
     password.dispose();
     idFocus.dispose();
     passwordFocus.dispose();
   }
-  @override
-  void onInit() {
-    id.text = "1";
-    password.text = "12345678";
 
-    super.onInit();
-  }
   @override
-  void onReady() {
-    //onLogin();
-    super.onReady();
+  void onInit() async {
+
+    List<String>? credentials = await UserServices.fetchCachedCredentials();
+    if (credentials != null) {
+      email.text = credentials[0];
+      password.text = credentials[1];
+      onLogin();
+    }
+    super.onInit();
   }
 
   String? validateID(String? id) {
@@ -42,12 +48,11 @@ class LoginController extends GetxController {
     } else if (GetUtils.isNumericOnly(id)) {
       logWith = "ID";
       valid = true;
-    }
-    else if (GetUtils.isEmail(id)) {
+    } else if (GetUtils.isEmail(id)) {
       logWith = "Email";
       valid = true;
     }
-    return (valid)?null:"Invalid ID";
+    return (valid) ? null : "Invalid ID";
   }
 
   String? validatePassword(String? password) {
@@ -60,23 +65,45 @@ class LoginController extends GetxController {
     }
   }
 
-  void forgotPassword(){
+  void forgotPassword() {
     Get.toNamed("/forgotPassword");
   }
 
-  Future<void> onLogin() async {
-    if (formKey.currentState!.validate()) {
-      logging.value = true;
-      await Future.delayed(const Duration(seconds: 1));
-      if (UserModel.userLogin(id.text, password.text)) {
-        Get.offNamed("/home");
-      }else{
-       loggingFiled.value = true;
-      }
-      logging.value = false;
-    }
+  void toggleRememberMe(bool? val) {
+    rememberMe.value = val ?? false;
   }
-  void changeLang(String lang){
+
+
+  Future<void> onLogin() async {
+    logging.value = true;
+    if (formKey.currentState!.validate()) {
+      Result res = await UserServices.userLogin(email.text, password.text,rememberMe: rememberMe.value);
+      if (res.statusCode == 200) {
+        Get.offNamed("/home");
+      } else if (res.statusCode == 900) {
+        filedMessage.value =
+            "no internet connection \n please check your connection ";
+        loggingFiled.value = true;
+      } else if (res.statusCode == 401) {
+        filedMessage.value = "password or id is wrong";
+        loggingFiled.value = true;
+      } else if (res.statusCode == 404) {
+        filedMessage.value = "no such user exist";
+        loggingFiled.value = true;
+      } else {
+        filedMessage.value =
+            "something get wrong \n please check your connection ";
+        loggingFiled.value = true;
+      }
+    }
+    logging.value = false;
+  }
+
+  void registerRoute() {
+    Get.to(() => PhoneRegisterView(), binding: RegisterViewBinding());
+  }
+
+  void changeLang(String lang) {
     Get.updateLocale(Locale(lang));
   }
 }

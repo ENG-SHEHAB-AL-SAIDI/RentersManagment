@@ -6,11 +6,20 @@ import 'package:renters_management_front_end/app/components/text_field.dart';
 import '../../globals.dart';
 import '../custom_text.dart';
 
-class PopUpIUpdateBuildCard extends StatelessWidget {
-  const PopUpIUpdateBuildCard({super.key});
-
+class PopUpIAddAndUpdateBuildCard extends StatelessWidget {
+   PopUpIAddAndUpdateBuildCard({this.mode="Add",this.data, super.key});
+  TextEditingController buildNameController = TextEditingController();
+  TextEditingController cityController = TextEditingController();
+  TextEditingController addressController = TextEditingController();
+   Map<String,String>? data;
+   String mode;
   @override
   Widget build(BuildContext context) {
+    if(data != null){
+      buildNameController.text = data!["buildName"]??"";
+      cityController.text = data!["city"]??"";
+      addressController.text = data!["address"]??"";
+    }
     return Center(
       child: Padding(
         padding: const EdgeInsets.all(32.0),
@@ -20,12 +29,12 @@ class PopUpIUpdateBuildCard extends StatelessWidget {
             color: AppColors.mainCardColor,
             elevation: 2,
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(32),
-              side: BorderSide(
-                color: AppColors.inverseCardColor,
-                width: 3,
+                borderRadius: BorderRadius.circular(32),
+                side: BorderSide(
+                  color: AppColors.inverseCardColor,
+                  width: 3,
 
-              )
+                )
             ),
             child: SizedBox(
                 height: Get.height * 0.4,
@@ -35,7 +44,7 @@ class PopUpIUpdateBuildCard extends StatelessWidget {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        SecText("Build Update",
+                        SecText("Add Build",
                             fontWeight: FontWeight.bold,
                             fontSize: 20),
                         Row(
@@ -58,6 +67,7 @@ class PopUpIUpdateBuildCard extends StatelessWidget {
                               ],
                             ),
                             CustomTextFormField(
+                              controller: buildNameController,
                               width: (Get.width-12)*0.46,
                             ),
                           ],
@@ -77,6 +87,7 @@ class PopUpIUpdateBuildCard extends StatelessWidget {
                               SecText("City"),
                             ],),
                             CustomTextFormField(
+                              controller: cityController,
                               width: (Get.width-12)*0.46,
                             ),
                           ],
@@ -98,6 +109,7 @@ class PopUpIUpdateBuildCard extends StatelessWidget {
                               ],
                             ),
                             CustomTextFormField(
+                              controller: addressController,
                               width: (Get.width-12)*0.46,
                             ),
                           ],
@@ -106,11 +118,11 @@ class PopUpIUpdateBuildCard extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
                             CustomButton(
-                              onPress: update,
-                              text: "Update",
+                              onPress: submit,
+                              text: mode,
                             ),
                             CustomButton(
-                              onPress: () => Get.back(),
+                              onPress: () => Get.back(result: null),
                               text: "Close",
                             ),
                           ],
@@ -123,5 +135,12 @@ class PopUpIUpdateBuildCard extends StatelessWidget {
     );
   }
 
-  void update() {}
+  void submit(){
+    Map<String,dynamic> jsData = {
+      "name":buildNameController.text,
+      "city":cityController.text,
+      "address":addressController.text,
+    };
+    Get.back(result: jsData);
+  }
 }

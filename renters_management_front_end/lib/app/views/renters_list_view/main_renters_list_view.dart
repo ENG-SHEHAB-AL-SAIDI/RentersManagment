@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import './phone_renters_list_view.dart';
 
-class RentersStateView extends StatelessWidget {
-  const RentersStateView({super.key});
+
+class RentersListView extends StatelessWidget {
+  const RentersListView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -13,7 +15,7 @@ class RentersStateView extends StatelessWidget {
       child: LayoutBuilder(
         builder: (context, constraints) {
           if (constraints.maxWidth <= 768 && constraints.maxHeight <= 1025) {
-            return  const Placeholder();
+            return  const PhoneRentersListView();
           } else {
             return  const Placeholder();
           }
@@ -22,3 +24,10 @@ class RentersStateView extends StatelessWidget {
     );
   }
 }
+
+
+
+
+
+
+

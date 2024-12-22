@@ -2,13 +2,14 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:renters_management_front_end/app/components/pop_up_cards/delete_confirmation_message_card.dart';
-import 'package:renters_management_front_end/app/components/pop_up_cards/update_build_card.dart';
+import 'package:renters_management_front_end/app/models/build_model.dart';
+
+import '../controllers/home_controller.dart';
 import '../globals.dart';
 import 'custom_text.dart';
 
 class BuildCard extends StatelessWidget {
-  late var buildInfo;
+  Build buildInfo;
   double height;
   double type;
 
@@ -19,13 +20,15 @@ class BuildCard extends StatelessWidget {
     required this.type,
   });
 
+  HomeController controller = Get.put<HomeController>(HomeController());
+
   @override
   Widget build(BuildContext context) {
-    (height < 200) ? height = 200 : null;
+    (height < 200) ? height = 270 : null;
     Color color1;
     Color color2;
     Color textColor;
-    double rightPadding = 70;
+
     if (type == 0) {
       color1 = AppColors.mainCardColor;
       color2 = AppColors.inverseCardColor;
@@ -35,7 +38,7 @@ class BuildCard extends StatelessWidget {
       color2 = AppColors.backColor;
       textColor = AppColors.mainTextColor;
     }
-    return Container(
+    return Obx(() => Container(
         height: height,
         width: double.maxFinite,
         decoration: BoxDecoration(
@@ -52,6 +55,7 @@ class BuildCard extends StatelessWidget {
               spreadRadius: 3,
               blurRadius: 5,
               offset: Offset(0, 5),
+              blurStyle: BlurStyle.outer
             )
           ],
           borderRadius: const BorderRadius.all(Radius.circular(20)),
@@ -62,15 +66,15 @@ class BuildCard extends StatelessWidget {
               height: ((height - 2) * 0.6),
               padding: const EdgeInsets.all(12),
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      SizedBox(
-                        width: (Get.width - rightPadding) * 0.6,
-                        child: Row(
+                  SizedBox(
+                    height: Utils.fontSizeScale(20),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(
                           children: [
                             SecText(
                               "Build Name:  ",
@@ -78,101 +82,86 @@ class BuildCard extends StatelessWidget {
                               fontWeight: FontWeight.bold,
                             ),
                             SecText(
-                              "Name",
+                              buildInfo.name?.value ?? "Unknown",
                               textColor: textColor,
                             ),
                           ],
                         ),
-                      ),
-                      SizedBox(
-                        width: (Get.width - rightPadding) * 0.30,
-                        child: Row(
+                        Row(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
                             IconButton(
-                                onPressed: edit,
-                                icon: Icon(
-                                  Icons.edit,
-                                  color: textColor,
-                                )),
+                              onPressed: () =>
+                                  controller.edit(buildInfo.id.value),
+                              icon: Icon(
+                                Icons.edit,
+                                color: textColor,
+                              ),
+                              padding: EdgeInsets.zero,
+                            ),
                             IconButton(
-                                onPressed: delete,
-                                icon: Icon(
-                                  Icons.delete,
-                                  color: textColor,
-                                ))
+                              onPressed: () =>
+                                  controller.delete(buildInfo.id.value),
+                              icon: Icon(
+                                Icons.delete,
+                                color: textColor,
+                              ),
+                              padding: EdgeInsets.zero,
+                            )
                           ],
                         ),
+                      ],
+                    ),
+                  ),
+                  Row(
+                    children: [
+                      SecText(
+                        "city:  ",
+                        textColor: textColor,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      SecText(
+                        buildInfo.city?.value ?? "Unknown",
+                        textColor: textColor,
                       ),
                     ],
                   ),
                   Row(
                     children: [
-                      SizedBox(
-                        width: (Get.width - rightPadding) * 0.4,
-                        child: Row(
-                          children: [
-                            SecText(
-                              "city:  ",
-                              textColor: textColor,
-                              fontWeight: FontWeight.bold,
-                            ),
-                            SecText(
-                              "Ibb",
-                              textColor: textColor,
-                            ),
-                          ],
-                        ),
+                      SecText(
+                        "address:  ",
+                        textColor: textColor,
+                        fontWeight: FontWeight.bold,
                       ),
-                      SizedBox(
-                        child: Row(
-                          children: [
-                            SecText(
-                              "address:  ",
-                              textColor: textColor,
-                              fontWeight: FontWeight.bold,
-                            ),
-                            SecText(
-                              "Arwa Street",
-                              textColor: textColor,
-                            ),
-                          ],
-                        ),
+                      SecText(
+                        buildInfo.address?.value ?? "Unknown",
+                        textColor: textColor,
                       ),
                     ],
                   ),
                   Row(
                     children: [
-                      SizedBox(
-                        width: (Get.width - rightPadding) * 0.4,
-                        child: Row(
-                          children: [
-                            SecText(
-                              "No.Renters:  ",
-                              textColor: textColor,
-                              fontWeight: FontWeight.bold,
-                            ),
-                            SecText(
-                              "20",
-                              textColor: textColor,
-                            ),
-                          ],
-                        ),
+                      SecText(
+                        "No.Renters:  ",
+                        textColor: textColor,
+                        fontWeight: FontWeight.bold,
                       ),
-                      SizedBox(
-                        child: Row(
-                          children: [
-                            SecText(
-                              "Total Rent:  ",
-                              textColor: textColor,
-                              fontWeight: FontWeight.bold,
-                            ),
-                            SecText(
-                              "100,000,000",
-                              textColor: textColor,
-                            ),
-                          ],
-                        ),
+                      SecText(
+                        buildInfo.numRenters?.value.toString() ?? '0',
+                        textColor: textColor,
+                      ),
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      SecText(
+                        "Total Rent:  ",
+                        textColor: textColor,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      SecText(
+                        "${buildInfo.totalRent}",
+                        textColor: textColor,
                       ),
                     ],
                   ),
@@ -183,27 +172,27 @@ class BuildCard extends StatelessWidget {
               height: (height - 2) * 0.2,
               width: double.maxFinite,
               color: color2,
-              child: Stack(
-                alignment: Alignment.topRight,
-                children: [
-                  Center(
-                    child: TextButton(
-                      onPressed: renterStateRoute,
+              child: InkWell(
+                onTap: () => controller.rentersListRoute(buildInfo.id.value),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    Center(
                       child: SecText(
-                        "Renters and Rent Status",
+                        "Renters List",
                         textColor: color1,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                  ),
-                  IconButton(
-                    onPressed: renterStateRoute,
-                    icon: Icon(
+                    Icon(
                       Icons.arrow_forward_ios,
                       color: color1,
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
             const SizedBox(
@@ -219,48 +208,30 @@ class BuildCard extends StatelessWidget {
                   bottomLeft: Radius.circular(20),
                 ),
               ),
-              child: Stack(
-                alignment: Alignment.topRight,
-                children: [
-                  Center(
-                    child: TextButton(
-                      onPressed: buildReportRoute,
+              child: InkWell(
+                onTap: () => controller.buildReportRoute(buildInfo.id.value),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    Center(
                       child: SecText(
-                        "Build Reports ",
+                        "Build Reports",
                         textColor: color1,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                  ),
-                  IconButton(
-                    onPressed: buildReportRoute,
-                    icon: Icon(
+                    Icon(
                       Icons.arrow_forward_ios,
                       color: color1,
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             )
           ],
-        ));
-  }
-
-  void edit() {
-
-    Get.dialog(const PopUpIUpdateBuildCard());
-  }
-
-  void delete() {
-    Get.dialog(PopUpMessageCard(
-            "did you sure want delete this build that will delete all data relative to it."));
-  }
-
-  void renterStateRoute() {
-    Get.toNamed("/rentersState");
-  }
-
-  void buildReportRoute() {
-    Get.toNamed("/buildReports");
+        )));
   }
 }

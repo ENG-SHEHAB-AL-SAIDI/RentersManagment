@@ -452,17 +452,24 @@ Future<List<Widget>> _statementCard() async {
                     "Fully Payed Renters List:",
                   ),
                 ),
-                for (Renter renter in payingRenters) ...[
+                for (int i=0;i<payingRenters.length;i+=4) ...[
                   Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      SizedBox(width: 32),
-                      PdfText("- ${renter.name?.value ?? " "}"),
-                    ],
-                  ),
-                  SizedBox(height: 16),
-                ]
+                      SizedBox(width: 30),
+                      for(int j=i;j<(i+4);j++)...[
+                        if(j<payingRenters.length)...[
+                          SizedBox(
+                            width: PdfPageFormat.a4.width/5,
+                            child: PdfText("${j+1}- ${payingRenters[j].name?.value ?? " "}"),
+                          )
+                        ]
+                      ]
+                    ]
+                  )
+                ],
+                SizedBox(height: 10),
               ]),
+
               Container(height: 1, color: PdfColors.black),
 
             ]
@@ -523,16 +530,22 @@ Future<List<Widget>> _statementCard() async {
                     "Partially Payed Renters List:",
                   ),
                 ),
-                for (Renter renter in partiallyPayingRenters) ...[
+                for (int i=0;i<partiallyPayingRenters.length;i+=4) ...[
                   Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SizedBox(width: 32),
-                      PdfText("- ${renter.name?.value ?? " "}"),
-                    ],
-                  ),
-                  SizedBox(height: 16),
-                ]
+                      children: [
+                        SizedBox(width: 30),
+                        for(int j=i;j<(i+4);j++)...[
+                          if(j<partiallyPayingRenters.length)...[
+                            SizedBox(
+                              width: PdfPageFormat.a4.width/5,
+                              child: PdfText("${j+1}- ${payingRenters[j].name?.value ?? " "}"),
+                            )
+                          ]
+                        ]
+                      ]
+                  )
+                ],
+                SizedBox(height: 10),
               ]),
               Container(height: 1, color: PdfColors.black),
             ]
@@ -592,16 +605,22 @@ Future<List<Widget>> _statementCard() async {
                     "Not Payed Renters List:",
                   ),
                 ),
-                for (Renter renter in notPayingRenters) ...[
+                for (int i=0;i<notPayingRenters.length;i+=4) ...[
                   Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SizedBox(width: 32),
-                      PdfText("- ${renter.name?.value ?? " "}"),
-                    ],
-                  ),
-                  SizedBox(height: 8),
-                ]
+                      children: [
+                        SizedBox(width: 30),
+                        for(int j=i;j<(i+4);j++)...[
+                          if(j<notPayingRenters.length)...[
+                            SizedBox(
+                              width: PdfPageFormat.a4.width/5,
+                              child: PdfText("${j+1}- ${payingRenters[j].name?.value ?? " "}"),
+                            )
+                          ]
+                        ]
+                      ]
+                  )
+                ],
+                SizedBox(height: 10),
               ]),
             ]
         )),

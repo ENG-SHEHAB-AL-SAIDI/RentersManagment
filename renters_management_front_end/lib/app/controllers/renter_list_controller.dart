@@ -6,6 +6,7 @@ import 'package:renters_management_front_end/app/models/rent_payments_model.dart
 import 'package:renters_management_front_end/app/models/result.dart';
 import 'package:renters_management_front_end/app/services/renter_services.dart';
 
+import '../components/calculator.dart';
 import '../components/pop_up_cards/alert_message_card.dart';
 import '../components/pop_up_cards/delete_confirmation_message_card.dart';
 import '../components/pop_up_cards/renter_print_setting_card.dart';
@@ -137,6 +138,8 @@ class RenterListController extends GetxController {
     if (val == "print") {
       Get.dialog(PopUpRenterPrintSettingCard(),
           arguments: {"renters": renters.value});
+    } else if (val == "Calculator") {
+      Get.bottomSheet(Calculator());
     }
   }
 }

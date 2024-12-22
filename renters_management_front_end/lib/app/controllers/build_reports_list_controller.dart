@@ -89,8 +89,9 @@ class BuildReportsListController extends GetxController {
   }
 
   void printing() async {
+    Get.arguments["buildId"] = buildId;
     BuildReportsController controller =  Get.put<BuildReportsController>(BuildReportsController());
-    controller.buildId = buildId;
+    // controller.buildId = buildId;
 
     List<Statement> statements = [];
     Map<String, List<Statement>> res =

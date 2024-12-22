@@ -1,6 +1,7 @@
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart';
+import 'package:renters_management_front_end/app/services/print/printing_components/pdf_text.dart';
 
 import '../../../models/renter_model.dart';
 
@@ -13,37 +14,37 @@ Widget renterInfoPrintLayout(Renter renter) {
       Row(mainAxisSize: MainAxisSize.min, children: [
         SizedBox(
           width: 85,
-          child: Text("Renter Name: "),
+          child: PdfText("Renter Name: ",isBold: true,fontSize: 12),
         ),
-        Text(renter.name?.value ?? ""),
+        PdfText(renter.name?.value ?? "",isBold: true,fontSize: 12),
       ]),
       SizedBox(height: 0.4 * PdfPageFormat.cm),
       Row(mainAxisSize: MainAxisSize.min, children: [
         SizedBox(
           width: 85,
-          child: Text("Rent: "),
+          child: PdfText("Rent: ",isBold: true,fontSize: 12),
         ),
-        Text("${renter.rent?.value ?? ""}"),
+        PdfText("${renter.rent?.value ?? ""}",isBold: true,fontSize: 12),
       ]),
       SizedBox(height: 0.4 * PdfPageFormat.cm),
       Row(mainAxisSize: MainAxisSize.min, children: [
         SizedBox(
           width: 85,
-          child: Text("Activity: "),
+          child: PdfText("Activity: ",isBold: true,fontSize: 12),
         ),
-        Text(renter.jobDomain?.value ?? ""),
+        PdfText(renter.jobDomain?.value ?? "",isBold: true,fontSize: 12),
       ]),
       SizedBox(height: 0.4 * PdfPageFormat.cm),
       Row(mainAxisSize: MainAxisSize.min, children: [
         SizedBox(
           width: 85,
-          child: Text("Phones:"),
+          child: PdfText("Phones:",isBold: true,fontSize: 12),
         ),
-        Text("[ "),
+        PdfText("[ ",isBold: true,fontSize: 12),
         for (RxString phone in renter.phones ?? []) ...[
-          Text("${phone.value} ,"),
+          PdfText("${phone.value} ,",isBold: true,fontSize: 12),
         ],
-        Text("  ]"),
+        PdfText("  ]",isBold: true,fontSize: 12),
       ]),
     ],
   ));

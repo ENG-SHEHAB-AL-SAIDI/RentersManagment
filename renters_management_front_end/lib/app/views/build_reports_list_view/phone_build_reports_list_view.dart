@@ -48,6 +48,7 @@ class PhoneBuildReportsListView extends GetView<BuildReportsListController> {
                       "Print",
                       textColor: AppColors.mainTextColor,
                     )),
+
               ],
               child: Icon(Icons.more_vert_outlined,
                   color: AppColors.mainTextColor),

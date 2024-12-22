@@ -1,5 +1,6 @@
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart';
+import 'package:renters_management_front_end/app/services/print/printing_components/pdf_text.dart';
 import 'package:renters_management_front_end/app/services/print/printing_components/rent_payment_layout.dart';
 import '../../models/rent_payments_model.dart';
 
@@ -11,9 +12,9 @@ class SingleRentPaymentPrintLayout {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            Text("Renter: $renterName"),
-            Text("Rent: $rent"),
-            Text("Year ${rentPayment?.year}"),
+            PdfText("Renter: $renterName"),
+            PdfText("Rent: $rent"),
+            PdfText("Year ${rentPayment?.year}"),
           ]
         ),
         SizedBox(height: 0.5 * PdfPageFormat.cm),

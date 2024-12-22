@@ -2,6 +2,7 @@ import 'package:intl/intl.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart';
 import 'package:renters_management_front_end/app/models/rent_payments_model.dart';
+import 'package:renters_management_front_end/app/services/print/printing_components/pdf_text.dart';
 
 Map<String, String> months = {
   '1': 'January',
@@ -32,30 +33,30 @@ Widget rentPaymentPrintLayout(RentPayment rentPayment,
       Row(mainAxisAlignment: MainAxisAlignment.center, children: [
         SizedBox(
           width: (PdfPageFormat.a4.width - 128) / 4,
-          child: Text(
+          child: PdfText(
             "Month:${months[rentPayment.month?.value]} (${rentPayment.month?.value})",
-            style: TextStyle(fontSize: 8),
+            fontSize: 8
           ),
         ),
         SizedBox(
           width: (PdfPageFormat.a4.width - 128) / 4,
-          child: Text(
+          child: PdfText(
             "State: ${rentPayment.state}",
-            style: TextStyle(fontSize: 8),
+              fontSize: 8
           ),
         ),
         SizedBox(
           width: (PdfPageFormat.a4.width - 128) / 4,
-          child: Text(
+          child: PdfText(
             "PayedAmount: ${rentPayment.payedAmount?.value.toStringAsFixed(2)}",
-            style: TextStyle(fontSize: 8),
+              fontSize: 8
           ),
         ),
         SizedBox(
           width: (PdfPageFormat.a4.width - 128) / 4,
-          child: Text(
+          child: PdfText(
             "RemainAmount:${rentPayment.remainAmount?.value.toStringAsFixed(2)}",
-            style: TextStyle(fontSize: 8),
+              fontSize: 8
           ),
         ),
       ]),
@@ -63,7 +64,7 @@ Widget rentPaymentPrintLayout(RentPayment rentPayment,
         Divider(),
       ] else ...[
         Divider(),
-        Text("  Installments:")
+        PdfText("  Installments:")
       ],
       if (includeInstallment) ...[
         SizedBox(height: 0.15 * PdfPageFormat.cm),
@@ -77,30 +78,27 @@ Widget rentPaymentPrintLayout(RentPayment rentPayment,
                     children: [
                       SizedBox(
                         width: (PdfPageFormat.a4.width - 128) / 6,
-                        child: Text(
+                        child: PdfText(
                           "Date",
-                          style: TextStyle(fontSize: 8),
                         ),
                       ),
                       SizedBox(
                         width: (PdfPageFormat.a4.width - 128) / 6,
-                        child: Text(
+                        child: PdfText(
                           "Time",
-                          style: TextStyle(fontSize: 8),
                         ),
                       ),
                       SizedBox(
                         width: (PdfPageFormat.a4.width - 128) / 6,
-                        child: Text(
+                        child: PdfText(
                           "Amount",
-                          style: TextStyle(fontSize: 8),
                         ),
                       ),
                       SizedBox(
                         width: ((PdfPageFormat.a4.width - 128) / 6) * 2,
-                        child: Text("Note",
-                            style: TextStyle(fontSize: 8),
-                            textAlign: TextAlign.center),
+                        child: PdfText("Note",
+                            textAlign: TextAlign.center,
+                        ),
                       ),
                       Divider(),
                     ]),
@@ -112,9 +110,8 @@ Widget rentPaymentPrintLayout(RentPayment rentPayment,
                 SizedBox(
                   width: (PdfPageFormat.a4.width),
                   child: Center(
-                      child: Text(
+                      child: PdfText(
                     "Empty",
-                    style: TextStyle(fontSize: 8),
                   )),
                 ),
                 SizedBox(height: 0.5 * PdfPageFormat.cm),
@@ -130,7 +127,7 @@ Widget rentPaymentPrintLayout(RentPayment rentPayment,
                         children: [
                           SizedBox(
                             width: (PdfPageFormat.a4.width - 128) / 6,
-                            child: Text(
+                            child: PdfText(
                               (rentPayment.rentPaymentsInstallment![i].date
                                           ?.value !=
                                       null)
@@ -141,12 +138,11 @@ Widget rentPaymentPrintLayout(RentPayment rentPayment,
                                           .value))
                                       .toString()
                                   : "Unknown",
-                              style: TextStyle(fontSize: 8),
                             ),
                           ),
                           SizedBox(
                             width: (PdfPageFormat.a4.width - 128) / 6,
-                            child: Text(
+                            child: PdfText(
                               (rentPayment.rentPaymentsInstallment![i].date
                                           ?.value !=
                                       null)
@@ -157,23 +153,20 @@ Widget rentPaymentPrintLayout(RentPayment rentPayment,
                                           .value))
                                       .toString()
                                   : "Unknown",
-                              style: TextStyle(fontSize: 8),
                             ),
                           ),
                           SizedBox(
                             width: (PdfPageFormat.a4.width - 128) / 6,
-                            child: Text(
+                            child: PdfText(
                               "${rentPayment.rentPaymentsInstallment![i].amount?.value.toStringAsFixed(2)}",
-                              style: TextStyle(fontSize: 8),
                             ),
                           ),
                           SizedBox(
                             width: ((PdfPageFormat.a4.width - 128) / 6) * 3,
-                            child: Text(
+                            child: PdfText(
                               rentPayment.rentPaymentsInstallment![i].notes
                                       ?.value ??
                                   "",
-                              style: TextStyle(fontSize: 8),
                             ),
                           ),
                         ]),

@@ -7,7 +7,8 @@ class StatementPrintLayout {
   static Future<Document> generateSingleStatement(Statement? statement,String buildName,) async {
     final pdf = Document();
     Widget statementLayout = await statementPrintLayout(statement);
-    pdf.addPage(MultiPage(
+    pdf.addPage(
+        MultiPage(
       build: (context) =>  [
         Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,

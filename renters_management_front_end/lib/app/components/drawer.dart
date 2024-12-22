@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_simple_calculator/flutter_simple_calculator.dart';
 import 'package:get/get.dart';
 import 'package:renters_management_front_end/app/components/calculator.dart';
 import 'package:renters_management_front_end/app/controllers/home_controller.dart';
 import 'package:renters_management_front_end/app/globals.dart';
 import 'package:renters_management_front_end/app/services/user_services.dart';
-import '../controllers/calculatorController.dart';
 import 'custom_text.dart';
 
 class CustomDrawer extends GetView<HomeController> {

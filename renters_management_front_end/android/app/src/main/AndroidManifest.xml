@@ -1,6 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <application
-        android:label="renters_management_front_end"
+        android:label="Renters&#10;Management"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

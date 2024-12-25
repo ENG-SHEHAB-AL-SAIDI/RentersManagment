@@ -2,12 +2,12 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
 import '../../components/buttons.dart';
 import '../../components/custom_text.dart';
 import '../../components/text_field.dart';
 import '../../controllers/login_controller.dart';
 import '../../globals.dart';
+
 
 class PhoneLoginView extends GetView<LoginController> {
   PhoneLoginView({
@@ -16,6 +16,7 @@ class PhoneLoginView extends GetView<LoginController> {
 
   double height = Get.height;
   double width = Get.width;
+  RxBool state = true.obs;
 
   List<PopupMenuItem<String>> menuItems = [
     PopupMenuItem<String>(value: "en", child: SecText("En")),
@@ -30,14 +31,14 @@ class PhoneLoginView extends GetView<LoginController> {
         Column(
           children: [
             SizedBox(
-              height: (height * 0.5),
+              height: (height * 0.4),
               width: width,
               child: Image.asset(
                   "assets/images/renters_management_background.jpeg",
                   fit: BoxFit.fill),
             ),
             SizedBox(
-              height: (height * 0.5),
+              height: (height * 0.4),
               width: width,
             ),
           ],
@@ -49,7 +50,7 @@ class PhoneLoginView extends GetView<LoginController> {
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               SizedBox(
-                height: (height * 0.34),
+                height: (height * 0.31),
               ),
               Container(
                 width: double.maxFinite,
@@ -115,8 +116,8 @@ class PhoneLoginView extends GetView<LoginController> {
                       height: height * 0.6 * 0.1,
                     ),
                     CustomTextFormField(
-                      controller: controller.id,
-                      validator: (id) => controller.validateID(id),
+                      controller: controller.email,
+                      validator: controller.validateID,
                       labelText: 'id'.tr,
                       icon: Icons.account_circle_outlined,
                       focusNode: controller.idFocus,
@@ -130,7 +131,7 @@ class PhoneLoginView extends GetView<LoginController> {
                       },
                       onTapOutside: (e) {
                         controller.idFocus.unfocus();
-                        controller.heightScale.value = 0.6;
+                        controller.heightScale.value = 0.65;
                       },
                     ),
                     SizedBox(
@@ -138,7 +139,7 @@ class PhoneLoginView extends GetView<LoginController> {
                     ),
                     CustomTextFormField(
                       controller: controller.password,
-                      validator: (pwd) => controller.validatePassword(pwd),
+                      validator: controller.validatePassword,
                       labelText: 'password'.tr,
                       icon: Icons.key_sharp,
                       isPassword: true,
@@ -148,10 +149,10 @@ class PhoneLoginView extends GetView<LoginController> {
                       },
                       onTapOutside: (e) {
                         controller.passwordFocus.unfocus();
-                        controller.heightScale.value = 0.6;
+                        controller.heightScale.value = 0.65;
                       },
                       onFieldSubmitted: (str) {
-                        controller.heightScale.value = 0.6;
+                        controller.heightScale.value = 0.65;
                         controller.onLogin();
                       },
                     ),
@@ -171,13 +172,18 @@ class PhoneLoginView extends GetView<LoginController> {
                         textColor: Colors.redAccent,
                       ),
                       SecText(
-                        "password or id is wrong",
+                        controller.filedMessage.value,
                         textColor: Colors.redAccent,
                       ),
+                      SizedBox(
+                        height: height * 0.01,
+                      ),
+                    ]else...[
+                      SizedBox(
+                        height: height * 0.6 * 0.05,
+                      ),
                     ],
-                    SizedBox(
-                      height: height * 0.6 * 0.05,
-                    ),
+
                     Obx(() => Column(
                           children: [
                             (controller.logging.value)
@@ -208,12 +214,24 @@ class PhoneLoginView extends GetView<LoginController> {
                                                     AppColors.mainTextColor)),
                                     size: Size(width * 0.8, 50)),
                             SizedBox(
-                              height: height * 0.03,
+                              height: height * 0.01,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                SecText("Remember me",textColor: AppColors.linkTextColor),
+                                Checkbox(
+                                    value: controller.rememberMe.value,
+                                    onChanged: controller.toggleRememberMe),
+                              ],
+                            ),
+                            SizedBox(
+                              height: height * 0.01,
                             ),
                             Align(
                               alignment: AlignmentDirectional.center,
                               child: TextButton(
-                                onPressed: () => controller.forgotPassword,
+                                onPressed: controller.registerRoute,
                                 child: SecText(
                                   "register".tr,
                                   textColor: AppColors.linkTextColor,

@@ -59,7 +59,7 @@ class WebLoginView extends GetView<LoginController> {
                             MainText('login'.tr,
                                 fontWeight: FontWeight.bold,
                                 fontSize: 32,
-                                textColor: Colors.black),
+                                textColor: AppColors.secTextColor),
                             PopupMenuButton<String>(
                               initialValue: Get.locale?.languageCode.toString(),
                               itemBuilder: (BuildContext context) => menuItems,
@@ -86,7 +86,7 @@ class WebLoginView extends GetView<LoginController> {
                           height: height * 0.6 * 0.1,
                         ),
                         CustomTextFormField(
-                          controller: controller.id,
+                          controller: controller.email,
                           validator: (id) => controller.validateID(id),
                           labelText: 'id'.tr,
                           icon: Icons.account_circle_outlined,

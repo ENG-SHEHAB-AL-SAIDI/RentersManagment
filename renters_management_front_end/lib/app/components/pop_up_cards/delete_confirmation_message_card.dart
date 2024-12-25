@@ -62,7 +62,7 @@ class PopUpMessageCard extends StatelessWidget {
                                 ),
                                 CustomButton(
                                   onPress: () {
-                                    Get.back(result: true);
+                                    Get.back(result: false);
                                   },
                                   text: "Cancel",
                                 ),

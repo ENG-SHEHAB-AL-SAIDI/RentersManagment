@@ -1,0 +1,93 @@
+import 'package:get/get.dart';
+import 'package:get/get_rx/get_rx.dart';
+import 'package:get/get_rx/src/rx_types/rx_types.dart';
+import 'package:get/state_manager.dart';
+import 'package:renters_management_front_end/app/models/rent_payments_model.dart';
+
+class Renter {
+  RxInt id;
+  RxString? name;
+  RxDouble? rent;
+  RxString? jobDomain;
+  RxString? enterDate;
+  List<RxString>? phones;
+  RxMap<String,List<RentPayment>>? rentPayments;
+  RxString? deletedAt;
+  RxString? createdAt;
+  RxString? updatedAt;
+
+  Renter({
+    required this.id,
+    this.name,
+    this.rent,
+    this.jobDomain,
+    this.enterDate,
+    this.phones,
+    this.rentPayments,
+    this.deletedAt,
+    this.createdAt,
+    this.updatedAt,
+  });
+
+  factory Renter.fromJson(Map<String, dynamic> json) {
+    List<Map<String, dynamic>> phones = [];
+    if((json["renter_phones"]??[]).isNotEmpty){
+      for (var item in json["renter_phones"]) {
+      if (item != []) {
+        phones.add(item);
+      }
+    }
+    }
+
+    Map<String,List<RentPayment>> rentPayments = {};
+    if((json["grouped_rent_payments"]??[]).isNotEmpty){
+    for (var key in json["grouped_rent_payments"].keys) {
+      List<RentPayment> rentPaymentsItems = [];
+      for(Map<String,dynamic> item in json["grouped_rent_payments"][key]){
+        rentPaymentsItems.add(RentPayment.fromJson(item));
+      }
+      rentPayments[key] = rentPaymentsItems;
+    }
+    }
+
+    return Renter(
+      id: RxInt(json['id'] ?? 0),
+      name: RxString(json['name'] ?? "Unknown"),
+      rent: RxDouble(double.parse(json['rent'].toString())),
+      jobDomain: RxString(json['job_domain'] ?? "Unknown"),
+      enterDate: RxString(json['enter_date'] ?? "Unknown"),
+      phones: List<RxString>.generate(
+          phones.length, (i) => RxString(phones[i]["phone"].toString())),
+      rentPayments: RxMap<String,List<RentPayment>>(rentPayments),
+      updatedAt: RxString(json['deleted_at'] ?? "Unknown"),
+      createdAt: RxString(json['created_at'] ?? "Unknown"),
+      deletedAt: RxString(json['updated_at'] ?? "Unknown"),
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+
+    Map<String,List<dynamic>> jsRentPayments = {};
+      for (String key in (rentPayments??{}).keys) {
+        List<dynamic> rentPaymentsItems = [];
+        for(RentPayment item in (rentPayments??{})[key]){
+          rentPaymentsItems.add(item.toJson());
+        }
+        jsRentPayments[key] = rentPaymentsItems;
+      }
+    return {
+      'id': id.value,
+      'name': name?.value,
+      'rent': rent?.value,
+      'job_domain': jobDomain?.value,
+      'renter_phones':phones,
+      'grouped_rent_payments':jsRentPayments,
+      'enter_date': enterDate?.value,
+      'deleted_at': deletedAt?.value,
+      'created_at': createdAt?.value,
+      'updated_at': updatedAt?.value,
+    };
+  }
+}
+
+

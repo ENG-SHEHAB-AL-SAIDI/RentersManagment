@@ -1,60 +1,46 @@
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
-import 'package:renters_management_front_end/app/models/structures/user_structure.dart';
+
+class User {
+  RxInt id;
+  RxString? name;
+  RxString? email;
+  RxString? phone;
+  RxString? profileImage;
+  RxString? emailVerifiedAt;
+  RxString? createdAt;
+  RxString? updatedAt;
 
 
+  User({
+    required this.id,
+    this.name,
+    this.email,
+    this.emailVerifiedAt,
+    this.createdAt,
+    this.updatedAt,
 
+  });
 
-class UserModel {
-
-  static User? _user;
-  static bool userLogin(String id,String password){
-    // simulate make request and get response
-    bool responseStat = false;
-    if(id == "1" && password == "12345678"){
-      responseStat = true;
-      //String token = "token";
-      Map<String,dynamic> response = {
-        'id': 2070093,
-        'name': 'Shehab AL-Saidi',
-        'email':'shehab@gmail.com',
-        'phone':'772388461',
-        'profileImage': 'assets/images/login_background_0.jpg',
-      };
-      _user = userResponseToUser(response);
-
-    }
-    return responseStat;
-  }
-  static User fetchUser() {
-    if(_user != null){
-      return _user!;
-    }
-    // simulate make request and get response
-    Map<String,dynamic> response = {
-      'id': 2070093,
-      'name': 'Shehab AL-Saidi',
-      'level': '4th',
-      'part': 'Electrical engineering',
-      'department': 'Computer engineering',
-      'profileImage': 'assets/images/login_background_0.jpg',
-    };
-    User user = userResponseToUser(response);
-    return user;
-  }
-
-  static User userResponseToUser(Map<String,dynamic> response){
-    User user = User(
-      id: RxInt(response['id']),
-      name: RxString(response['name']),
-      email: RxString(response['email']),
-      phone: RxString(response['phone']),
-      profileImage: RxString(response['profileImage']),
+  factory User.fromJson(Map<String,dynamic> json){
+    return User(
+      id: RxInt(json['id'] ?? 0),
+      name: RxString(json['name'] ?? ""),
+      email: RxString(json['email'] ?? ""),
+      emailVerifiedAt: RxString(json['email_verified_at'] ?? ""),
+      createdAt: RxString(json['created_at'] ?? ""),
+      updatedAt: RxString(json['updated_at'] ?? ""),
     );
-    return user;
   }
 
-  static void write() {}
+  Map<String,dynamic> toJson(){
+    return {
+      "id":id.value,
+      "name":name?.value,
+      "email":email?.value,
+      "email_verified_at":emailVerifiedAt?.value,
+      "created_at":createdAt?.value,
+      "updated_at":updatedAt?.value,
+    };
+  }
+
 }
-
-
-

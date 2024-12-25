@@ -1,6 +1,32 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 class AppData{
+}
+
+class AppFonts{
+  static  late ByteData ciroRegular;
+  static  late ByteData ciroBold;
+  static  late ByteData notoNaskhArabicRegular;
+  static  late ByteData notoNaskhArabicBold;
+  static  late ByteData arial;
+
+  static Future<void> loadFonts() async {
+    try{
+      ciroRegular = await rootBundle.load('assets/fonts/Cairo-Regular.ttf');
+      notoNaskhArabicRegular = await rootBundle.load('assets/fonts/NotoNaskhArabic-Regular.ttf');
+      ciroBold = await rootBundle.load('assets/fonts/Cairo-Bold.ttf');
+      notoNaskhArabicBold = await rootBundle.load('assets/fonts/NotoNaskhArabic-Bold.ttf');
+      arial = await rootBundle.load('assets/fonts/ARIAL.TTF');
+
+
+    }catch(e){
+      if (kDebugMode) {
+        print(e);
+      }
+    }
+  }
 }
 
 class Utils {

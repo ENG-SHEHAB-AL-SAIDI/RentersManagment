@@ -1,36 +1,56 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart' as get_x;
-import 'package:renters_management_front_end/app/services/user_services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../../components/pop_up_cards/alert_message_card.dart';
+import '../user_services.dart';
 
 class HttpProvider {
   static final Dio _dio = Dio();
-  static InterceptorsWrapper? _authInterceptor;
 
-  static init({String baseUrl = "", String contentType = 'application/json'}) {
+  static Future<void> init({
+    String baseUrl = "",
+    String accept = 'application/json',
+    String contentType = 'application/json',
+    Duration connectTimeout = const Duration(seconds: 3),
+    Duration sendTimeout = const Duration(seconds: 3),
+    Duration receiveTimeout = const Duration(seconds: 3),
+  }) async {
     _dio.options.baseUrl = baseUrl;
-    _dio.options.headers["Accept"] = contentType;
-    _dio.options.connectTimeout = const Duration(seconds: 15);
+    _dio.options.headers["Accept"] = accept;
+    _dio.options.headers["Content-Type"] = contentType;
+    _dio.options.connectTimeout = connectTimeout;
+    _dio.options.sendTimeout = sendTimeout;
+    _dio.options.receiveTimeout = receiveTimeout;
+    if(kIsWeb){
+      await reSetAccessToken();
+    }
     _dio.interceptors.add(InterceptorsWrapper(
       onError: (DioException error, ErrorInterceptorHandler handler) async {
         List<ConnectivityResult> connectivityResult =
-            await (Connectivity().checkConnectivity());
+        await (Connectivity().checkConnectivity());
         if (kDebugMode) {
-          print(error.requestOptions.path);
+          print(error.requestOptions.uri);
           print("HttpProviderError ------------------ ");
           print("error: ${error.message}");
           print("status code: ${error.response?.statusCode}");
           print("status headers: ${error.response?.isRedirect}");
+          print("request headers: ${error.requestOptions.headers}");
           print(connectivityResult);
         }
         if (connectivityResult.contains(ConnectivityResult.none)) {
+          get_x.Get.dialog(PopUpAlertCard(
+              "no internet connection \n please check your connection ",
+              Icons.warning));
           return handler.resolve(
               Response(requestOptions: error.requestOptions, statusCode: 900));
         }
+
         if (error.response?.statusCode == 401 &&
-            error.requestOptions.path != "auth/refresh") {
+            error.requestOptions.path != "refresh" &&
+            error.requestOptions.path != "login") {
           try {
             Response? response = await _refreshAndRetry(error.requestOptions);
             if (response != null) {
@@ -40,9 +60,13 @@ class HttpProvider {
             if (kDebugMode) {
               print(e);
             }
-            get_x.Get.offNamed("/login");
           }
         } else if (((error.response?.statusCode) ?? 0) == 422) {
+          return handler.resolve(error.response!);
+        }
+
+        if (error.response?.statusCode == 401 &&
+            error.requestOptions.path == "refresh"){
           return handler.resolve(error.response!);
         }
         return handler.next(error);
@@ -121,18 +145,12 @@ class HttpProvider {
   static Future<Response?> _refreshAndRetry(
       RequestOptions requestOptions) async {
     try {
-      Response response = await _dio.post("auth/refresh");
-      if (response.statusCode == 200) {
-        removeAuthTokenInterceptor();
-        addAuthTokenInterceptor(
-            response.data["token"]["original"]["access_token"]);
-        return await _dio.request(requestOptions.path,
-            queryParameters: requestOptions.queryParameters,
-            data: requestOptions.data,
-            options: Options(
-              method: requestOptions.method,
-            ));
-      } else if (response.statusCode == 401) {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      Response response = await _dio.post("auth/refresh",data: {
+        "refreshToken":prefs.getString("refreshToken")??""
+      });
+      if (response.statusCode == 401) {
+        // re login if remember me data available
         SharedPreferences prefs = await SharedPreferences.getInstance();
         List<String>? credentials = prefs.getStringList("credentials");
         if (credentials != null) {
@@ -140,29 +158,48 @@ class HttpProvider {
         } else {
           get_x.Get.offAllNamed("/login");
         }
+      } else if (response.statusCode == 200) {
+        addAccessTokenHeader(
+          response.data["accessToken"],
+        );
+        return await _dio.request(
+          requestOptions.path,
+          queryParameters: requestOptions.queryParameters,
+          data: requestOptions.data,
+          options: Options(
+            method: requestOptions.method,
+          ),
+        );
       }
     } on DioException catch (error) {
       return error.response;
     }
-
     return null;
   }
 
-  static void addAuthTokenInterceptor(String authToken) {
-    _dio.options.headers["Authorization"] = "Bearer $authToken";
-    // _authInterceptor = InterceptorsWrapper(
-    //   onRequest: (options, handler) {
-    //     options.headers['Authorization'] = 'Bearer $authToken';
-    //     return handler.next(options);
-    //   },
-    // );
-    // _dio.interceptors.add(_authInterceptor!);
+  static void addAccessTokenHeader(String? accessToken) {
+    _dio.options.headers["Authorization"] = "Bearer $accessToken";
+    if(kIsWeb){
+      storeAccessToken(accessToken??"");
+    }
   }
 
-  static void removeAuthTokenInterceptor() {
-    if (_authInterceptor != null) {
-      _dio.interceptors.remove(_authInterceptor);
-      _authInterceptor = null;
-    }
+  static void storeRefreshToken(String refreshToken) async{
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString("refreshToken",refreshToken);
+  }
+
+  static void storeAccessToken(String accessToken) async{
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString("AccessToken",accessToken);
+  }
+
+  static Future<void> reSetAccessToken() async{
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    _dio.options.headers["Authorization"] = "Bearer ${prefs.getString("AccessToken")}";
+  }
+
+  static void removeAccessTokenHeader() {
+    _dio.options.headers["Authorization"] = null;
   }
 }

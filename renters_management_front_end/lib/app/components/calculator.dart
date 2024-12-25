@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_simple_calculator/flutter_simple_calculator.dart';
 import 'package:get/get.dart';
-import 'package:renters_management_front_end/app/controllers/calculatorController.dart';
+import 'package:renters_management_front_end/app/controllers/calculator_controller.dart';
 import '../globals.dart';
 
 class Calculator extends GetView<CalculatorController> {

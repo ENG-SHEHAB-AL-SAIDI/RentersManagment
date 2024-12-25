@@ -36,6 +36,8 @@ class LoginController extends GetxController {
     if (credentials != null) {
       email.text = credentials[0];
       password.text = credentials[1];
+      // email.text = "test@gmail.com";
+      // password.text = "12345678";
       onLogin();
     }
     super.onInit();

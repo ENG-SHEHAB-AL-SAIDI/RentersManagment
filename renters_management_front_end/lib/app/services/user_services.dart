@@ -20,6 +20,7 @@ class UserServices {
         _user = User.fromJson(response?.data["user"]);
         HttpProvider.addAccessTokenHeader(
             response?.data["token"]["original"]["access_token"]);
+        HttpProvider.storeRefreshToken(response?.data["token"]["original"]["access_token"]);
         if (rememberMe) {
           _prefs ??= await SharedPreferences.getInstance();
           await _prefs?.setStringList("credentials", <String>[email, password]);
@@ -54,6 +55,7 @@ class UserServices {
         _user = User.fromJson(response?.data["user"]);
         HttpProvider.addAccessTokenHeader(
             response?.data["token"]["original"]["access_token"]);
+        HttpProvider.storeRefreshToken(response?.data["token"]["original"]["access_token"]);
         return Result(
             hasError: false, statusCode: response?.statusCode, data: true);
       }

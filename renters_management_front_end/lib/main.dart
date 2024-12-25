@@ -8,6 +8,7 @@ import 'app/services/http_provider/http_provider.dart';
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
   await HttpProvider.init(baseUrl:"https://rentersmanagement.helioho.st/api/");
+  // await HttpProvider.init(baseUrl:"http://192.168.0.31:8000/api/");
   await AppFonts.loadFonts();
   runApp(const MyApp());
 }

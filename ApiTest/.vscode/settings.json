@@ -1,0 +1,8 @@
+{
+    "rest-client.environmentVariables": {
+        "$shared": {
+            "apiUrl": "http://127.0.0.1:8000/api",
+            "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYXBpL2F1dGgvbG9naW4iLCJpYXQiOjE3MjEwNjcwMDcsImV4cCI6MTcyMTA3MDYwNywibmJmIjoxNzIxMDY3MDA3LCJqdGkiOiJwUmh2U2VLN0Jla0NjNk1hIiwic3ViIjoiMSIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.sa-qSPGq_goDo2cg0xuEGxLl7DPS-sr3hdMk4Q7vc3M"
+        }
+    }
+}

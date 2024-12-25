@@ -3,7 +3,6 @@ import 'package:flutter/foundation.dart';
 import 'package:get/get.dart' as get_x;
 import 'package:renters_management_front_end/app/models/result.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 import '../models/user_model.dart';
 import 'http_provider/http_provider.dart';
 
@@ -19,7 +18,7 @@ class UserServices {
           data: {"email": email, "password": password});
       if (response?.statusCode == 200) {
         _user = User.fromJson(response?.data["user"]);
-        HttpProvider.addAuthTokenInterceptor(
+        HttpProvider.addAccessTokenHeader(
             response?.data["token"]["original"]["access_token"]);
         if (rememberMe) {
           _prefs ??= await SharedPreferences.getInstance();
@@ -53,7 +52,7 @@ class UserServices {
       });
       if (response?.statusCode == 200) {
         _user = User.fromJson(response?.data["user"]);
-        HttpProvider.addAuthTokenInterceptor(
+        HttpProvider.addAccessTokenHeader(
             response?.data["token"]["original"]["access_token"]);
         return Result(
             hasError: false, statusCode: response?.statusCode, data: true);

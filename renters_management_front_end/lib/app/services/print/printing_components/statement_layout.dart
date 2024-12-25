@@ -538,7 +538,7 @@ Future<List<Widget>> _statementCard() async {
                           if(j<partiallyPayingRenters.length)...[
                             SizedBox(
                               width: PdfPageFormat.a4.width/5,
-                              child: PdfText("${j+1}- ${payingRenters[j].name?.value ?? " "}"),
+                              child: PdfText("${j+1}- ${partiallyPayingRenters[j].name?.value ?? " "}"),
                             )
                           ]
                         ]
@@ -613,7 +613,7 @@ Future<List<Widget>> _statementCard() async {
                           if(j<notPayingRenters.length)...[
                             SizedBox(
                               width: PdfPageFormat.a4.width/5,
-                              child: PdfText("${j+1}- ${payingRenters[j].name?.value ?? " "}"),
+                              child: PdfText("${j+1}- ${notPayingRenters[j].name?.value ?? " "}"),
                             )
                           ]
                         ]
@@ -628,11 +628,3 @@ Future<List<Widget>> _statementCard() async {
   ];
 }
 
-
-List<Widget> _test(){
-  return [
-    Text("1"),
-    Text("2"),
-    Text("3"),
-  ];
-}

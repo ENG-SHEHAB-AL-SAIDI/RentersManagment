@@ -269,6 +269,7 @@ class BuildReportsController extends GetxController {
             "payment_id": result["payment_id"],
             "describe": result["note"],
           });
+      Navigator.of(Get.overlayContext!).pop();
       if (res.statusCode == 200) {
         if (res.data != null) {
           statement?.totalIncomes?.refresh();
@@ -289,6 +290,7 @@ class BuildReportsController extends GetxController {
           buildId: buildId,
           statementId: statement!.id.value,
           incomeId: incomeId);
+      Navigator.of(Get.overlayContext!).pop();
       if (res.statusCode == 200) {
         if (res.data != null) {
           statement?.totalIncomes?.refresh();
@@ -307,6 +309,7 @@ class BuildReportsController extends GetxController {
         statementId: statement!.id.value,
         incomeId: incomeId,
         data: data);
+    Navigator.of(Get.overlayContext!).pop();
     if (res.statusCode == 200) {
       if (res.data != null) {
         statement?.totalIncomes?.refresh();
@@ -367,6 +370,7 @@ class BuildReportsController extends GetxController {
             "amount": double.parse(result["amount"]),
             "describe": result["note"]
           });
+      Navigator.of(Get.overlayContext!).pop();
       if (res.statusCode == 200) {
         if (res.data != null) {
           statement?.totalExpenses?.refresh();
@@ -387,6 +391,7 @@ class BuildReportsController extends GetxController {
           buildId: buildId,
           statementId: statement!.id.value,
           expensId: expensId);
+      Navigator.of(Get.overlayContext!).pop();
       if (res.statusCode == 200) {
         if (res.data != null) {
           statement?.totalExpenses?.refresh();
@@ -405,6 +410,7 @@ class BuildReportsController extends GetxController {
         statementId: statement!.id.value,
         expensId: expensId,
         data: data);
+    Navigator.of(Get.overlayContext!).pop();
     if (res.statusCode == 200) {
       if (res.data != null) {
         statement?.totalExpenses?.refresh();

@@ -8,9 +8,10 @@ import 'package:renters_management_front_end/app/models/result.dart';
 import 'package:renters_management_front_end/app/services/build_services.dart';
 import 'package:renters_management_front_end/app/services/renter_services.dart';
 
+import '../components/loading_card.dart';
 import '../models/renter_model.dart';
 import 'http_provider/http_provider.dart';
-
+import 'package:get/get.dart' as get_x;
 class RentPaymentServices {
   static Future<Result<Map<String, List<RentPayment>>>> fetchRentPayments(
       {required int buildId,
@@ -129,6 +130,7 @@ class RentPaymentServices {
       required int rentPaymentId,
       required Map<String, dynamic> data,
       bool hardFetch = false}) async {
+    get_x.Get.dialog(const PopUpLoadingCard(),barrierDismissible: false);
     Response? response;
     try {
       response = await HttpProvider.patch(
@@ -160,46 +162,13 @@ class RentPaymentServices {
   }
 
 
-  static Future<Result<Build>> deleteRenter(
-      {required int buildId,
-      required int renterId,
-      bool hardFetch = false}) async {
-    Result<Build> res = await BuildServices.fetchBuild(id: buildId);
-    Response? response;
-    try {
-      response = await HttpProvider.delete(
-          "user/builds/$buildId/renters/$renterId");
-      if (response?.statusCode == 200) {
-        res.data?.renters
-            ?.removeWhere((element) => element.id.value == renterId);
-        return Result(
-            hasError: false,
-            statusCode: response?.statusCode,
-            message: "successful");
-      }
-    } catch (error) {
-      if (kDebugMode) {
-        print(error.toString());
-      }
-      return Result(
-          hasError: true,
-          statusCode: 645,
-          message: error.toString(),
-          data: null);
-    }
-    return Result(
-        hasError: true,
-        statusCode: 625,
-        message: "some thing wrong",
-        data: null);
-  }
-
   static Future<Result<bool>> rentPaymentAddInstallment(
       {required int buildId,
       required int renterId,
       required int rentPaymentId,
       required Map<String, dynamic> data,
       bool hardFetch = false}) async {
+    get_x.Get.dialog(const PopUpLoadingCard(),barrierDismissible: false);
     Result<RentPayment> rentPayment = await fetchRentPayment(
         buildId: buildId, renterId: renterId, rentPaymentID: rentPaymentId);
     Response? response;
@@ -246,6 +215,7 @@ class RentPaymentServices {
         required int installmentId,
         required Map<String, dynamic> data,
         bool hardFetch = false}) async {
+    get_x.Get.dialog(const PopUpLoadingCard(),barrierDismissible: false);
     Result<RentPayment> rentPayment = await fetchRentPayment(
         buildId: buildId, renterId: renterId, rentPaymentID: rentPaymentId);
     Response? response;
@@ -294,6 +264,7 @@ class RentPaymentServices {
       required int rentPaymentId,
       required int installmentId,
       bool hardFetch = false}) async {
+    get_x.Get.dialog(const PopUpLoadingCard(),barrierDismissible: false);
     Result<RentPayment> rentPayment = await fetchRentPayment(
         buildId: buildId, renterId: renterId, rentPaymentID: rentPaymentId);
     Response? response;

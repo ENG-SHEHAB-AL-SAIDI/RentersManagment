@@ -14,9 +14,9 @@ class HttpProvider {
     String baseUrl = "",
     String accept = 'application/json',
     String contentType = 'application/json',
-    Duration connectTimeout = const Duration(seconds: 3),
-    Duration sendTimeout = const Duration(seconds: 3),
-    Duration receiveTimeout = const Duration(seconds: 3),
+    Duration connectTimeout = const Duration(seconds: 10),
+    Duration sendTimeout = const Duration(seconds: 10),
+    Duration receiveTimeout = const Duration(seconds: 10),
   }) async {
     _dio.options.baseUrl = baseUrl;
     _dio.options.headers["Accept"] = accept;
@@ -49,8 +49,8 @@ class HttpProvider {
         }
 
         if (error.response?.statusCode == 401 &&
-            error.requestOptions.path != "refresh" &&
-            error.requestOptions.path != "login") {
+            error.requestOptions.path != "auth/refresh" &&
+            error.requestOptions.path != "auth/login") {
           try {
             Response? response = await _refreshAndRetry(error.requestOptions);
             if (response != null) {
@@ -146,9 +146,8 @@ class HttpProvider {
       RequestOptions requestOptions) async {
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
-      Response response = await _dio.post("auth/refresh",data: {
-        "refreshToken":prefs.getString("refreshToken")??""
-      });
+      addAccessTokenHeader(prefs.getString("refreshToken"));
+      Response response = await _dio.post("auth/refresh");
       if (response.statusCode == 401) {
         // re login if remember me data available
         SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -156,11 +155,11 @@ class HttpProvider {
         if (credentials != null) {
           UserServices.userLogin(credentials[0], credentials[1]);
         } else {
-          get_x.Get.offAllNamed("/login");
+          get_x.Get.offAllNamed("auth/login");
         }
       } else if (response.statusCode == 200) {
         addAccessTokenHeader(
-          response.data["accessToken"],
+            response.data["token"]["original"]["access_token"]
         );
         return await _dio.request(
           requestOptions.path,

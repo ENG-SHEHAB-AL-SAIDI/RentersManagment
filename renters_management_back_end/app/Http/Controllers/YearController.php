@@ -39,17 +39,20 @@ class YearController extends Controller
         if ($renter->build->statements()->where('year', $data['year'])->get()->isEmpty()) {
             for ($i = 0; $i < 12; $i++) {
                 $renter->build->statements()->create([
-                    'year' => $renter->entery_year,
+                    'year' => $data['year'],
                     'month' => str($i + 1),
                 ]);
             }
         }
 
         $groupedRentPayments = $renter->rentPayments->where('year',$data['year'])->groupBy('year');
+		$groupedStatments = $renter->build->statements()->with(['incomes','expenses'])->where('year',$data['year'])->get()->groupBy('year');
 
         return response()->json([
             'message' => 'year added',
-            'grouped_rent_payments' => $groupedRentPayments
+            'grouped_rent_payments' => $groupedRentPayments,
+            'grouped_statements' => $groupedStatments,
+
         ], 200);
     }
 

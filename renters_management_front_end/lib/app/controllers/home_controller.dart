@@ -80,6 +80,7 @@ class HomeController extends GetxController {
     Map<String,dynamic>? result = await Get.dialog(PopUpIAddAndUpdateBuildCard());
     if(result!=null){
       Result res = await BuildServices.storeBuild(data: result);
+      Navigator.of(Get.overlayContext!).pop();
       if (res.statusCode == 200) {
         if (res.data != null) {
           builds.refresh();
@@ -107,6 +108,7 @@ class HomeController extends GetxController {
     },));
     if(result!=null){
       Result res = await BuildServices.updateBuild(id: id,data: result);
+      Navigator.of(Get.overlayContext!).pop();
       if (res.statusCode == 200) {
         if (res.data != null){
           builds.refresh();
@@ -124,6 +126,7 @@ class HomeController extends GetxController {
         "did you sure want delete this build that will delete all data relative to it."));
     if (res) {
       Result res = await BuildServices.deleteBuild(id: id);
+      Navigator.of(Get.overlayContext!).pop();
       if (res.statusCode == 200) {
         builds.refresh();
       }else{

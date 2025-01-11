@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:get/get.dart' as get_x;
 import 'package:renters_management_front_end/app/models/result.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../components/loading_card.dart';
 import '../models/user_model.dart';
 import 'http_provider/http_provider.dart';
 
@@ -20,21 +21,21 @@ class UserServices {
         _user = User.fromJson(response?.data["user"]);
         HttpProvider.addAccessTokenHeader(
             response?.data["token"]["original"]["access_token"]);
+        HttpProvider.storeRefreshToken(
+            response?.data["token"]["original"]["access_token"]);
         if (rememberMe) {
           _prefs ??= await SharedPreferences.getInstance();
           await _prefs?.setStringList("credentials", <String>[email, password]);
         }
         return Result(
             hasError: false, statusCode: response?.statusCode, data: true);
-      }else{
+      } else {
         return Result(
             hasError: true,
             statusCode: response?.statusCode ?? 601,
             message: "error",
             data: false);
       }
-
-
     } catch (error) {
       return Result(hasError: true, statusCode: 601, message: error.toString());
     }
@@ -54,6 +55,8 @@ class UserServices {
         _user = User.fromJson(response?.data["user"]);
         HttpProvider.addAccessTokenHeader(
             response?.data["token"]["original"]["access_token"]);
+        HttpProvider.storeRefreshToken(
+            response?.data["token"]["original"]["access_token"]);
         return Result(
             hasError: false, statusCode: response?.statusCode, data: true);
       }
@@ -71,6 +74,7 @@ class UserServices {
   static Future<Result?> userLogout() async {
     Response? response;
     try {
+      get_x.Get.dialog(const PopUpLoadingCard(), barrierDismissible: false);
       response = await HttpProvider.post("auth/logout");
       if (response?.statusCode == 200) {
         _prefs ??= await SharedPreferences.getInstance();
@@ -99,7 +103,6 @@ class UserServices {
     if (_user != null && !hardFetch) {
       return Result(data: _user, hasError: false, message: "successful");
     }
-
     late Response? response;
     try {
       response = await HttpProvider.post("auth/me");

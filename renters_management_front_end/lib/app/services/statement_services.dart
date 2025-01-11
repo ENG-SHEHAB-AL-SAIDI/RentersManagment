@@ -5,7 +5,8 @@ import 'package:renters_management_front_end/app/models/expens_model.dart';
 import 'package:renters_management_front_end/app/models/result.dart';
 import 'package:renters_management_front_end/app/models/statement_model.dart';
 import 'package:renters_management_front_end/app/services/build_services.dart';
-
+import 'package:get/get.dart' as get_x;
+import '../components/loading_card.dart';
 import '../models/income_model.dart';
 import 'http_provider/http_provider.dart';
 
@@ -216,6 +217,7 @@ class StatementServices {
       required int statementId,
       required Map<String, dynamic> data,
       bool hardFetch = false}) async {
+    get_x.Get.dialog(const PopUpLoadingCard(),barrierDismissible: false);
     Result<Build> res = await BuildServices.fetchBuild(id: buildId);
     Response? response;
     try {
@@ -263,6 +265,7 @@ class StatementServices {
       required int incomeId,
       Map<String, dynamic> data = const {},
       bool hardFetch = false}) async {
+    get_x.Get.dialog(const PopUpLoadingCard(),barrierDismissible: false);
     Result<Statement> res = await fetchStatement(buildId,statementId);
     Response? response;
     try {
@@ -302,6 +305,7 @@ class StatementServices {
       required int statementId,
       required Map<String, dynamic> data,
       bool hardFetch = false}) async {
+    get_x.Get.dialog(const PopUpLoadingCard(),barrierDismissible: false);
     Result<Build> res = await BuildServices.fetchBuild(id: buildId);
     Response? response;
     try {
@@ -349,6 +353,7 @@ class StatementServices {
       required int expensId,
       Map<String, dynamic> data = const {},
       bool hardFetch = false}) async {
+    get_x.Get.dialog(const PopUpLoadingCard(),barrierDismissible: false);
     Result<Statement> res = await fetchStatement(buildId,statementId);
     Response? response;
     try {
@@ -389,6 +394,7 @@ class StatementServices {
         required int incomeId,
         Map<String, dynamic> data = const {},
         bool hardFetch = false}) async {
+    get_x.Get.dialog(const PopUpLoadingCard(),barrierDismissible: false);
     Result<Statement> res = await fetchStatement(buildId,statementId);
     Response? response;
     try {
@@ -429,6 +435,7 @@ class StatementServices {
         required int expensId,
         Map<String, dynamic> data = const {},
         bool hardFetch = false}) async {
+    get_x.Get.dialog(const PopUpLoadingCard(),barrierDismissible: false);
     Result<Statement> res = await fetchStatement(buildId,statementId);
     Response? response;
     try {

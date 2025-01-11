@@ -4,7 +4,9 @@ import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:renters_management_front_end/app/models/build_model.dart';
 import 'package:renters_management_front_end/app/models/result.dart';
 import 'package:renters_management_front_end/app/services/build_services.dart';
+import 'package:get/get.dart' as get_x;
 
+import '../components/loading_card.dart';
 import '../models/renter_model.dart';
 import 'http_provider/http_provider.dart';
 
@@ -117,6 +119,7 @@ class RenterServices {
       {required int buildId,
       required Map<String, dynamic> data,
       bool hardFetch = false}) async {
+    get_x.Get.dialog(const PopUpLoadingCard(),barrierDismissible: false);
     Result<Build> res = await BuildServices.fetchBuild(id: buildId);
     Response? response;
     try {
@@ -156,6 +159,7 @@ class RenterServices {
       required int renterId,
       required Map<String, dynamic> data,
       bool hardFetch = false}) async {
+    get_x.Get.dialog(const PopUpLoadingCard(),barrierDismissible: false);
     Result<Build> res = await BuildServices.fetchBuild(id: buildId);
     Response? response;
     try {
@@ -196,6 +200,7 @@ class RenterServices {
       {required int buildId,
       required int renterId,
       bool hardFetch = false}) async {
+    get_x.Get.dialog(const PopUpLoadingCard(),barrierDismissible: false);
     Result<Build> res = await BuildServices.fetchBuild(id: buildId);
     Response? response;
     try {
@@ -231,6 +236,7 @@ class RenterServices {
       required int renterId,
       required Map<String, dynamic> data,
       bool hardFetch = false}) async {
+    get_x.Get.dialog(const PopUpLoadingCard(),barrierDismissible: false);
     Result<Build> res = await BuildServices.fetchBuild(id: buildId);
     Response? response;
     try {
@@ -286,6 +292,7 @@ class RenterServices {
       required int renterId,
       required Map<String, dynamic> data,
       bool hardFetch = false}) async {
+    get_x.Get.dialog(const PopUpLoadingCard(),barrierDismissible: false);
     Result<Build> res = await BuildServices.fetchBuild(id: buildId);
     Response? response;
     try {

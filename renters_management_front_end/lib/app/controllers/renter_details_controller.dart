@@ -165,6 +165,7 @@ class RenterDetailsController extends GetxController {
           buildId: buildId,
           data: {'phone': phoneController.text},
           renterId: renterId);
+      Navigator.of(Get.overlayContext!).pop();
       if (res.statusCode == 200) {
         if (res.data) {
           getPhonesDropItemList();
@@ -188,6 +189,7 @@ class RenterDetailsController extends GetxController {
             buildId: buildId,
             data: {'phone': selectedPhone.value},
             renterId: renterId);
+        Navigator.of(Get.overlayContext!).pop();
         if (res.statusCode == 200) {
           if (res.data) {
             getPhonesDropItemList();
@@ -209,7 +211,7 @@ class RenterDetailsController extends GetxController {
         renterId: renterId,
         data: {"year": yearController.text},
       );
-
+      Navigator.of(Get.overlayContext!).pop();
       if (res.statusCode == 200) {
         if (res.data) {
           getYearsDropItemList();
@@ -233,6 +235,7 @@ class RenterDetailsController extends GetxController {
             buildId: buildId,
             data: {"year": selectedYear.value},
             renterId: renterId);
+        Navigator.of(Get.overlayContext!).pop();
         if (res.statusCode == 200) {
           if (res.data) {
             getYearsDropItemList();
@@ -268,6 +271,7 @@ class RenterDetailsController extends GetxController {
             "amount": double.parse(result["amount"]),
             "note": result["note"]
           });
+      Navigator.of(Get.overlayContext!).pop();
       if (res.statusCode == 200) {
         if (res.data != null) {
           renter?.rentPayments?.refresh();
@@ -290,6 +294,7 @@ class RenterDetailsController extends GetxController {
           rentPaymentId: paymentId,
           installmentId: installmentId,
           data: data,);
+    Navigator.of(Get.overlayContext!).pop();
       if (res.statusCode == 200) {
         if (res.data != null) {
           renter?.rentPayments?.refresh();
@@ -313,6 +318,7 @@ class RenterDetailsController extends GetxController {
           renterId: renterId,
           rentPaymentId: paymentId,
           installmentId: installmentId);
+      Navigator.of(Get.overlayContext!).pop();
 
       if (res.statusCode == 200) {
         if (res.data != null) {
@@ -345,6 +351,7 @@ class RenterDetailsController extends GetxController {
     if (result != null) {
       Result<Renter> res = await RenterServices.updateRenter(
           buildId: buildId, renterId: renterId, data: result);
+      Navigator.of(Get.overlayContext!).pop();
       if (res.statusCode == 200) {
         if (res.data != null) {
           renter?.name?.value = res.data!.name!.value;
@@ -383,6 +390,7 @@ class RenterDetailsController extends GetxController {
           data: {
             "state": "excluded",
           });
+      Navigator.of(Get.overlayContext!).pop();
       if (res.statusCode == 200) {
         int? index = renter?.rentPayments?[rentPayment.year?.value]
             ?.indexWhere((element) => element.id.value == rentPayment.id.value);
@@ -398,7 +406,6 @@ class RenterDetailsController extends GetxController {
       }
     } else if (val == "include") {
       String state;
-
       if ((rentPayment.remainAmount?.value ?? 0) == 0) {
         state = "payed";
       } else if ((rentPayment.payedAmount?.value ?? 0) == 0) {
@@ -412,6 +419,7 @@ class RenterDetailsController extends GetxController {
           data: {
             "state": state,
           });
+      Navigator.of(Get.overlayContext!).pop();
       if (res.statusCode == 200) {
         int? index = renter?.rentPayments?[rentPayment.year?.value]
             ?.indexWhere((element) => element.id.value == rentPayment.id.value);

@@ -2,9 +2,11 @@ import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:renters_management_front_end/app/models/result.dart';
 import 'package:renters_management_front_end/app/models/statement_model.dart';
+import '../components/loading_card.dart';
 import '../models/build_model.dart';
 import '../models/renter_model.dart';
 import 'http_provider/http_provider.dart';
+import 'package:get/get.dart' as get_x;
 
 class BuildServices {
   static List<Build> _builds = [];
@@ -88,6 +90,7 @@ class BuildServices {
 
   static Future<Result<Build>> storeBuild(
       {required Map<String, dynamic> data, bool hardFetch = false}) async {
+    get_x.Get.dialog(const PopUpLoadingCard(),barrierDismissible: false);
     Response? response;
     try {
       response = await HttpProvider.post("user/builds", data: data);
@@ -122,6 +125,7 @@ class BuildServices {
       {required int id,
       required Map<String, dynamic> data,
       bool hardFetch = false}) async {
+    get_x.Get.dialog(const PopUpLoadingCard(),barrierDismissible: false);
     Response? response;
     try {
       response =
@@ -156,6 +160,7 @@ class BuildServices {
 
   static Future<Result<Build>> deleteBuild(
       {required int id, bool hardFetch = false}) async {
+    get_x.Get.dialog(const PopUpLoadingCard(),barrierDismissible: false);
     Response? response;
     try {
       response = await HttpProvider.delete("user/builds/$id");

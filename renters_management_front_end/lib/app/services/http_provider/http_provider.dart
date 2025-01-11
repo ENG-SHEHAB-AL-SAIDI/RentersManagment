@@ -14,9 +14,9 @@ class HttpProvider {
     String baseUrl = "",
     String accept = 'application/json',
     String contentType = 'application/json',
-    Duration connectTimeout = const Duration(seconds: 3),
-    Duration sendTimeout = const Duration(seconds: 3),
-    Duration receiveTimeout = const Duration(seconds: 3),
+    Duration connectTimeout = const Duration(seconds: 10),
+    Duration sendTimeout = const Duration(seconds: 10),
+    Duration receiveTimeout = const Duration(seconds: 10),
   }) async {
     _dio.options.baseUrl = baseUrl;
     _dio.options.headers["Accept"] = accept;

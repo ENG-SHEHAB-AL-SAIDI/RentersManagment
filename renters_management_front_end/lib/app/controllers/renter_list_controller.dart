@@ -104,6 +104,7 @@ class RenterListController extends GetxController {
     if (result) {
       Result res =
           await RenterServices.deleteRenter(buildId: buildId, renterId: id);
+      Navigator.of(Get.overlayContext!).pop();
       if (res.statusCode == 200) {
         renters.refresh();
       } else {
@@ -122,6 +123,7 @@ class RenterListController extends GetxController {
     if (result != null) {
       Result res =
           await RenterServices.storeRenter(buildId: buildId, data: result);
+      Navigator.of(Get.overlayContext!).pop();
       if (res.statusCode == 200) {
         if (res.data != null) {
           renters.refresh();

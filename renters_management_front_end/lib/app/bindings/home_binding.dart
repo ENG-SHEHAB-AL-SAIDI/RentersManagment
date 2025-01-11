@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import 'package:renters_management_front_end/app/controllers/calculatorController.dart';
+import 'package:renters_management_front_end/app/controllers/calculator_controller.dart';
 import 'package:renters_management_front_end/app/controllers/home_controller.dart';
 
 

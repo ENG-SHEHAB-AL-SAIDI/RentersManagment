@@ -1,7 +1,6 @@
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart';
-import 'package:renters_management_front_end/app/globals.dart';
 import 'package:renters_management_front_end/app/services/print/printing_components/pdf_text.dart';
 import 'package:renters_management_front_end/app/services/print/printing_components/rent_payment_layout.dart';
 import 'package:renters_management_front_end/app/services/print/printing_components/renter_info_layout.dart';

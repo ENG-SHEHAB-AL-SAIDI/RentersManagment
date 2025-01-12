@@ -193,10 +193,8 @@ class BuildReportsController extends GetxController {
       for (RentPayment rentPayment in renter.rentPayments?[year] ?? []) {
         if (rentPayment.month?.value == month.toString() &&
             rentPayment.state?.value != "excluded") {
-          monthTotalRent.value += renter.rent?.value ?? 0;
-          rentersCount.value += 1;
           if (rentPayment.state?.value == "payed") {
-            payedTotalRent.value += renter.rent?.value ?? 0;
+            payedTotalRent.value += rentPayment.payedAmount?.value??0;
             payedRentersCount.value += 1;
             payedRentersIds.add(renter.id.value);
           } else if (rentPayment.state?.value == "partially_payed") {
@@ -209,6 +207,9 @@ class BuildReportsController extends GetxController {
             notPayedRentersCount.value++;
             notPayedRentersIds.add(renter.id.value);
           }
+
+          monthTotalRent.value += (rentPayment.payedAmount!.value+rentPayment.remainAmount!.value);
+          rentersCount.value += 1;
         }
       }
     }

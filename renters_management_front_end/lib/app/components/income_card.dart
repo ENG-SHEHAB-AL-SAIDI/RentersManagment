@@ -308,6 +308,7 @@ class IncomeCard extends GetView<BuildReportsController> {
                                                           "help",
                                                     });
                                                 if (changed != "") {
+                                                  print(changed);
                                                   controller.updateIncome(
                                                       controller.statement!
                                                           .incomes![i].id.value,

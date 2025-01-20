@@ -63,7 +63,7 @@ class BuildReportsListController extends GetxController {
       ));
     }
     selectedYear.value =
-        (years.value.isNotEmpty) ? years.value.first.value ?? "" : "";
+        (years.value.isNotEmpty) ? years.value.last.value ?? "" : "";
   }
 
   void changeSelectedYear(value) {

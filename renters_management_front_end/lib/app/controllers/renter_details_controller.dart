@@ -147,7 +147,7 @@ class RenterDetailsController extends GetxController {
     ));
 
     selectedYear.value =
-        (years.value.isNotEmpty) ? years.value.first.value ?? "" : "";
+        (years.value.isNotEmpty) ? years.value.elementAt(years.value.length-2).value ?? "" : "";
   }
 
   void changeSelectedYear(value) {

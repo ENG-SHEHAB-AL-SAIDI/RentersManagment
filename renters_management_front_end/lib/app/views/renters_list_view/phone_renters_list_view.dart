@@ -65,13 +65,7 @@ class PhoneRentersListView extends GetView<RenterListController> {
       ),
       body: Container(
         color: AppColors.backColor,
-        child: Obx(() => (controller.renters.value.isEmpty)
-            ? Center(
-                child: MainText(
-                "No renters yet ${controller.renters.value.length}",
-                textColor: AppColors.inverseSecTextColor,
-              ))
-            : RefreshIndicator(
+        child: Obx(() =>  RefreshIndicator(
                 onRefresh: controller.refresh,
                 child: Column(
                   children: [
@@ -83,7 +77,11 @@ class PhoneRentersListView extends GetView<RenterListController> {
                         labelText: "Search",
                       ),
                     ),
-                    Expanded(
+                    (controller.renters.value.isEmpty)?Center(
+                        child: MainText(
+                          "No renters",
+                          textColor: AppColors.inverseSecTextColor,
+                        )):Expanded(
                         child: ListView.builder(
                             itemCount: (controller.renters.value.isNotEmpty)
                                 ? ((controller.renters.value.length) * 2)

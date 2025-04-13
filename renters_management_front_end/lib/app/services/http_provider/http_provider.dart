@@ -9,14 +9,15 @@ import '../user_services.dart';
 
 class HttpProvider {
   static final Dio _dio = Dio();
+  static int _refreshTries = 5;
 
   static Future<void> init({
     String baseUrl = "",
     String accept = 'application/json',
     String contentType = 'application/json',
-    Duration connectTimeout = const Duration(seconds: 10),
-    Duration sendTimeout = const Duration(seconds: 10),
-    Duration receiveTimeout = const Duration(seconds: 10),
+    Duration connectTimeout = const Duration(seconds: 15),
+    Duration sendTimeout = const Duration(seconds: 60),
+    Duration receiveTimeout = const Duration(seconds: 60),
   }) async {
     _dio.options.baseUrl = baseUrl;
     _dio.options.headers["Accept"] = accept;
@@ -31,14 +32,12 @@ class HttpProvider {
       onError: (DioException error, ErrorInterceptorHandler handler) async {
         List<ConnectivityResult> connectivityResult =
         await (Connectivity().checkConnectivity());
-        if (kDebugMode) {
-          print(error.requestOptions.uri);
-          print("HttpProviderError ------------------ ");
-          print("error: ${error.message}");
-          print("status code: ${error.response?.statusCode}");
-          print("status headers: ${error.response?.isRedirect}");
-          print("request headers: ${error.requestOptions.headers}");
-          print(connectivityResult);
+        if(error.type == DioExceptionType.receiveTimeout || error.type == DioExceptionType.sendTimeout || error.type == DioExceptionType.connectionTimeout){
+          get_x.Get.dialog(PopUpAlertCard(
+              "Server Time Out \n  action aborted because take long time place try again later",
+              Icons.warning));
+          return handler.resolve(
+              Response(requestOptions: error.requestOptions, statusCode: 901));
         }
         if (connectivityResult.contains(ConnectivityResult.none)) {
           get_x.Get.dialog(PopUpAlertCard(
@@ -145,6 +144,14 @@ class HttpProvider {
   static Future<Response?> _refreshAndRetry(
       RequestOptions requestOptions) async {
     try {
+      _refreshTries--;
+      if (_refreshTries < 0) {
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        prefs.remove("credentials");
+        get_x.Get.offAllNamed("login");
+        _refreshTries = 5;
+        return null;
+      }
       SharedPreferences prefs = await SharedPreferences.getInstance();
       addAccessTokenHeader(prefs.getString("refreshToken"));
       Response response = await _dio.post("auth/refresh");
@@ -155,7 +162,7 @@ class HttpProvider {
         if (credentials != null) {
           UserServices.userLogin(credentials[0], credentials[1]);
         } else {
-          get_x.Get.offAllNamed("auth/login");
+          get_x.Get.offAllNamed("login");
         }
       } else if (response.statusCode == 200) {
         addAccessTokenHeader(

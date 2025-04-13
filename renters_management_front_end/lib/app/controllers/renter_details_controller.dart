@@ -269,7 +269,7 @@ class RenterDetailsController extends GetxController {
           data: {
             "date": dateTimeFormat.format(dateTime),
             "amount": double.parse(result["amount"]),
-            "note": result["note"]
+            "notes": result["note"]
           });
       Navigator.of(Get.overlayContext!).pop();
       if (res.statusCode == 200) {

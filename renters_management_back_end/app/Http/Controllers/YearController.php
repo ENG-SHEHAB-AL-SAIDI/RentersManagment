@@ -74,8 +74,7 @@ class YearController extends Controller
         }
 
         $renter->rentPayments()->where('year',$data['year'])->forceDelete();
-        $renter->build->statements()->where('year', $data['year'])->forceDelete();
-
+        
         return response()->json([
             'message' => 'year deleted',
         ], 200);

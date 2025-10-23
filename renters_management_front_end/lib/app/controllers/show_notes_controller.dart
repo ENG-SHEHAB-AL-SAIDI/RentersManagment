@@ -20,7 +20,7 @@ class ShowNotesController extends GetxController {
       }
     } else if (enable.value == false) {
       enable.value = true;
-      editIcon = Icons.save;
+      editIcon = Icons.edit_off;
     }
   }
 
@@ -31,19 +31,21 @@ class ShowNotesController extends GetxController {
     super.onInit();
   }
 
+  void close(){
+    Get.back(result: changed);
+  }
   @override
   void onClose() {
     noteController.dispose();
     noteFocus.dispose();
   }
-
-  void submit() {
-    Map<String, dynamic> jsData = {};
-    if (formKey.currentState!.validate()) {
-      (noteController.text.isNotEmpty && noteController.text != "Unknown".tr)
-          ? jsData["enter_date"] = noteController.text
-          : null;
-      Get.back(result: jsData);
-    }
-  }
+  // void submit() {
+  //   Map<String, dynamic> jsData = {};
+  //   if (formKey.currentState!.validate()) {
+  //     (noteController.text.isNotEmpty && noteController.text != "Unknown".tr)
+  //         ? jsData["enter_date"] = noteController.text
+  //         : null;
+  //     Get.back(result: jsData);
+  //   }
+  // }
 }

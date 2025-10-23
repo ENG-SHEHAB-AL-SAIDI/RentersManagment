@@ -73,10 +73,8 @@ class PopUpShowNotesCard extends GetView<ShowNotesController> {
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
                               CustomButton(
-                                onPress: () {
-                                  Get.back(result: controller.changed);
-                                },
-                                text: "Close",
+                                onPress: controller.close,
+                                text: "Save",
                               ),
                             ],
                           ),

@@ -147,7 +147,7 @@ class RenterDetailsController extends GetxController {
     ));
 
     selectedYear.value =
-        (years.value.isNotEmpty) ? years.value.first.value ?? "" : "";
+        (years.value.isNotEmpty) ? years.value.elementAt(years.value.length-2).value ?? "" : "";
   }
 
   void changeSelectedYear(value) {
@@ -269,7 +269,7 @@ class RenterDetailsController extends GetxController {
           data: {
             "date": dateTimeFormat.format(dateTime),
             "amount": double.parse(result["amount"]),
-            "note": result["note"]
+            "notes": result["note"]
           });
       Navigator.of(Get.overlayContext!).pop();
       if (res.statusCode == 200) {

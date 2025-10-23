@@ -120,7 +120,7 @@ class RentPaymentController extends Controller
         $installment = $rentPayment->rentPaymentsInstallments()->create([
             'date' => $data['date'],
             'amount' => $data['amount'],
-            'notes' => $data['note']??null,
+            'notes' => $data['notes']??null,
         ]);
         $rentPayment->remain_amount -= $data['amount'];
         $rentPayment->payed_amount += $data['amount'];

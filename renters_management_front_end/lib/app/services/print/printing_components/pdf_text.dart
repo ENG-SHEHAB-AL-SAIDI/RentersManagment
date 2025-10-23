@@ -18,7 +18,7 @@ class PdfText extends pw.StatelessWidget {
     this.textAlign = pw.TextAlign.left,
   }){
     boldFont = pw.Font.ttf(AppFonts.arial);
-    regularFont = pw.Font.ttf(AppFonts.ciroRegular);
+    regularFont = pw.Font.ttf(AppFonts.arial);
   }
 
 

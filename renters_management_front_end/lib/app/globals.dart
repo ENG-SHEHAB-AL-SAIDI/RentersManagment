@@ -15,9 +15,7 @@ class AppFonts{
   static Future<void> loadFonts() async {
     try{
       ciroRegular = await rootBundle.load('assets/fonts/Cairo-Regular.ttf');
-      notoNaskhArabicRegular = await rootBundle.load('assets/fonts/NotoNaskhArabic-Regular.ttf');
       ciroBold = await rootBundle.load('assets/fonts/Cairo-Bold.ttf');
-      notoNaskhArabicBold = await rootBundle.load('assets/fonts/NotoNaskhArabic-Bold.ttf');
       arial = await rootBundle.load('assets/fonts/ARIAL.TTF');
 
 

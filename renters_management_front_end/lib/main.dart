@@ -29,7 +29,6 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         fontFamily: 'Arial',
         textTheme: ThemeData.light().textTheme.apply(fontFamily: 'Arial'),
-        useMaterial3: true, // optional
       ),
 
     );

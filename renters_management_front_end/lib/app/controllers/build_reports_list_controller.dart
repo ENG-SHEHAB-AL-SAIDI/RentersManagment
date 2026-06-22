@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:renters_management_front_end/app/components/pop_up_cards/statement_print_setting_card.dart';
-import 'package:renters_management_front_end/app/services/build_services.dart';
+import 'package:renters_management_front_end/app/repositories/build_repository.dart';
 import 'package:renters_management_front_end/app/services/print/printing.dart';
-import 'package:renters_management_front_end/app/services/statement_services.dart';
+
 
 import '../components/custom_text.dart';
 import '../globals.dart';
 import '../models/statement_model.dart';
+import '../repositories/statement_repository.dart';
 import 'build_reports_controller.dart';
 
 class BuildReportsListController extends GetxController {

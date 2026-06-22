@@ -11,12 +11,14 @@ import 'custom_text.dart';
 class BuildCard extends StatelessWidget {
   Build buildInfo;
   double height;
+  double? width;
   double type;
 
   BuildCard({
     super.key,
     required this.buildInfo,
     required this.height,
+    this.width,
     required this.type,
   });
 
@@ -40,7 +42,7 @@ class BuildCard extends StatelessWidget {
     }
     return Obx(() => Container(
         height: height,
-        width: double.maxFinite,
+        width: width??double.maxFinite,
         decoration: BoxDecoration(
           color: color1,
           border: Border(
@@ -170,7 +172,7 @@ class BuildCard extends StatelessWidget {
             ),
             Container(
               height: (height - 2) * 0.2,
-              width: double.maxFinite,
+              width: width??double.maxFinite,
               color: color2,
               child: InkWell(
                 onTap: () => controller.rentersListRoute(buildInfo.id.value),

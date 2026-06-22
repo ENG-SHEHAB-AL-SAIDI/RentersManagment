@@ -331,7 +331,9 @@ class IncomeCard extends GetView<BuildReportsController> {
                                                           ?.incomes![i]
                                                           .id
                                                           .value ==
-                                                      null) return;
+                                                      null) {
+                                                    return;
+                                                  }
                                                   controller.deleteIncome(
                                                       (controller.statement!
                                                           .incomes![i].id.value));

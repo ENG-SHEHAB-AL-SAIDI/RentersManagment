@@ -3,12 +3,12 @@ import 'package:flutter/foundation.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:renters_management_front_end/app/models/build_model.dart';
 import 'package:renters_management_front_end/app/models/result.dart';
-import 'package:renters_management_front_end/app/services/build_services.dart';
+import 'package:renters_management_front_end/app/repositories/build_repository.dart';
 import 'package:get/get.dart' as get_x;
 
 import '../components/loading_card.dart';
 import '../models/renter_model.dart';
-import 'http_provider/http_provider.dart';
+import '../services/http_provider/http_provider.dart';
 
 class RenterServices {
 

@@ -4,12 +4,12 @@ import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:renters_management_front_end/app/models/rent_payments_installment_model.dart';
 import 'package:renters_management_front_end/app/models/rent_payments_model.dart';
 import 'package:renters_management_front_end/app/models/result.dart';
-import 'package:renters_management_front_end/app/services/renter_services.dart';
-
+import 'package:renters_management_front_end/app/repositories/renter_repository.dart';
 import '../components/loading_card.dart';
 import '../models/renter_model.dart';
-import 'http_provider/http_provider.dart';
 import 'package:get/get.dart' as get_x;
+
+import '../services/http_provider/http_provider.dart';
 class RentPaymentServices {
   static Future<Result<Map<String, List<RentPayment>>>> fetchRentPayments(
       {required int buildId,

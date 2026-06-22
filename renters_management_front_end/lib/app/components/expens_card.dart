@@ -279,7 +279,9 @@ class ExpensCard extends GetView<BuildReportsController> {
                                         onPressed: () {
                                           if (controller.statement?.expenses![i]
                                                   .id.value ==
-                                              null) return;
+                                              null) {
+                                            return;
+                                          }
                                           controller.deleteExpens((controller
                                               .statement!
                                               .expenses![i]

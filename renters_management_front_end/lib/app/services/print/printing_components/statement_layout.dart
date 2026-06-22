@@ -5,9 +5,10 @@ import 'package:pdf/widgets.dart';
 import 'package:renters_management_front_end/app/controllers/build_reports_controller.dart';
 import 'package:renters_management_front_end/app/models/statement_model.dart';
 import 'package:renters_management_front_end/app/services/print/printing_components/pdf_text.dart';
-import 'package:renters_management_front_end/app/services/renter_services.dart';
+
 
 import '../../../models/renter_model.dart';
+import '../../../repositories/renter_repository.dart';
 
 Map<String, String> months = {
   '1': 'January',

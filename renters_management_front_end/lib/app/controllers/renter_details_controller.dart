@@ -11,9 +11,7 @@ import 'package:renters_management_front_end/app/globals.dart';
 import 'package:renters_management_front_end/app/models/rent_payments_model.dart';
 import 'package:renters_management_front_end/app/models/result.dart';
 import 'package:renters_management_front_end/app/services/print/printing.dart';
-import 'package:renters_management_front_end/app/services/renter_services.dart';
-import 'package:renters_management_front_end/app/services/rentpayment_services.dart';
-import 'package:renters_management_front_end/app/services/year_services.dart';
+
 import 'package:url_launcher/url_launcher.dart';
 
 import '../components/custom_text.dart';
@@ -21,6 +19,9 @@ import '../components/pop_up_cards/add_and_update_renter_card.dart';
 import '../components/pop_up_cards/alert_message_card.dart';
 import '../components/pop_up_cards/delete_confirmation_message_card.dart';
 import '../models/renter_model.dart';
+import '../repositories/renter_repository.dart';
+import '../repositories/rentpayment_repository.dart';
+import '../repositories/year_repository.dart';
 import 'installment_add_controller.dart';
 
 class RenterDetailsController extends GetxController {

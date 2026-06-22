@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:renters_management_front_end/app/models/result.dart';
-import 'package:renters_management_front_end/app/services/user_services.dart';
+
+import '../repositories/user_repository.dart';
+
 
 class RegisterController extends GetxController {
   TextEditingController name = TextEditingController();

@@ -3,7 +3,8 @@ import 'package:get/get.dart';
 import 'package:renters_management_front_end/app/components/calculator.dart';
 import 'package:renters_management_front_end/app/controllers/home_controller.dart';
 import 'package:renters_management_front_end/app/globals.dart';
-import 'package:renters_management_front_end/app/services/user_services.dart';
+
+import '../repositories/user_repository.dart';
 import 'custom_text.dart';
 
 class CustomDrawer extends GetView<HomeController> {

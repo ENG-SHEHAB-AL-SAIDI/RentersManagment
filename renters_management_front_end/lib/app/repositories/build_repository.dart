@@ -5,7 +5,7 @@ import 'package:renters_management_front_end/app/models/statement_model.dart';
 import '../components/loading_card.dart';
 import '../models/build_model.dart';
 import '../models/renter_model.dart';
-import 'http_provider/http_provider.dart';
+import '../services/http_provider/http_provider.dart';
 import 'package:get/get.dart' as get_x;
 
 class BuildServices {

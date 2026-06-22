@@ -10,7 +10,7 @@ import '../../models/renter_model.dart';
 
 class AppPrinting{
 
-  static printRenterDetailsPrintLayout(List<Renter?> renters,
+  static Future<void> printRenterDetailsPrintLayout(List<Renter?> renters,
       {bool includeInstallment = true, List<String>? selectedYears}) async {
     Document pdf =
     await RenterDetailsPrintLayout.generate(renters, includeInstallment: includeInstallment,selectedYears: selectedYears);
@@ -19,21 +19,21 @@ class AppPrinting{
     );
   }
 
-  static printSingleRentPaymentPrintLayout(RentPayment? rentPayment,String renterName,double rent) async {
+  static Future<void> printSingleRentPaymentPrintLayout(RentPayment? rentPayment,String renterName,double rent) async {
     Document pdf = await SingleRentPaymentPrintLayout.generate(rentPayment,renterName,rent);
     Printing.layoutPdf(
       onLayout: (format) => pdf.save(),
     );
   }
 
-  static printSingleStatementPrintLayout(Statement? statement,String buildName) async {
+  static Future<void> printSingleStatementPrintLayout(Statement? statement,String buildName) async {
     Document pdf = await StatementPrintLayout.generateSingleStatement(statement,buildName);
     Printing.layoutPdf(
       onLayout: (format) => pdf.save(),
     );
   }
 
-  static printStatementsPrintLayout(List<Statement>? statements,String buildName) async {
+  static Future<void> printStatementsPrintLayout(List<Statement>? statements,String buildName) async {
     Document pdf = await StatementPrintLayout.generateMultiStatement(statements,buildName);
     Printing.layoutPdf(
       onLayout: (format) => pdf.save(),

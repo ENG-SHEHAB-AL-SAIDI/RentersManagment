@@ -4,13 +4,12 @@ import 'package:renters_management_front_end/app/components/pop_up_cards/add_and
 import 'package:renters_management_front_end/app/controllers/renter_add_update_card_controller.dart';
 import 'package:renters_management_front_end/app/models/rent_payments_model.dart';
 import 'package:renters_management_front_end/app/models/result.dart';
-import 'package:renters_management_front_end/app/services/renter_services.dart';
-
 import '../components/calculator.dart';
 import '../components/pop_up_cards/alert_message_card.dart';
 import '../components/pop_up_cards/delete_confirmation_message_card.dart';
 import '../components/pop_up_cards/renter_print_setting_card.dart';
 import '../models/renter_model.dart';
+import '../repositories/renter_repository.dart';
 
 class RenterListController extends GetxController {
   TextEditingController searchField = TextEditingController();

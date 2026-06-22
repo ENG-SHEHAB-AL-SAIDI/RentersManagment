@@ -6,8 +6,8 @@ import '../../components/text_field.dart';
 import '../../controllers/renter_list_controller.dart';
 import '../../globals.dart';
 
-class PhoneRentersListView extends GetView<RenterListController> {
-  const PhoneRentersListView({super.key});
+class RentersListView extends GetView<RenterListController> {
+  const RentersListView({super.key});
 
   @override
   Widget build(BuildContext context) {

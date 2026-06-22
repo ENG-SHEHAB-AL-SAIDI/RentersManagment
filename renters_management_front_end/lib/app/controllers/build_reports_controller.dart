@@ -3,9 +3,9 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:renters_management_front_end/app/components/pop_up_cards/add_expens.dart';
 import 'package:renters_management_front_end/app/models/statement_model.dart';
-import 'package:renters_management_front_end/app/services/build_services.dart';
+import 'package:renters_management_front_end/app/repositories/build_repository.dart';
 import 'package:renters_management_front_end/app/services/print/printing.dart';
-import 'package:renters_management_front_end/app/services/statement_services.dart';
+
 
 import '../components/calculator.dart';
 import '../components/pop_up_cards/add_income.dart';
@@ -16,6 +16,7 @@ import '../models/build_model.dart';
 import '../models/rent_payments_model.dart';
 import '../models/renter_model.dart';
 import '../models/result.dart';
+import '../repositories/statement_repository.dart';
 
 class BuildReportsController extends GetxController {
   int buildId = -1;
@@ -91,7 +92,7 @@ class BuildReportsController extends GetxController {
     isLoad.value = false;
   }
 
-  formatTimeOfDay(TimeOfDay time) {
+  String formatTimeOfDay(TimeOfDay time) {
     final hours =
         time.hourOfPeriod.toString().padLeft(2, '0'); // 12-hour format
     final minutes = time.minute.toString().padLeft(2, '0');

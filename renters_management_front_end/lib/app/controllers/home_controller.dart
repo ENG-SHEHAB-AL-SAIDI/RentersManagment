@@ -3,13 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:renters_management_front_end/app/components/pop_up_cards/alert_message_card.dart';
 import 'package:renters_management_front_end/app/models/result.dart';
-import 'package:renters_management_front_end/app/services/build_services.dart';
+import 'package:renters_management_front_end/app/repositories/build_repository.dart';
 
 import '../components/pop_up_cards/add_and_update_build_card.dart';
 import '../components/pop_up_cards/delete_confirmation_message_card.dart';
 import '../models/build_model.dart';
 import '../models/user_model.dart';
-import '../services/user_services.dart';
+import '../repositories/user_repository.dart';
+
 
 class HomeController extends GetxController {
   Rx<List<Build>> builds = Rx([]);

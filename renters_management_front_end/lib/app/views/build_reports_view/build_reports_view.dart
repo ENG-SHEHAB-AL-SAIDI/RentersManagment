@@ -8,8 +8,8 @@ import '../../components/custom_text.dart';
 import '../../controllers/build_reports_controller.dart';
 import '../../globals.dart';
 
-class PhoneBuildReportsView extends GetView<BuildReportsController> {
-  PhoneBuildReportsView({super.key});
+class BuildReportsView extends GetView<BuildReportsController> {
+  BuildReportsView({super.key});
 
   final Map<String, String> _months = {
     '1': 'January',

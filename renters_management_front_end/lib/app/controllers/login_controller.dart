@@ -2,13 +2,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:renters_management_front_end/app/bindings/register_binding.dart';
 import 'package:renters_management_front_end/app/models/result.dart';
-import 'package:renters_management_front_end/app/services/user_services.dart';
-
+import '../repositories/user_repository.dart';
 import '../views/login_view/register_view.dart';
 
 class LoginController extends GetxController {
-
-
   TextEditingController email = TextEditingController();
   TextEditingController password = TextEditingController();
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
@@ -31,14 +28,15 @@ class LoginController extends GetxController {
 
   @override
   void onInit() async {
-
-    List<String>? credentials = await UserServices.fetchCachedCredentials();
-    if (credentials != null) {
-      email.text = credentials[0];
-      password.text = credentials[1];
-      // email.text = "test@gmail.com";
-      // password.text = "12345678";
-      onLogin();
+    if (Get.parameters.keys.contains('demoMode') &&
+        Get.parameters['demoMode'] == 'true') {
+      email.text = "test@gmail.com";
+      password.text = "12345678";
+      await onLogin();
+    }
+    Result res = await UserServices.fetchUser(hardFetch: true);
+    if (res.statusCode == 200) {
+      Get.offNamed("/home");
     }
     super.onInit();
   }
@@ -75,11 +73,11 @@ class LoginController extends GetxController {
     rememberMe.value = val ?? false;
   }
 
-
   Future<void> onLogin() async {
     logging.value = true;
     if (formKey.currentState!.validate()) {
-      Result res = await UserServices.userLogin(email.text, password.text,rememberMe: rememberMe.value);
+      Result res = await UserServices.userLogin(email.text, password.text,
+          rememberMe: rememberMe.value);
       if (res.statusCode == 200) {
         Get.offNamed("/home");
       } else if (res.statusCode == 900) {

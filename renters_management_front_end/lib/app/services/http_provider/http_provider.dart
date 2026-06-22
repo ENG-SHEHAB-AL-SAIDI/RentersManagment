@@ -206,7 +206,14 @@ class HttpProvider {
     _dio.options.headers["Authorization"] = "Bearer ${prefs.getString("AccessToken")}";
   }
 
-  static void removeAccessTokenHeader() {
+  static Future<void> removeAccessToken() async {
     _dio.options.headers["Authorization"] = null;
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.remove("AccessToken");
+  }
+
+  static Future<void> removeRefreshToken() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.remove("refreshToken");
   }
 }

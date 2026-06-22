@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       title: "Renters Management",
-      initialRoute: "/login",
+      initialRoute: "/demo",
       translations: Languages(),
       locale: Get.deviceLocale,
       fallbackLocale: const Locale('en'),

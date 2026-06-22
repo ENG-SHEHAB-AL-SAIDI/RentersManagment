@@ -21,6 +21,7 @@ class UserServices {
         _user = User.fromJson(response?.data["user"]);
         HttpProvider.addAccessTokenHeader(
             response?.data["token"]["original"]["access_token"]);
+        print( response?.data["token"]);
         HttpProvider.storeRefreshToken(
             response?.data["token"]["original"]["access_token"]);
         if (rememberMe) {
@@ -77,8 +78,9 @@ class UserServices {
       get_x.Get.dialog(const PopUpLoadingCard(), barrierDismissible: false);
       response = await HttpProvider.post("auth/logout");
       if (response?.statusCode == 200) {
-        _prefs ??= await SharedPreferences.getInstance();
-        await _prefs?.remove("credentials");
+        await HttpProvider.removeAccessToken();
+        await HttpProvider.removeRefreshToken();
+        get_x.Get.reset();
         get_x.Get.offAllNamed("/login");
         return null;
       }

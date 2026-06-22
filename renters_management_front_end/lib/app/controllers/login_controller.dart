@@ -28,17 +28,22 @@ class LoginController extends GetxController {
 
   @override
   void onInit() async {
+    Result res = await UserServices.fetchUser(hardFetch: true);
+    if (res.statusCode == 200) {
+      Get.offNamed("/home");
+    }
+    super.onInit();
+  }
+
+
+  @override
+  Future<void> onReady() async {
     if (Get.parameters.keys.contains('demoMode') &&
         Get.parameters['demoMode'] == 'true') {
       email.text = "test@gmail.com";
       password.text = "12345678";
       await onLogin();
     }
-    Result res = await UserServices.fetchUser(hardFetch: true);
-    if (res.statusCode == 200) {
-      Get.offNamed("/home");
-    }
-    super.onInit();
   }
 
   String? validateID(String? id) {

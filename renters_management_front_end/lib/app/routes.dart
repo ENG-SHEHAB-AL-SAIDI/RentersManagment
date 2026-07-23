@@ -16,7 +16,6 @@ class AppRoutes {
   static final routes = [
     GetPage(
       name: '/login',
-
       page: ()=>  const LoginPage(),
       binding: LoginViewBinding(),
     ),

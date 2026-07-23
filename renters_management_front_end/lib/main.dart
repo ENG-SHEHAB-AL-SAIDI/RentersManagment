@@ -4,9 +4,12 @@ import 'package:renters_management_front_end/app/globals.dart';
 import './app/localization/languages.dart';
 import './app/routes.dart';
 import 'app/services/http_provider/http_provider.dart';
+import 'package:flutter_web_plugins/url_strategy.dart';
+
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  usePathUrlStrategy();
   await HttpProvider.init(baseUrl: "https://rentersmanagement.helioho.st/api/");
   // await HttpProvider.init(baseUrl:"http://192.168.0.31:8000/api/");
   await AppFonts.loadFonts();
@@ -20,7 +23,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       title: "Renters Management",
-      initialRoute: "/demo",
+      initialRoute: "/login",
       translations: Languages(),
       locale: Get.deviceLocale,
       fallbackLocale: const Locale('en'),

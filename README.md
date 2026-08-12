@@ -1,177 +1,27 @@
-# Renters Management
+# Renters Management — Short (Interview style)
 
-A simple, extensible application to manage rental properties, tenants, leases, payments, and maintenance requests.
+## Purpose
+A mobile-first renters and property management system: the Flutter client lets property managers track buildings, renters, rent payments, statements, and yearly reports while a server-side API provides authentication, data persistence and business logic.
 
-This repository provides the backend and/or frontend scaffolding (depending on the project structure) for tracking renters and properties. The README below is intentionally generic and includes common setup steps, environment variables, and development notes that you can adapt to the actual tech stack used in this repository.
+## Key features (high level)
+- Manage buildings and units, tenants and contact details
+- Record and group rent payments, installments and payment history
+- Generate and store financial statements and incomes/expenses per period
+- Year-based operations (assign/remove year records to renters/buildings)
+- Authentication and token-based session flow for mobile clients
 
-## Features
+## Technology highlights
+- Frontend: Flutter (Dart) mobile app — GetX for state/routing, Dio for HTTP, local storage for credentials and tokens, PDF generation/printing and app icons/assets management
+- Backend: Laravel PHP API — RESTful controllers and routes that expose auth endpoints and protected /user/* resources (builds, renters, rent_payments, statements, year operations)
+- Auth: JWT-based tokens for mobile authentication and refresh flows
+- Data & storage: standard relational database usage (MySQL/Postgres or SQLite for quick local setup) and filesystem-backed assets where needed
+- Integrations & utilities: shared preferences on client, PDF/printing support, and common Laravel tooling (artisan, migrations) on server
 
-- Manage properties (units, addresses)
-- Track tenants and lease terms
-- Record rent payments and payment history
-- Log maintenance requests and statuses
-- Basic authentication and role-based access (admin/property manager/tenant)
+## How it fits together
+The mobile app calls the API for everything: users register/login, then make authenticated requests to list and mutate buildings, renters, payments and statements. The backend enforces business rules and persists data; the frontend stores tokens and presents UI for managing properties and finances.
 
-## Tech stack (suggested / replace as appropriate)
-
-- Backend: Node.js + Express / Python + Django / Ruby on Rails (choose one)
-- Database: PostgreSQL (recommended)
-- Frontend: React / Vue / Angular (if included)
-- Optional: Docker & Docker Compose for local development
-
-## Getting started (quickstart - Docker)
-
-Recommended: use Docker to avoid local environment differences.
-
-1. Copy the example environment file and update values:
-
-   ```bash
-   cp .env.example .env
-   # Edit .env to set DB credentials and other keys
-   ```
-
-2. Build and run with Docker Compose:
-
-   ```bash
-   docker-compose up --build
-   ```
-
-3. Run migrations and seed data (if applicable):
-
-   ```bash
-   # Example commands - replace with your project's migration commands
-   docker-compose exec app npm run migrate
-   docker-compose exec app npm run seed
-   ```
-
-4. Open the application:
-
-   - Backend: http://localhost:8000 (or configured port)
-   - Frontend: http://localhost:3000
-
-## Local development (no Docker)
-
-Example for a Node.js project — adapt to your stack:
-
-1. Install dependencies:
-
-   ```bash
-   npm install
-   # or
-   yarn install
-   ```
-
-2. Configure environment variables (see `.env.example`)
-
-3. Start the development server:
-
-   ```bash
-   npm run dev
-   # or
-   yarn dev
-   ```
-
-4. Run tests:
-
-   ```bash
-   npm test
-   # or
-   yarn test
-   ```
-
-## .env.example (template)
-
-Create a `.env` file from this template and fill in values:
-
-```
-# Server
-PORT=8000
-NODE_ENV=development
-
-# Database
-DB_HOST=postgres
-DB_PORT=5432
-DB_NAME=renters_db
-DB_USER=postgres
-DB_PASS=postgres
-
-# Security
-APP_SECRET=change-me-to-a-secure-random-string
-
-# Optional third-party keys
-# STRIPE_KEY=
-# SENTRY_DSN=
-```
-
-## Database & Migrations
-
-Replace these instructions with your project's migration tooling (Sequelize, Knex, Django migrations, Rails migrations, etc.). Example:
-
-```bash
-# Node (Sequelize)
-npx sequelize db:migrate
-npx sequelize db:seed:all
-
-# Django
-python manage.py migrate
-python manage.py loaddata initial_data.json
-
-# Rails
-bundle exec rails db:migrate
-bundle exec rails db:seed
-```
-
-## API (example endpoints)
-
-Adjust based on your implementation. Example REST endpoints:
-
-- POST /api/auth/login — Authenticate user
-- POST /api/auth/register — Create user
-- GET /api/properties — List properties
-- POST /api/properties — Create property
-- GET /api/properties/:id/tenants — List tenants for property
-- POST /api/leases — Create lease
-- GET /api/payments — List payments
-- POST /api/maintenance — Create maintenance request
-
-Include API docs or OpenAPI/Swagger references if available.
-
-## Tests
-
-Describe how to run unit and integration tests. Example:
-
-```bash
-npm test
-# or
-pytest
-# or
-bundle exec rspec
-```
-
-## CI / CD
-
-Add notes about the CI pipeline (GitHub Actions, GitLab CI, etc.) and deployment targets (Heroku, AWS ECS, Docker image registry). Example:
-
-- Push to `main` → run tests → build Docker image → publish to registry
-- Deploy from the `main` image/tag to production environment
-
-## Contributing
-
-Contributions are welcome. Please follow these steps:
-
-1. Fork the repository
-2. Create a feature branch: `git checkout -b feat/your-feature`
-3. Commit your changes and push: `git push origin feat/your-feature`
-4. Open a pull request with a clear description of the change
-
-Please add tests and update documentation for significant changes.
-
-## License
-
-This project is licensed under the MIT License. Change as necessary.
+## Repo layout (one line)
+`renters_management_front_end/` (Flutter client) — `renters_management_back_end/` (Laravel API)
 
 ## Contact
-
-Maintainer: ENG-SHEHAB-AL-SAIDI
-
-For questions or support, open an issue in this repository.
+Maintainer: ENG-SHEHAB-AL-SAIDI — open an issue or PR in the repository for follow-ups.
